@@ -1,0 +1,31 @@
+# Archives and backups
+_archive/
+*_BACKUP*
+
+# Build/utility scripts
+_build_*.py
+_expand_*.py
+_rebuild_*.py
+_progress.md
+
+# Screenshots (working reference only)
+Zrzut ekranu*.png
+check-*.jpg
+
+# Excel files (not part of web presentation)
+*.xlsx
+.~lock.*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor/IDE
+.claude/
+*.swp
+*.swo
+*~
+
+# Markdown notes
+NOTE *.md

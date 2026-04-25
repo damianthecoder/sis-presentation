@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SIS — Trial Proposal · 4-Week Division 3 Night Run</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b0a;
+    --bg-2: #111312;
+    --bg-3: #17191a;
+    --ink: #f2f3ef;
+    --ink-2: #cfd1cb;
+    --muted: #8a8f86;
+    --rule: #222624;
+    --rule-2: #2e3330;
+    --neon: #b8ff2b;
+    --neon-dim: #7fb31d;
+    --orange: #ff6a1f;
+    --orange-dim: #c74a0c;
+    --blue: #4ac4ff;
+    --gold: #ffc845;
+    --purple: #b48dff;
+    --panel: #0f1110;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+
+  .page {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 80px 96px 120px;
+  }
+
+  .runner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 64px;
+  }
+  .sis-mark {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .sis-mark .dot {
+    width: 10px; height: 10px; background: var(--neon); border-radius: 2px;
+    box-shadow: 0 0 10px rgba(184,255,43,0.7);
+  }
+
+  h1.display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 84px;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    margin-bottom: 32px;
+    max-width: 1300px;
+  }
+  h2.section {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow .sq {
+    width: 10px; height: 10px;
+    background: var(--neon);
+    box-shadow: 0 0 10px rgba(184,255,43,0.5);
+  }
+  .eyebrow.blue .sq { background: var(--blue); box-shadow: 0 0 10px rgba(74,196,255,0.5); }
+  .eyebrow.gold .sq { background: var(--gold); box-shadow: 0 0 10px rgba(255,200,69,0.5); }
+  .eyebrow.orange .sq { background: var(--orange); box-shadow: 0 0 10px rgba(255,106,31,0.5); }
+  .eyebrow.muted .sq { background: var(--muted); box-shadow: none; }
+
+  .lede {
+    font-size: 24px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    max-width: 1100px;
+    text-wrap: pretty;
+  }
+  .body {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 1000px;
+    text-wrap: pretty;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .accent { color: var(--neon); }
+  .orange-text { color: var(--orange); }
+  .blue-text { color: var(--blue); }
+  .gold-text { color: var(--gold); }
+  .purple-text { color: var(--purple); }
+  .muted-text { color: var(--muted); }
+
+  .section-break { height: 1px; background: var(--rule); margin: 88px 0; }
+
+  /* STAT STRIP */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 40px;
+  }
+  .stat { background: var(--bg); padding: 28px 24px 32px; }
+  .stat .n {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    margin-bottom: 10px;
+  }
+  .stat .n.accent { color: var(--neon); }
+  .stat .n.gold { color: var(--gold); }
+  .stat .n.blue { color: var(--blue); }
+  .stat .n.orange { color: var(--orange); }
+  .stat .l {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .stat .sub {
+    font-size: 12px; color: var(--ink-2); line-height: 1.4;
+  }
+
+  /* THREE-COL FEATURE BLOCKS */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .feature {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    padding: 32px;
+    border-radius: 2px;
+  }
+  .feature .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .feature h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .feature p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .feature ul {
+    list-style: none;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin-top: 16px;
+  }
+  .feature li {
+    margin-bottom: 8px;
+  }
+  .feature li::before { content: "· "; color: var(--neon); margin-right: 8px; }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--neon);
+    padding: 32px 32px;
+    border-radius: 2px;
+  }
+  .callout.orange { border-left-color: var(--orange); }
+  .callout.blue { border-left-color: var(--blue); }
+  .callout .eye {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .callout .huge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--neon);
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    margin-bottom: 10px;
+  }
+  .callout.orange .huge { color: var(--orange); }
+  .callout.blue .huge { color: var(--blue); }
+  .callout p {
+    font-size: 15px; line-height: 1.55; color: var(--ink-2);
+  }
+
+  /* TWO-COL LAYOUT */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 40px;
+  }
+
+  /* PAY LADDER */
+  .pay-table {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    padding: 28px;
+    border-radius: 2px;
+    margin-top: 36px;
+  }
+  .pay-table .row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.2fr;
+    gap: 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+  }
+  .pay-table .row:last-child { border-bottom: none; }
+  .pay-table .row.header {
+    background: var(--bg-3);
+    padding: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pay-table .label {
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .pay-table .value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    color: var(--neon);
+  }
+  .pay-table .note {
+    font-size: 12px;
+    color: var(--ink-2);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* PROGRESSION TIERS */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-top: 36px;
+  }
+  .tier {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    padding: 20px 16px;
+    border-radius: 2px;
+    text-align: center;
+  }
+  .tier.active {
+    border-color: var(--neon);
+    background: rgba(184, 255, 43, 0.08);
+  }
+  .tier .name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .tier .bonus {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .tier .desc {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* COST TABLE */
+  .cost-table {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    padding: 28px;
+    border-radius: 2px;
+    margin-top: 36px;
+  }
+  .cost-table .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cost-table .row:last-child { border-bottom: none; }
+  .cost-table .row.total {
+    border-top: 2px solid var(--rule);
+    padding-top: 18px;
+    font-weight: 600;
+  }
+  .cost-table .label {
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+  .cost-table .amount {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: var(--neon);
+  }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    margin-top: 40px;
+    padding: 40px 0;
+  }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 70px;
+    top: 0;
+    bottom: -32px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--neon), transparent);
+  }
+  .timeline-item:last-child::before { display: none; }
+  .timeline-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 80px;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--neon);
+  }
+  .timeline-content {
+    padding-top: 12px;
+  }
+  .timeline-content h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .timeline-content p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  /* SUCCESS CRITERIA */
+  .criteria {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 36px;
+  }
+  .criterion { background: var(--bg); padding: 28px; }
+  .criterion .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--neon);
+    margin-bottom: 12px;
+  }
+  .criterion h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .criterion p {
+    font-size: 14px; line-height: 1.5; color: var(--ink-2);
+  }
+
+  /* Decision */
+  .decision {
+    margin-top: 56px;
+    padding: 44px 44px;
+    background: var(--neon);
+    color: #0a0b0a;
+    border-radius: 2px;
+  }
+  .decision .eye {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #1a2305;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .decision .eye::before { content: ""; width: 10px; height: 10px; background: #0a0b0a; }
+  .decision h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 18px;
+    max-width: 1100px;
+  }
+  .decision p {
+    font-size: 17px; line-height: 1.5; color: #1a2305;
+    max-width: 1000px; margin-bottom: 12px;
+  }
+  .decision .outcomes {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  .decision .outcome {
+    background: rgba(10, 11, 10, 0.4);
+    padding: 16px;
+    border-radius: 2px;
+  }
+  .decision .outcome-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #1a2305;
+    margin-bottom: 6px;
+  }
+  .decision .outcome-text {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #1a2305;
+  }
+
+  .assumptions {
+    margin-top: 44px;
+    padding: 22px 28px;
+    border: 1px dashed var(--rule-2);
+    border-radius: 2px;
+  }
+  .assumptions .title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .assumptions ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-2);
+    letter-spacing: 0.02em;
+  }
+  .assumptions li::before { content: "· "; color: var(--muted); }
+
+  /* HERO SUBTITLE */
+  .subtitle {
+    font-size: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.06em;
+    color: var(--ink-2);
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="runner">
+    <div class="sis-mark"><span class="dot"></span>SIS · INTERNAL · PROPOSAL</div>
+    <div>TRIAL BRIEF</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- HERO -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <h1 class="display">The Proposal</h1>
+    <p class="subtitle">4-week trial · Studios 5–6 · Division 3 · Night shift</p>
+    <p class="lede">
+      A controlled validation of three interconnected systems: the new <span class="accent">tiered bonus structure</span>, the <span class="accent">6-studio stagger scheduling model</span>, and the <span class="accent">continuous progression system</span> with reliability tiers. Run on Division 3 (entry-level gamers) during the night shift. Measure cancel rate stability, SPS distribution, bonus predictability, and gamer satisfaction before rolling out to the full night pool.
+    </p>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 01: WHAT WE'RE TESTING -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="eyebrow"><span class="sq"></span>01 · WHAT WE'RE TESTING</div>
+    <h2 class="section">Three systems, validated simultaneously.</h2>
+    <p class="body" style="margin-bottom: 40px;">
+      The trial runs three initiatives in parallel. Each one is measured independently so we can isolate success signals and identify what works.
+    </p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="label">System 1 of 3</div>
+        <h3>New Bonus Structure</h3>
+        <p>Tiered win bonuses (£2.00/win in Studio 5, £1.80/win in Studio 6), division championship bonus (£4/shift, 1 per division), and a reliability multiplier system that compounds earnings based on career tier (Rookie T6 → Championship T1).</p>
+        <ul>
+          <li>Tiers: Academy → Rookie → Regular → Specialist → Elite → Champion</li>
+          <li>Multipliers range from 0% (Academy) to +35% (Champion)</li>
+          <li>All tied to rolling 8-week SPS average</li>
+          <li>Reference: NEW NBA BONUS STRUCTURE&CALCULATOR.xlsx</li>
+        </ul>
+      </div>
+
+      <div class="feature">
+        <div class="label">System 2 of 3</div>
+        <h3>Scheduling Model</h3>
+        <p>6-studio stagger with 10-minute cadence, 32-minute match slots, and a fatigue‑safe 1v1 rotation (max 3 consecutive, all pairings present). Studios 4–6 truncated to 21 matches per night (vs. standard 22).</p>
+        <ul>
+          <li>Night shift: 18:30–07:00 (11.5 hours paid, 1 hour unpaid break)</li>
+          <li>10-min stagger ensures continuous bank activity</li>
+          <li>21-match cap allows for natural rhythm breaks</li>
+          <li>Doubles rotation smooths fatigue distribution</li>
+        </ul>
+      </div>
+
+      <div class="feature">
+        <div class="label">System 3 of 3</div>
+        <h3>Progression System</h3>
+        <p>Continuous career tracking with 8-week rolling SPS average and automatic promotion/relegation. No seasonal resets. Career milestones unlock reliability tiers.</p>
+        <ul>
+          <li>SPS formula: 0.45 density + 0.25 narrative + 0.15 reliability + 0.15 settlement</li>
+          <li>"Career in the Studio" tiers compound with bonus multiplier</li>
+          <li>Promotions begin Week 2 (sufficient rolling data)</li>
+          <li>Natural stratification expected by Week 4</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 02: TRIAL SCOPE -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="eyebrow blue"><span class="sq"></span>02 · TRIAL SCOPE</div>
+    <h2 class="section">Tight boundary. Maximum isolation.</h2>
+
+    <div class="two-col">
+      <div>
+        <p class="body">
+          The trial is scoped to Division 3 (entry-level studios) during the night shift only. All 8 gamers start at Academy tier. This isolation lets us measure the systems against a homogeneous baseline and avoid confounding variables from mixed tiers or day-shift dynamics.
+        </p>
+      </div>
+      <div>
+        <p class="body">
+          Studios 5 and 6 are the operational unit. Each night, we rotate 4 gamers per studio from the night pool. The stagger, match slots, and bonus structure are identical across both. Break and settlement protocols mirror the existing night shift.
+        </p>
+      </div>
+    </div>
+
+    <div class="stat-strip" style="grid-template-columns: repeat(4, 1fr); margin-top: 36px;">
+      <div class="stat">
+        <div class="l">Studios</div>
+        <div class="n accent">2</div>
+        <div class="sub">Division 3 only (S5 & S6)</div>
+      </div>
+      <div class="stat">
+        <div class="l">Duration</div>
+        <div class="n blue">4 weeks</div>
+        <div class="sub">28 nights, night shift</div>
+      </div>
+      <div class="stat">
+        <div class="l">Gamers</div>
+        <div class="n gold">8</div>
+        <div class="sub">4 per studio, all Academy start</div>
+      </div>
+      <div class="stat">
+        <div class="l">Matches per Night</div>
+        <div class="n orange">42</div>
+        <div class="sub">21 per studio × 2 studios (S5–S6 truncated)</div>
+      </div>
+    </div>
+
+    <div class="callout blue" style="margin-top: 36px;">
+      <div class="eye">Trial Volume Summary</div>
+      <div style="font-size: 16px; line-height: 1.6; color: var(--ink-2);">
+        <strong style="color: var(--ink);">1,176 trial matches total</strong> across 28 nights (42 matches/night × 28 nights). Each gamer plays 11 matches per shift; at an average ~3 shifts/week that's roughly 132 matches per gamer over the trial — enough to stabilize SPS rolling averages and reveal bonus payout variance.
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 03: BONUS STRUCTURE DEEP DIVE -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="eyebrow gold"><span class="sq"></span>03 · BONUS STRUCTURE DEEP DIVE</div>
+    <h2 class="section">Pay ladder and reliability multiplier tiers.</h2>
+
+    <p class="body" style="margin-bottom: 32px;">
+      Every gamer receives a base daily rate plus win bonuses. The reliability multiplier compounds on top, creating earning differentiation that rewards sustained performance.
+    </p>
+
+    <div class="pay-table">
+      <div class="row header">
+        <div>Component</div>
+        <div>Studio 5</div>
+        <div>Studio 6</div>
+      </div>
+      <div class="row">
+        <div class="label">Base daily (11.5h @ £12.71/hr)</div>
+        <div class="value">£146.16</div>
+        <div class="value">£146.16</div>
+      </div>
+      <div class="row">
+        <div class="label">Win bonus (assumed 5 wins/shift)</div>
+        <div class="value">£10.00</div>
+        <div class="value">£9.00</div>
+      </div>
+      <div class="row">
+        <div class="label">Division championship bonus</div>
+        <div class="value">£4.00</div>
+        <div class="value">£4.00</div>
+      </div>
+      <div class="row" style="font-weight: 600;">
+        <div class="label">Daily subtotal (Academy gamer)</div>
+        <div class="value">£160.16</div>
+        <div class="value">£159.16</div>
+      </div>
+    </div>
+
+    <h3 style="font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 28px; letter-spacing: -0.01em; margin-top: 44px; margin-bottom: 20px;">Reliability multiplier tiers</h3>
+    <p class="body" style="margin-bottom: 28px;">
+      Bonus multipliers unlock as gamers advance through career tiers based on SPS. All gamers start at Academy (0% multiplier). Promotions begin after Week 2.
+    </p>
+
+    <div class="tiers">
+      <div class="tier active">
+        <div class="name">Academy</div>
+        <div class="bonus">+0%</div>
+        <div class="desc">Entry point</div>
+      </div>
+      <div class="tier">
+        <div class="name">Rookie</div>
+        <div class="bonus">+2.5%</div>
+        <div class="desc">50+ shifts</div>
+      </div>
+      <div class="tier">
+        <div class="name">Regular</div>
+        <div class="bonus">+7.5%</div>
+        <div class="desc">Promoted out D3</div>
+      </div>
+      <div class="tier">
+        <div class="name">Specialist</div>
+        <div class="bonus">+12.5%</div>
+        <div class="desc">1+ mo. D1/D2</div>
+      </div>
+      <div class="tier">
+        <div class="name">Elite</div>
+        <div class="bonus">+30%</div>
+        <div class="desc">3+ mo. D1</div>
+      </div>
+      <div class="tier">
+        <div class="name">Champion</div>
+        <div class="bonus">+35%</div>
+        <div class="desc">Division title holder</div>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top: 40px;">
+      <strong>Examples:</strong> A Rookie gamer (S5) earns £160.16 × 1.025 = <span class="accent">£164.16/day</span>. A Regular gamer (S5) earns £160.16 × 1.075 = <span class="accent">£172.17/day</span>. The multiplier applies to the full daily total (base + wins + division championship bonus).
+    </p>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 04: ON-CALL MODEL -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="eyebrow orange"><span class="sq"></span>04 · ON-CALL MODEL</div>
+    <h2 class="section">Standby gamers and activation cost.</h2>
+
+    <div class="two-col">
+      <div>
+        <p class="body">
+          For the trial period, <strong>one standby gamer per shift</strong>. If not called in, they receive £50/day flat compensation. If called in, they receive full daily pay (base + wins + bonuses) plus an additional £50 on-call premium. Full 6‑studio operation maintains 1 standby/shift.
+        </p>
+        <p class="body" style="margin-top: 24px;">
+          This creates a safety margin without penalizing standby gamers. At a 15% call-in probability (conservative industry baseline), expected on-call cost per shift is approximately £72 (1 standby × £50 × 0.85 flat + 1 standby × full daily × 0.15 call rate).
+        </p>
+      </div>
+      <div>
+        <div class="callout">
+          <div class="eye">On-Call Cost per Shift</div>
+          <div style="font-size: 20px; margin: 16px 0; color: var(--ink-2);">
+            <strong style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; color: var(--gold);">£72</strong>
+            <div style="font-size: 14px; margin-top: 8px;">Expected per shift (1 standby, 15% call-in rate)</div>
+          </div>
+          <div style="font-size: 14px; line-height: 1.6; color: var(--ink-2); border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 12px;">
+            28 nights × £72 = <strong style="color: var(--gold);">£2,016</strong> trial on-call cost
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 05: PROGRESSION SYSTEM -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="eyebrow"><span class="sq"></span>05 · PROGRESSION SYSTEM</div>
+    <h2 class="section">Continuous tracking and career milestones.</h2>
+
+    <p class="body" style="margin-bottom: 36px;">
+      Unlike seasonal resets, the progression system runs continuously. Performance accumulates in real time. The 8-week rolling SPS average is the primary metric for tier position.
+    </p>
+
+    <div class="callout blue" style="margin-bottom: 40px;">
+      <div class="eye">SPS Formula</div>
+      <div style="font-size: 16px; line-height: 1.6; margin-top: 12px;">
+        <div style="color: var(--ink); font-weight: 600; margin-bottom: 8px;">0.45 × event_density + 0.25 × narrative_delta + 0.15 × reliability + 0.15 × settlement_accuracy</div>
+        <div style="color: var(--ink-2); font-size: 14px;">Event density measures participation rate. Narrative delta tracks story contribution. Reliability captures cancellation avoidance. Settlement accuracy rewards clean event resolution.</div>
+      </div>
+    </div>
+
+    <h3 style="font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 28px; letter-spacing: -0.01em; margin-bottom: 20px;">Career milestones</h3>
+
+    <div class="features">
+      <div class="feature">
+        <div class="label">01</div>
+        <h3>Academy</h3>
+        <p>Entry point. No prerequisites. All trial gamers start here. Zero reliability multiplier.</p>
+      </div>
+      <div class="feature">
+        <div class="label">02</div>
+        <h3>Rookie</h3>
+        <p>50+ shifts completed AND less than 6% cancel rate. +2.5% multiplier. Expected after Week 2–3 of trial.</p>
+      </div>
+      <div class="feature">
+        <div class="label">03</div>
+        <h3>Regular</h3>
+        <p>Promoted out of Division 3 (earned seat in D1/D2) AND less than 4% cancel rate. +7.5% multiplier. Unlikely in 4-week trial but documented for context.</p>
+      </div>
+      <div class="feature">
+        <div class="label">04</div>
+        <h3>Specialist</h3>
+        <p>Maintained top 3 studios for 1+ month AND less than 3% cancel rate. +12.5% multiplier. Long-term career progression.</p>
+      </div>
+      <div class="feature">
+        <div class="label">05</div>
+        <h3>Elite</h3>
+        <p>Sustained D1 performance for 3+ months AND less than 2% cancel rate. +30% multiplier. Peak regular season.</p>
+      </div>
+      <div class="feature">
+        <div class="label">★</div>
+        <h3>Champion</h3>
+        <p>Current division title holder (1 per division) AND 8+ wins per shift average. +35% multiplier. Highest earnings tier. Unlocks division championship bonus.</p>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top: 40px;">
+      <strong>Trial expectations:</strong> All 8 gamers start at Academy. By end of Week 2 (14 shifts), those with strong event density and low cancellations should reach Rookie. By Week 4, we expect natural stratification with some holding Rookie, some possibly Regular if they've been promoted to a higher division.
+    </p>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 06: SUCCESS CRITERIA -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="eyebrow gold"><span class="sq"></span>06 · SUCCESS CRITERIA</div>
+    <h2 class="section">What "pass" looks like after 4 weeks.</h2>
+
+    <div class="criteria">
+      <div class="criterion">
+        <div class="num">01</div>
+        <h4>Cancel rate drops below baseline</h4>
+        <p>S5–S6 cancel rate falls below 3% (target improvement from current ~5% baseline). The reliability multiplier should incentivize attendance.</p>
+      </div>
+      <div class="criterion">
+        <div class="num">02</div>
+        <h4>SPS distribution shows tier separation</h4>
+        <p>By Week 3–4, we expect meaningful SPS differentiation across the 8 gamers. Academy vs. Rookie vs. emerging Regular should be visually distinct in the distribution.</p>
+      </div>
+      <div class="criterion">
+        <div class="num">03</div>
+        <h4>Bonus payout variance is predictable</h4>
+        <p>Week-to-week bonus payouts show consistent patterns (no wild swings). Variance is explainable by win count and tier, not anomalies.</p>
+      </div>
+      <div class="criterion">
+        <div class="num">04</div>
+        <h4>Gamer retention is 100%</h4>
+        <p>All 8 gamers complete the full 4-week trial. No mid-trial dropouts from dissatisfaction with pay, schedule, or progression mechanics.</p>
+      </div>
+      <div class="criterion">
+        <div class="num">05</div>
+        <h4>On-call activations match assumption</h4>
+        <p>Actual call-in rate stays within 10%–20% range. If wildly lower or higher, it signals scheduling or capacity issues.</p>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top: 40px;">
+      If 4 out of 5 criteria pass, the trial is green-lit for expansion to full Division 3 night. If 3 or fewer pass, we adjust mechanics and run again. If all 5 pass, we proceed to full 6-studio day+night rollout planning.
+    </p>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 07: COST SUMMARY -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="eyebrow blue"><span class="sq"></span>07 · COST SUMMARY</div>
+    <h2 class="section">Investment and financial bridge.</h2>
+
+    <div class="cost-table">
+      <div class="row">
+        <div class="label">Active gamer cost (28 nights × 8 gamers × ~£158.66/day avg)</div>
+        <div class="amount">£35,420</div>
+      </div>
+      <div class="row">
+        <div class="label">On-call cost (28 nights × £72/night · 1 standby)</div>
+        <div class="amount">£2,016</div>
+      </div>
+      <div class="row total">
+        <div class="label">Total trial cost (4 weeks)</div>
+        <div class="amount">£37,436</div>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top: 40px; margin-bottom: 24px;">
+      <strong>Scale assumptions if trial succeeds:</strong> Night restructure rolls out to all 6 studios at an incremental cost of <span class="accent">~£238K/yr</span> (£212K bonus restructure + £26K on-call). Day shift retains its current bonus structure. Future revenue play: expand Day to 6 studios and extend the restructured bonus to both shifts — additional ~£730K incremental at full scale, unlocking 94,170 matches/yr and £3.77M cancel recovery (3.9× ROI).
+    </p>
+
+    <div class="callout orange">
+      <div class="eye">Revenue impact (full operation)</div>
+      <div style="margin-top: 12px;">
+        <div style="font-size: 20px; line-height: 1.6; color: var(--ink-2);">
+          At current volume (78,475 matches/yr), the 5% cancel baseline costs approximately <strong style="color: var(--orange);">£3.92M/year</strong> in lost revenue (£1,000 per cancellation). Reducing to 1% target recovers <strong style="color: var(--orange);">£3.14M/year</strong> on just <strong style="color: var(--neon);">£238K/yr incremental spend</strong> — Night shift restructure only (13.2× ROI). Day shift retains its current bonus structure. <strong style="color: var(--ink);">Future expansion to 6 studios on both shifts would unlock 94,170 matches/yr and £3.77M recovery. The trial is cost‑neutral — with 1 on‑call/shift, the new structure actually saves ~£1.3K vs current S5–6 operations. See Section 08 for the full current‑vs‑new breakdown.</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- TIMELINE -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section style="margin-bottom: 40px;">
+    <div class="eyebrow"><span class="sq"></span>TRIAL TIMELINE</div>
+    <h2 class="section">4-week progression and gates.</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-marker">Week 1</div>
+        <div class="timeline-content">
+          <h4>Kickoff & baseline capture</h4>
+          <p>All 8 gamers start at Academy tier. Capture baseline cancel rates, average SPS, and gamer satisfaction (quick survey). Establish control metrics.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker">Week 2</div>
+        <div class="timeline-content">
+          <h4>Early promotions emerge</h4>
+          <p>Rolling 8-week SPS average begins to stabilize. First tier promotions (Academy → Rookie) expected for high performers. Bonus multipliers take effect. Monitor payout variance.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker">Week 3</div>
+        <div class="timeline-content">
+          <h4>Stratification visible</h4>
+          <p>SPS distribution shows clear separation by tier. Cancel rates trending. Gamer feedback on schedule and pay structure. Bonus payouts stabilize into expected ranges.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker">Week 4</div>
+        <div class="timeline-content">
+          <h4>Final assessment & gate</h4>
+          <p>Complete retrospective on all 5 success criteria. Final satisfaction survey. Data compilation. Leadership decision: expand, adjust & re-run, or revert.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SIS STRATEGY ALIGNMENT -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="eyebrow"><span class="sq"></span>09 · SIS STRATEGY ALIGNMENT</div>
+    <h2 class="section">Built for SIS Competitive Gaming's next phase.</h2>
+    <p class="body">
+      This trial isn't an isolated experiment — it's the first operational test of the model SIS needs as it scales Competitive Gaming globally. SIS Competitive Gaming already delivers 225K+ annual events across titles through the H2H Global Gaming League, now live in 15+ US states via Hard Rock Bet, bet365 and Genius Sports distribution. The product drives ~10% turnover uplift for sportsbook partners and holds the ESIC Gold Standard — the highest integrity accreditation in esports. That standard demands consistent, auditable content: fewer cancellations, traceable gamer performance, and reliable 24/7 feeds.
+    </p>
+    <p class="body" style="margin-top: 16px;">
+      The restructure delivers all of this: <strong>94,170 NBA matches/yr</strong> at a target 1% cancel rate, fatigue‑safe scheduling that protects content quality, SPS‑driven career tracking that makes gamer quality measurable, and a title‑agnostic structure that EAFC and eAmerican Football can inherit directly. The trial on Studios 5–6 validates the model at zero incremental cost before scaling.
+    </p>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- DECISION BOX -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <div class="decision">
+    <div class="eye">Leadership decision gate</div>
+    <h2>Run the 4-week night trial on Studios 5–6. Measure cancel rate, SPS stability, bonus predictability, and gamer satisfaction.</h2>
+    <p>Execute the trial as outlined above. Establish the bonuses, progression system, and scheduling model on a controlled, measurable cohort. Decision point: end of Week 4.</p>
+
+    <div class="outcomes">
+      <div class="outcome">
+        <div class="outcome-label">Outcome A</div>
+        <div class="outcome-text"><strong>Expand.</strong> If 5/5 criteria pass, roll out to full Division 3 night immediately.</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-label">Outcome B</div>
+        <div class="outcome-text"><strong>Adjust & re-run.</strong> If 3–4 criteria pass, revise mechanics and restart a 4-week cycle.</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-label">Outcome C</div>
+        <div class="outcome-text"><strong>Revert.</strong> If ≤2 criteria pass, pause and return to the legacy model.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- COST COMPARISON: CURRENT vs NEW -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section style="margin-bottom: 40px;">
+    <div class="eyebrow gold"><span class="sq"></span>08 · COST COMPARISON — CURRENT vs NEW STRUCTURE</div>
+    <h2 class="section">The restructure pays for itself — and then some.</h2>
+
+    <p class="body" style="margin-bottom: 36px;">
+      The new structure is not a greenfield cost centre. SIS already runs 6 NBA studios at night and 4 during the day with the same base pay rate (£12.71/hr). The incremental cost of the restructure is the <em>difference</em> between what we spend today and what the new bonus/scheduling/on‑call model costs — not the total payroll.
+    </p>
+
+    <!-- Current structure -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+      <div class="callout">
+        <div class="eye">Current structure (NBA only)</div>
+        <div style="margin-top: 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-2); line-height: 2;">
+          <div><span style="color: var(--muted);">Night shift:</span> 6 studios × 4 gamers + 3 hosts</div>
+          <div><span style="color: var(--muted);">Day shift:</span> 4 studios × 4 gamers + 2 hosts <span style="color: var(--orange);">(S5–6 offline)</span></div>
+          <div><span style="color: var(--muted);">Win bonus:</span> S1 £4.00/win → S6 £0.50/win (wide spread)</div>
+          <div><span style="color: var(--muted);">On‑call:</span> none</div>
+          <div><span style="color: var(--muted);">Champion/reliability bonus:</span> none</div>
+          <div style="margin-top: 12px; border-top: 1px solid var(--rule); padding-top: 12px;">
+            <div><span style="color: var(--muted);">Night daily:</span> £4,340</div>
+            <div><span style="color: var(--muted);">Day daily:</span> £2,955</div>
+            <div style="color: var(--ink); font-weight: 600; font-size: 15px; margin-top: 8px;">Annual total: £2.66M</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout blue">
+        <div class="eye">New structure (NBA only)</div>
+        <div style="margin-top: 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-2); line-height: 2;">
+          <div><span style="color: var(--muted);">Night shift:</span> 6 studios × 4 gamers + 3 hosts + 1 on‑call</div>
+          <div><span style="color: var(--muted);">Day shift:</span> 4 studios × 4 gamers + 2 hosts + 1 on‑call <span style="color: var(--orange);">(S5–6 offline)</span></div>
+          <div><span style="color: var(--muted);">Win bonus (Night):</span> S1 £2.80/win → S6 £1.80/win (compressed) <span style="color: var(--orange);">· Day retains current structure</span></div>
+          <div><span style="color: var(--muted);">On‑call:</span> 1/shift · £50/day standby or £196.16 called in</div>
+          <div><span style="color: var(--muted);">Champion/reliability bonus (Night):</span> D1 £12 · D2 £5 · D3 £4 + 0–35% multiplier</div>
+          <div style="margin-top: 12px; border-top: 1px solid var(--rule); padding-top: 12px;">
+            <div><span style="color: var(--muted);">Night shift:</span> £4,993/day (gamers + hosts + on‑call) <span style="color: var(--neon);">← restructured</span></div>
+            <div><span style="color: var(--muted);">Day shift:</span> £2,955/day (unchanged — current bonus structure)</div>
+            <div><span style="color: var(--muted);">Daily (2 shifts):</span> £7,948</div>
+            <div style="color: var(--ink); font-weight: 600; font-size: 15px; margin-top: 8px;">Annual total: £2.90M</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Incremental breakdown -->
+    <h3 class="sub" style="margin-bottom: 20px;">What actually changes — incremental cost drivers</h3>
+
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+      <div style="background: var(--bg-2); border: 1px solid var(--rule); padding: 20px; border-radius: 2px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;">Bonus restructure · Night only</div>
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 600; color: var(--ink);">£212K</div>
+        <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-2); margin-top: 8px;">Champion bonus + reliability multiplier + compressed win rates (Night shift only — Day retains current bonus structure)</div>
+      </div>
+      <div style="background: var(--bg-2); border: 1px solid var(--rule); padding: 20px; border-radius: 2px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;">On‑call system · Night only</div>
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 600; color: var(--ink);">£26K</div>
+        <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-2); margin-top: 8px;">1 standby/shift × Night shift × 365 days (15% call‑in rate)</div>
+      </div>
+    </div>
+    <div style="background: var(--bg-3); border: 1px dashed var(--rule-2); padding: 16px 20px; margin-bottom: 36px; font-size: 13px; color: var(--ink-2); line-height: 1.6;">
+      <span style="color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em;">FUTURE EXPANSION PATH →</span> Extend restructured bonus + Day S5–6 activation (both shifts at 6 studios). Additional ~£730K incremental, 94,170 matches/yr, £3.77M recovery, 3.9× ROI. Day expansion is a revenue play once the Night model is proven.
+    </div>
+
+    <!-- ROI summary — the punchline -->
+    <div style="background: var(--bg-2); border: 2px solid var(--neon); padding: 32px; margin-bottom: 32px;">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--neon); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px;">Return on incremental investment</div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;">
+        <!-- Trial -->
+        <div style="text-align: center; padding: 20px; background: var(--bg-3); border-radius: 2px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">Trial · S5–6 × 28 nights</div>
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; color: var(--neon);">£0</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-2); margin-top: 8px;">cost‑neutral (saves ~£1.3K vs current)</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); margin-top: 4px;">S5–6 already run at night — <br>1 on‑call costs less than current bonuses</div>
+        </div>
+        <!-- Night only (restructure scope) -->
+        <div style="text-align: center; padding: 20px; background: var(--bg-3); border: 1px solid var(--neon); border-radius: 2px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--neon); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">Night restructure · 6 studios</div>
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; color: var(--neon);">13.2×</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-2); margin-top: 8px;">£238K incremental → £3.14M recovery</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); margin-top: 4px;">net gain: £2.90M/yr</div>
+        </div>
+        <!-- Future: full 24/7 expansion -->
+        <div style="text-align: center; padding: 20px; background: var(--bg-3); border-radius: 2px; opacity: 0.7;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">Future · Day expansion + both shifts</div>
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; color: var(--neon);">3.9×</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-2); margin-top: 8px;">£0.97M incremental → £3.77M recovery</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); margin-top: 4px;">both shifts at 6 studios · future revenue play</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Waterfall bar — visual flow -->
+    <div style="background: var(--bg-2); padding: 24px; border: 1px solid var(--rule); margin-bottom: 36px;">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px;">Night restructure cost flow · current → new → net position</div>
+      <svg viewBox="0 0 1000 180" preserveAspectRatio="xMidYMid meet">
+        <!-- Current cost bar -->
+        <rect x="40" y="30" width="260" height="60" fill="#8a8f86" opacity="0.6"/>
+        <text x="170" y="66" font-family="Space Grotesk" font-size="22" fill="#f2f3ef" font-weight="600" text-anchor="middle">£2.66M</text>
+        <text x="170" y="110" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.1em">CURRENT ANNUAL</text>
+
+        <!-- Incremental block (Night only — much smaller) -->
+        <rect x="340" y="30" width="260" height="60" fill="#8a8f86" opacity="0.6"/>
+        <rect x="340" y="30" width="24" height="60" fill="#ff6a1f" opacity="0.85"/>
+        <text x="376" y="56" font-family="Space Grotesk" font-size="13" fill="#f2f3ef" font-weight="500" text-anchor="middle">+£0.24M</text>
+        <text x="376" y="72" font-family="JetBrains Mono" font-size="9" fill="#ff6a1f" text-anchor="middle">(NIGHT ONLY)</text>
+        <text x="480" y="66" font-family="Space Grotesk" font-size="22" fill="#f2f3ef" font-weight="600" text-anchor="middle">£2.90M</text>
+        <text x="470" y="110" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.1em">NEW ANNUAL (TOTAL)</text>
+
+        <!-- Recovery -->
+        <rect x="640" y="30" width="320" height="60" fill="#b8ff2b" opacity="0.85"/>
+        <text x="800" y="66" font-family="Space Grotesk" font-size="22" fill="#0a0b0a" font-weight="700" text-anchor="middle">£3.14M RECOVERY</text>
+        <text x="800" y="110" font-family="JetBrains Mono" font-size="11" fill="#b8ff2b" text-anchor="middle" letter-spacing="0.1em">5% → 1% CANCEL RATE · NET GAIN £2.90M</text>
+
+        <!-- Arrow -->
+        <line x1="310" y1="60" x2="332" y2="60" stroke="#cfd1cb" stroke-width="1.5"/>
+        <polygon points="332,54 342,60 332,66" fill="#cfd1cb"/>
+        <line x1="608" y1="60" x2="632" y2="60" stroke="#b8ff2b" stroke-width="1.5"/>
+        <polygon points="632,54 642,60 632,66" fill="#b8ff2b"/>
+
+        <!-- Labels -->
+        <text x="170" y="155" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" text-anchor="middle" letter-spacing="0.08em">10 STUDIOS · MIXED BONUS</text>
+        <text x="470" y="155" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" text-anchor="middle" letter-spacing="0.08em">10 STUDIOS · NIGHT RESTRUCTURED</text>
+        <text x="800" y="155" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" text-anchor="middle" letter-spacing="0.08em">78,475 MATCHES/YR · £1K/CANCEL</text>
+      </svg>
+    </div>
+
+    <div class="callout orange">
+      <div class="eye">Key assumption — win bonus interpolation</div>
+      <p>Current win bonus rates are interpolated linearly between S1 (£4.00/win) and S6 (£0.50/win), giving S2 £3.30, S3 £2.60, S4 £1.90, S5 £1.20. Current matches assumed at 22/studio/shift across all studios (no stagger truncation). Hosts at £15.50/hr × 11.5h = £178.25/shift. If actual rates differ, the incremental figures shift — but the directional conclusion (the restructure pays for itself many times over) holds across any reasonable range.</p>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- ASSUMPTIONS -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <div class="assumptions">
+    <div class="title">Working assumptions</div>
+    <ul>
+      <li>Shift window: 18:30–07:00, 11.5 paid hours, 1 unpaid break</li>
+      <li>Match slot: 32 minutes per match, 10-minute inter-studio stagger</li>
+      <li>Studios 5–6: 21 matches per studio per night (42 total, 84 across night pool matches)</li>
+      <li>Match bank supply: assumes stable inbound event queue (no shortage of titles)</li>
+      <li>Gamer pool: 8 trial gamers, 70% utilization assumption, 1 on-call/shift (Night only)</li>
+      <li>Bonus: £2.00/win S5, £1.80/win S6, £4 division championship bonus (1 per division, if applicable), reliability multiplier +0% to +35%</li>
+      <li>SPS rolling window: 8-week lookback, continuous update (no seasonal resets)</li>
+      <li>Tier promotion thresholds: see Career Milestones section (Rookie T6 entry, Qualifier T5 50+ shifts &lt;6%, Division T4, Playoff T3, Contender T2, Championship T1)</li>
+      <li>Cancel baseline: current ~5%, trial target &lt;3%, full-operation target 1%</li>
+      <li>On-call call-in rate: 15% (conservative industry baseline, ±5pp tolerance)</li>
+      <li>Gamer satisfaction: baseline net promoter score or equivalent survey metric (to be defined pre-trial)</li>
+      <li>Cost per gamer average: £158.66/day (base + assumed 5 wins + multiplier blend)</li>
+      <li>Revenue per cancellation avoided: £1,000 (standard event margin)</li>
+      <li>Trial completion rate assumption: 100% (all 8 gamers finish 4 weeks, used to validate system stability)</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

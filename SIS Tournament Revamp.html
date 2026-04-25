@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SIS Tournament Revamp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --bg: #0a0b0a;
+    --bg-2: #111312;
+    --bg-3: #17191a;
+    --ink: #f2f3ef;
+    --ink-2: #cfd1cb;
+    --muted: #8a8f86;
+    --rule: #222624;
+    --rule-2: #2e3330;
+    --neon: #b8ff2b;       /* almost-neon green */
+    --neon-dim: #7fb31d;
+    --orange: #ff6a1f;
+    --orange-dim: #c74a0c;
+    --panel: #0f1110;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; }
+  body { font-family: 'Inter', Helvetica, Arial, sans-serif; color: var(--ink); }
+
+  .slide {
+    background: var(--bg);
+    color: var(--ink);
+    padding: 96px 112px 88px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+  .slide.grey { background: var(--bg-2); }
+  .slide.neon { background: var(--neon); color: #0a0b0a; }
+  .slide.neon .muted, .slide.neon .small, .slide.neon .eyebrow { color: #1a2305; }
+  .slide.neon .rule { background: #1a2305; }
+
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(184,255,43,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(184,255,43,0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+  .slide.neon .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(10,11,10,0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,11,10,0.08) 1px, transparent 1px);
+  }
+
+  /* Running header/footer */
+  .runner {
+    position: absolute;
+    left: 112px;
+    right: 112px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 2;
+  }
+  .runner.top { top: 44px; }
+  .runner.bot { bottom: 44px; }
+
+  .sis-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    font-size: 24px;
+    color: var(--ink);
+  }
+  .slide.neon .sis-mark { color: #0a0b0a; }
+  .sis-mark .dot {
+    width: 12px; height: 12px; background: var(--neon); border-radius: 2px;
+    display: inline-block;
+    box-shadow: 0 0 12px rgba(184,255,43,0.8);
+  }
+  .slide.neon .sis-mark .dot { background: #0a0b0a; box-shadow: none; }
+
+  /* Type */
+  h1.display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 140px;
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+  }
+  h1.title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 78px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  h2.section {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .eyebrow .sq {
+    display: inline-block; width: 14px; height: 14px;
+    background: var(--neon);
+    box-shadow: 0 0 14px rgba(184,255,43,0.5);
+  }
+  .slide.neon .eyebrow .sq { background: #0a0b0a; box-shadow: none; }
+
+  .body {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    max-width: 1200px;
+  }
+  .slide.neon .body { color: #1a2305; }
+  .body.lg { font-size: 34px; line-height: 1.35; }
+  .small {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .accent { color: var(--neon); }
+  .orange { color: var(--orange); }
+
+  .rule { height: 1px; background: var(--rule); width: 100%; }
+  .rule.thick { height: 2px; background: var(--neon); }
+
+  .row { display: flex; }
+  .col { display: flex; flex-direction: column; }
+  .grid { display: grid; }
+  .between { justify-content: space-between; }
+  .middle { align-items: center; }
+  .gap-s { gap: 16px; }
+  .gap-m { gap: 28px; }
+  .gap-l { gap: 52px; }
+  .grow { flex: 1; }
+
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 200px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+  }
+  .stat-num.sm { font-size: 120px; }
+  .stat-num.md { font-size: 160px; }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 18px;
+  }
+
+  /* Table */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+  }
+  table.data th, table.data td {
+    text-align: left; padding: 22px 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+  table.data th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500;
+    border-bottom: 2px solid var(--neon);
+    padding-bottom: 14px;
+  }
+  table.data td.num { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  table.data tr.highlight td { background: rgba(184,255,43,0.07); }
+  table.data tr.highlight td.flag { color: var(--neon); font-weight: 600; }
+
+  /* Pillars */
+  .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 2px solid var(--neon); border-bottom: 2px solid var(--neon); }
+  .pillar { padding: 36px 32px; border-right: 1px solid var(--rule-2); display: flex; flex-direction: column; gap: 18px; min-height: 360px; background: var(--bg-2); }
+  .pillar:last-child { border-right: 0; }
+  .pillar.accent-p { background: var(--neon); color: #0a0b0a; }
+  .pillar.accent-p .p-num { color: rgba(10,11,10,0.65); }
+  .pillar.accent-p .p-desc { color: #1a2305; }
+  .pillar .p-num { font-family: 'JetBrains Mono', monospace; font-size: 22px; letter-spacing: 0.14em; color: var(--muted); }
+  .pillar .p-name { font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 500; line-height: 1.05; letter-spacing: -0.01em; }
+  .pillar .p-desc { font-family: 'Inter', sans-serif; font-size: 24px; color: var(--ink-2); line-height: 1.45; }
+
+  /* bars */
+  .bar-row { display: grid; grid-template-columns: 140px 1fr 220px; align-items: center; gap: 24px; padding: 16px 0; border-bottom: 1px dashed var(--rule-2); }
+  .bar-row .bar-lbl { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 600; color: var(--ink); }
+  .bar-row .bar-track { height: 28px; background: var(--bg-3); position: relative; border: 1px solid var(--rule-2); }
+  .bar-row .bar-fill { position: absolute; inset: 0 auto 0 0; background: var(--neon); box-shadow: 0 0 16px rgba(184,255,43,0.3); }
+  .bar-row .bar-val { font-family: 'JetBrains Mono', monospace; font-size: 30px; text-align: right; font-variant-numeric: tabular-nums; color: var(--neon); font-weight: 600; }
+
+  .callout {
+    display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: end;
+    padding: 24px 0; border-top: 2px solid var(--neon); border-bottom: 1px solid var(--rule);
+  }
+  .callout .c-num {
+    font-family: 'Space Grotesk', sans-serif; font-size: 160px; font-weight: 500;
+    line-height: 0.9; letter-spacing: -0.04em; color: var(--neon);
+  }
+  .callout .c-lbl { font-family: 'Inter', sans-serif; font-size: 26px; color: var(--muted); padding-bottom: 24px; line-height: 1.3; }
+
+  /* ───────────────────────────────────────────────────────────
+     Interactive tournament structure
+  ─────────────────────────────────────────────────────────── */
+
+  .ts-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 32px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Title selector tabs */
+  .ts-tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--rule-2);
+    margin-bottom: 24px;
+  }
+  .ts-tab {
+    flex: 1;
+    padding: 12px 18px;
+    background: var(--bg-2);
+    border: 0;
+    border-right: 1px solid var(--rule-2);
+    color: var(--ink-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+    text-align: left;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .ts-tab:last-child { border-right: 0; }
+  .ts-tab:hover { background: var(--bg-3); color: var(--ink-2); }
+  .ts-tab.active { background: var(--neon); color: #0a0b0a; }
+  .ts-tab .t-name { font-size: 28px; font-weight: 700; }
+  .ts-tab .t-sub { font-size: 18px; letter-spacing: 0.06em; opacity: 0.7; }
+
+  /* Pyramid diagram */
+  .pyr-diagram {
+    border: 1px solid var(--rule-2);
+    background: var(--bg-2);
+    padding: 40px 20px 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-content: flex-start;
+    position: relative;
+  }
+  .pyr-row-i { display: flex; gap: 12px; justify-content: center; }
+  .pyr-tier {
+    border: 1px solid var(--rule-2);
+    background: var(--bg-3);
+    padding: 10px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+    position: relative;
+    align-items: center;
+    text-align: center;
+  }
+  /* Staircase widths: T1 narrow at top, T6 widest at bottom */
+  .pyr-row-i:nth-child(2) .pyr-tier { width: 240px; }
+  .pyr-row-i:nth-child(3) .pyr-tier { width: 290px; }
+  .pyr-row-i:nth-child(4) .pyr-tier { width: 340px; }
+  .pyr-row-i:nth-child(5) .pyr-tier { width: 390px; }
+  .pyr-row-i:nth-child(6) .pyr-tier { width: 440px; }
+  .pyr-row-i:nth-child(7) .pyr-tier { width: 490px; }
+  .pyr-tier { padding: 5px 12px; }
+  .pyr-tier .pt-tag { font-size: 13px; }
+  .pyr-tier .pt-name { font-size: 18px; }
+  .pyr-tier .pt-meta { font-size: 11px; margin-top: 0; }
+  .pyr-tier:hover {
+    border-color: var(--neon);
+    background: #1a1e1b;
+  }
+  .pyr-tier.selected {
+    background: var(--neon);
+    color: #0a0b0a;
+    border-color: var(--neon);
+    box-shadow: 0 0 24px rgba(184,255,43,0.35);
+  }
+  .pyr-tier.selected .pt-tag { color: rgba(10,11,10,0.7); }
+  .pyr-tier .pt-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .pyr-tier .pt-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .pyr-tier .pt-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .pyr-tier.selected .pt-meta { color: rgba(10,11,10,0.6); }
+
+  /* Arrow connectors */
+  .pyr-arrows {
+    position: absolute;
+    left: 24px;
+    top: 36px;
+    bottom: 36px;
+    width: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .pyr-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: var(--orange);
+    letter-spacing: -0.05em;
+  }
+  .pyr-arrow.up { color: var(--neon); }
+
+  /* top legend (promo/releg key) */
+  .pyr-legend {
+    position: absolute;
+    left: 32px;
+    top: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+  }
+  .pyr-legend .lg-row { display: flex; gap: 10px; align-items: center; color: var(--muted); }
+  .pyr-legend .lg-arrow.up { color: var(--neon); font-weight: 700; }
+  .pyr-legend .lg-arrow.down { color: var(--orange); font-weight: 700; }
+
+  /* Tier detail card */
+  .tier-detail {
+    background: var(--bg-2);
+    border: 1px solid var(--rule-2);
+    padding: 24px 28px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .tier-detail .td-head {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--neon);
+    margin-bottom: 16px;
+  }
+  .tier-detail .td-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    color: var(--neon);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .tier-detail .td-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-top: 6px;
+  }
+  .tier-detail .td-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    padding: 8px 14px;
+    border: 1px solid var(--rule-2);
+    color: var(--ink-2);
+    letter-spacing: 0.08em;
+  }
+  .tier-detail .td-section { margin-bottom: 14px; }
+  .tier-detail .td-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .tier-detail .td-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .tier-detail .td-criteria {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .tier-detail .td-criteria .cr {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    background: var(--bg-3);
+    border-left: 3px solid var(--neon);
+  }
+  .tier-detail .td-criteria .cr .cr-key {
+    color: var(--neon);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .tier-detail .td-criteria .cr .cr-txt {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: var(--ink-2);
+  }
+  .tier-detail .td-criteria .cr .cr-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: var(--neon);
+    font-weight: 600;
+  }
+
+  /* reward row on selected */
+  .td-rewards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .td-rewards .rw {
+    padding: 14px 16px;
+    background: var(--bg-3);
+    border: 1px solid var(--rule-2);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .td-rewards .rw .rw-lbl { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .td-rewards .rw .rw-val { font-family: 'Space Grotesk', sans-serif; font-size: 22px; color: var(--neon); font-weight: 600; }
+  .td-rewards .rw.orange-rw .rw-val { color: var(--orange); }
+
+  /* Ladder for progression slide */
+  .ladder {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
+    border-top: 2px solid var(--neon); border-bottom: 2px solid var(--neon);
+  }
+  .rung {
+    padding: 28px 22px; border-right: 1px solid var(--rule-2);
+    display: flex; flex-direction: column; gap: 10px; min-height: 280px;
+    background: var(--bg-2);
+  }
+  .rung:last-child { border-right: 0; }
+  .rung .r-num { font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 500; line-height: 1; color: var(--muted); }
+  .rung .r-name { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink); }
+  .rung .r-desc { font-family: 'Inter', sans-serif; font-size: 18px; color: var(--muted); line-height: 1.4; }
+  .rung .r-pay { font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--neon); font-weight: 600; margin-top: auto; padding-top: 10px; border-top: 1px dashed var(--rule-2); }
+  .rung.champ { background: var(--neon); }
+  .rung.champ .r-num { color: rgba(10,11,10,0.6); }
+  .rung.champ .r-name { color: #0a0b0a; }
+  .rung.champ .r-desc { color: #1a2305; }
+  .rung.champ .r-pay { color: #0a0b0a; border-color: rgba(10,11,10,0.3); }
+
+  /* Flow diagram (shift cycle) */
+  .flow-wrap {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr) auto;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .flow-step {
+    border: 1px solid var(--rule-2);
+    background: var(--bg-2);
+    padding: 24px 22px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+    min-height: 220px;
+  }
+  .flow-step .fs-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px; color: var(--neon);
+    letter-spacing: 0.14em;
+  }
+  .flow-step .fs-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .flow-step .fs-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px; color: var(--muted); line-height: 1.4;
+  }
+  .flow-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--neon);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .flow-loop {
+    margin-top: 20px;
+    display: flex; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: var(--orange);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Marker sticker */
+  .marker-sticker {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--neon); color: #0a0b0a;
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; letter-spacing: 0.12em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .marker-sticker.orange-st { background: var(--orange); color: #fff; }
+
+  /* Tweaks panel */
+  #tweaks {
+    position: fixed; right: 24px; bottom: 80px;
+    background: var(--bg-2); color: var(--ink);
+    padding: 22px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    border: 1px solid var(--rule-2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    z-index: 2147483500;
+    min-width: 300px;
+    display: none;
+  }
+  #tweaks.on { display: block; }
+  #tweaks h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--neon);
+    margin-bottom: 14px;
+  }
+  #tweaks .row-t { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  #tweaks button {
+    background: transparent; color: var(--ink); border: 1px solid var(--rule-2);
+    padding: 8px 12px; font-family: 'Inter', sans-serif; font-size: 13px;
+    cursor: pointer;
+  }
+  #tweaks button.active { background: var(--neon); border-color: var(--neon); color: #0a0b0a; }
+  #tweaks .lbl { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<script type="application/json" id="speaker-notes">
+{
+  "Cover":                "Welcome. Today I want to walk you through a proposal to fundamentally revamp how we run our H2H gaming tournaments. Internally we're calling this the H2H League Format — distinct from the existing H2H Global Gaming League broadcast brand. Every cancelled match is revenue walking out the door, and our current format is engineered to produce cancellations. This deck lays out what to change and what it's worth.",
+  "The Business":         "Here's the frame. We run live H2H content twenty-four hours a day, two shifts, twelve studios — production booths distributed across our Manchester and Milton Keynes hubs. Hundreds of matches per day across NBA, EAFC and eAMF. It is one of the highest-frequency betting products in the world.",
+  "The Problem":          "Here's the problem sized. Using conservative internal assumptions, cancellations are costing us roughly ten point nine million pounds a year. This is the number that makes this conversation worth having.",
+  "One Percent":          "And this is what one percent looks like. If we convert one percent of annual matches from cancelled to successful, we recover approximately two point two million pounds. Every percentage point of reliability is a material P and L line. And note — SIS already positions CG publicly as adding ten percent to a sportsbook. Our reliability ladder compounds directly into that margin promise.",
+  "Why It Fails":         "Why are we cancelling so many events? Four structural reasons — burnout, no progression, flat reward, and a schedule designed for attrition. The format produces the behaviour it claims to prevent.",
+  "Three Pillars":        "The revamp stands on three pillars inside our scope: format, reward, and progression. Each addresses a specific driver of cancellation and each compounds with the others. And we're layering this on top of existing ESIC Gold Standard accreditation — certified integrity is already in place; we're adding structure on top.",
+  "Tournament Structure": "This is the core of the proposal — the H2H League Format. Every title gets a tiered structure with promotion and relegation. Click through the tabs at the top — NBA, EAFC, eAMF — to see how each title's league is shaped. Click any tier to see its stakes and promotion criteria.",
+  "Shift Cycle":          "Here is the life of a single shift, step by step. Seed from yesterday's standings, play the matches, tally points, promote the top, relegate the bottom, reseed. Repeat every shift. Over a week it produces narrative and stakes.",
+  "Progression":          "Progression and reward. Six career ranks from Academy to Champion, based on SPS and reliability. Pay base for hours, bonus for wins, premium for reliability multiplier. Reliability is the only KPI tied directly to the P and L.",
+  "Projected Impact":     "Projected impact, shown two ways. Conservative applies title‑specific rates — six hundred and fifty pounds per NBA cancel, three fifty per EAFC, four hundred per eAMF — blending to about five hundred and twenty‑four pounds per cancel. Liberal uses our internal thousand‑pound baseline. At one percent reliability gain we recover one point one five million conservative, two point two million liberal. At the five percent target, five point seven million or eleven million. The conservative view is roughly half the liberal view across the board — both tell the same story. And because CG runs on rev‑share, every pound recovered flows back into SIS's own cut — this isn't operator‑only upside.",
+  "The Ask":              "What I am asking for. A six-week pilot on NBA, one shift. Clear success criteria. Sponsor: Andy Purkiss (COO). Execution owners if greenlit: Peter Camden (Product), Stephen Maguire (Ops), Aaron St Pierre (Trading) — the July 2025 CG leadership trio. If the numbers move, we roll to EAFC and eAMF in quarter three. Distribution is no longer single-surface — our Genius Sports deal means tournament identity can ride a second platform as well as direct-to-operator feeds. Internal context for the room: Ladbrokes, William Hill and the Tote are both shareholders and customers of SIS — a reliability lift lands as governance-friendly, not politically sensitive."
+}
+</script>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- 1. Cover -->
+  <section data-label="Cover" class="slide">
+    <div class="grid-bg"></div>
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>VOL. 01 / APR 2026</span>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; position:relative; z-index: 1;">
+      <div class="eyebrow"><span class="sq"></span>PROPOSAL · COMPETITIVE GAMING H2H</div>
+      <h1 class="display" style="margin-bottom: 40px;">
+        A new <span style="color: var(--neon); text-shadow: 0 0 40px rgba(184,255,43,0.35);">tournament</span><br>
+        system for<br>
+        24/7 live betting.
+      </h1>
+      <div class="rule thick" style="margin: 36px 0 32px; width: 420px;"></div>
+      <div class="body lg" style="max-width: 1000px;">
+        Rebuilding <span class="accent">format</span>, <span class="accent">reward</span> and <span class="accent">progression</span><br>
+        to turn cancellations into revenue.
+      </div>
+      <div class="mono" style="margin-top: 28px; font-size: 14px; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase;">
+        Working title: <span style="color: var(--neon);">H2H League Format</span> &nbsp;·&nbsp; broadcast brand remains H2H Global Gaming League
+      </div>
+    </div>
+    <div class="runner bot">
+      <span>A PROPOSAL TO LEADERSHIP</span>
+      <span>№ 01 / 11</span>
+    </div>
+  </section>
+
+  <!-- 2. The Business We Run -->
+  <section data-label="The Business" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>CONTEXT</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>02 · THE BUSINESS WE RUN</div>
+    <h1 class="title" style="margin-bottom: 56px; max-width: 1500px;">
+      We produce live betting content<br>
+      around the clock — every few minutes,<br>
+      somewhere a match tips off.
+    </h1>
+
+    <div class="grid" style="grid-template-columns: repeat(4, 1fr); border-top: 2px solid var(--neon); border-bottom: 1px solid var(--rule-2);">
+      <div style="padding: 32px 28px; border-right: 1px solid var(--rule-2);">
+        <div class="stat-num sm" style="color: var(--neon);">24/7</div>
+        <div class="stat-label">Continuous output</div>
+      </div>
+      <div style="padding: 32px 28px; border-right: 1px solid var(--rule-2);">
+        <div class="stat-num sm">12</div>
+        <div class="stat-label">Studios · 2 shifts</div>
+      </div>
+      <div style="padding: 32px 28px; border-right: 1px solid var(--rule-2);">
+        <div class="stat-num sm">48</div>
+        <div class="stat-label">Gamers per shift</div>
+      </div>
+      <div style="padding: 32px 28px;">
+        <div class="stat-num sm">3</div>
+        <div class="stat-label">Titles · NBA · EAFC · eAMF</div>
+      </div>
+    </div>
+
+    <div class="row gap-l" style="margin-top: 48px;">
+      <div class="col gap-s" style="flex:1;">
+        <div class="small"><span class="accent">●</span> NBA · 4-MIN STAGGER</div>
+        <div class="body" style="font-size: 26px;">6 studios · 22 matches/shift/studio · <b class="accent">264 / day</b></div>
+      </div>
+      <div class="col gap-s" style="flex:1;">
+        <div class="small"><span class="accent">●</span> EAFC · 5-MIN STAGGER</div>
+        <div class="body" style="font-size: 26px;">3 studios · 46 matches/shift/studio · <b class="accent">276 / day</b></div>
+      </div>
+      <div class="col gap-s" style="flex:1;">
+        <div class="small"><span class="accent">●</span> eAMF · 10-MIN STAGGER</div>
+        <div class="body" style="font-size: 26px;">3 studios · 22 matches/shift/studio · <b class="accent">132 / day</b></div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>CONTEXT</span>
+      <span>№ 02 / 11</span>
+    </div>
+  </section>
+
+  <!-- 3. The problem, in numbers -->
+  <section data-label="The Problem" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>THE PROBLEM</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>03 · THE PROBLEM, IN NUMBERS</div>
+    <h1 class="title" style="margin-bottom: 56px; max-width: 1500px;">
+      Cancellations are the single largest<br>
+      avoidable cost in our production.
+    </h1>
+
+    <div class="row gap-l" style="flex:1;">
+      <div class="col" style="flex: 1.1; justify-content: center;">
+        <div class="small" style="margin-bottom: 18px;">ASSUMED ANNUALISED IMPACT</div>
+        <div class="stat-num" style="color: var(--orange); text-shadow: 0 0 48px rgba(255,106,31,0.25);">£10.9M</div>
+        <div class="body lg" style="color: var(--muted); margin-top: 28px; max-width: 720px;">
+          Fees owed to contract partners, plus lost betting handle, across a full production year.
+        </div>
+      </div>
+
+      <div class="col" style="flex: 1.1; gap: 0; border-left: 1px solid var(--rule-2); padding-left: 52px;">
+        <div class="small" style="margin-bottom: 24px;">HOW IT BUILDS · INTERNAL BASELINE</div>
+        <table class="data">
+          <tr><td style="color: var(--muted);">Per cancellation</td><td class="num" style="text-align:right;">£1,000 revenue lost</td></tr>
+          <tr><td style="color: var(--muted);">Per shift</td><td class="num" style="text-align:right;">15 cancels · <span class="accent">£15,000</span></td></tr>
+          <tr><td style="color: var(--muted);">Per day</td><td class="num" style="text-align:right;">30 · <span class="accent">£30,000</span></td></tr>
+          <tr><td style="color: var(--muted);">Per week</td><td class="num" style="text-align:right;">210 · <span class="accent">£210,000</span></td></tr>
+          <tr class="highlight"><td class="flag">Per year (52w)</td><td class="num" style="text-align:right; color: var(--orange); font-weight: 700;">10,900 · £10.9M</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>INTERNAL BASELINE · OPS CANCELLATION LOG · 12‑MO ROLLING</span>
+      <span>№ 03 / 11</span>
+    </div>
+  </section>
+
+  <!-- 4. What one percent looks like -->
+  <section data-label="One Percent" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>THE OPPORTUNITY</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>04 · WHAT ONE PERCENT LOOKS LIKE</div>
+    <h1 class="title" style="margin-bottom: 48px; max-width: 1500px;">
+      Every percentage point of reliability<br>
+      is a line item on the P&amp;L.
+    </h1>
+
+    <div class="row gap-l" style="flex:1; align-items: stretch;">
+      <div class="col" style="flex:1;">
+        <div class="callout">
+          <div class="c-num">+1%</div>
+          <div class="c-lbl">reliability gain<br>= recovered per year</div>
+        </div>
+        <div class="stat-num md" style="margin-top: 32px; color: var(--neon);">£2.2M</div>
+        <div class="small" style="margin-top: 16px;">PER PERCENTAGE POINT · APPROX.</div>
+
+        <div class="body" style="margin-top: 36px; max-width: 640px; font-size: 24px;">
+          Reliability compounds: fewer cancellations means more booked bets,
+          better partner confidence, and lower make-good fees.
+        </div>
+      </div>
+
+      <div class="col" style="flex:1.2; border-left: 1px solid var(--rule-2); padding-left: 52px;">
+        <div class="small" style="margin-bottom: 24px;">SCENARIO LADDER · ANNUAL RECOVERY</div>
+
+        <div class="bar-row"><div class="bar-lbl">+1%</div><div class="bar-track"><div class="bar-fill" style="width: 11%;"></div></div><div class="bar-val">£2.2M</div></div>
+        <div class="bar-row"><div class="bar-lbl">+3%</div><div class="bar-track"><div class="bar-fill" style="width: 33%;"></div></div><div class="bar-val">£6.6M</div></div>
+        <div class="bar-row"><div class="bar-lbl">+5%</div><div class="bar-track"><div class="bar-fill" style="width: 55%;"></div></div><div class="bar-val">£11.0M</div></div>
+        <div class="bar-row"><div class="bar-lbl">+8%</div><div class="bar-track"><div class="bar-fill" style="width: 88%;"></div></div><div class="bar-val">£17.6M</div></div>
+        <div class="bar-row" style="border-bottom: 0;"><div class="bar-lbl">+10%</div><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><div class="bar-val">£22.0M</div></div>
+
+        <div class="small" style="margin-top: 20px; font-size: 18px;">
+          BASELINE · ~220,000 MATCHES/YR · £1,000 REVENUE LOST / CANCEL
+        </div>
+        <div style="margin-top: 20px; padding: 16px 20px; background: #111312; border-left: 3px solid var(--neon); font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.45; color: var(--ink-2); max-width: 680px;">
+          <span class="mono" style="color: var(--neon); letter-spacing: 0.14em; font-size: 12px; text-transform: uppercase;">Why this ladder matters</span><br>
+          SIS already sells CG to operators as <span class="accent">"adds 10% to your sportsbook"</span>. Our +1 / +5 / +10% reliability ladder compounds that margin promise one‑for‑one.
+        </div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>THE OPPORTUNITY</span>
+      <span>№ 04 / 11</span>
+    </div>
+  </section>
+
+  <!-- 5. Why the current model fails -->
+  <section data-label="Why It Fails" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>DIAGNOSIS</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>05 · WHY THE CURRENT MODEL FAILS</div>
+    <h1 class="title" style="margin-bottom: 64px; max-width: 1500px;">
+      The format produces the behaviour<br>
+      it claims to prevent.
+    </h1>
+
+    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 0; border-top: 2px solid var(--neon); border-bottom: 2px solid var(--neon);">
+      <div style="padding: 36px 40px 36px 0; border-right: 1px solid var(--rule-2); display: flex; gap: 28px;">
+        <div class="mono" style="font-size: 26px; color: var(--orange); width: 48px; flex-shrink: 0; font-weight: 700;">01</div>
+        <div>
+          <h2 class="section" style="margin-bottom: 14px;">Burnout by schedule</h2>
+          <div class="body" style="font-size: 24px;">A 4-minute stagger with no breaks, no variety, no stakes. Gamers play identical matches for eight hours. Cancellations are the pressure valve.</div>
+        </div>
+      </div>
+      <div style="padding: 36px 0 36px 40px; display: flex; gap: 28px;">
+        <div class="mono" style="font-size: 26px; color: var(--orange); width: 48px; flex-shrink: 0; font-weight: 700;">02</div>
+        <div>
+          <h2 class="section" style="margin-bottom: 14px;">No progression</h2>
+          <div class="body" style="font-size: 24px;">A good week and a bad week look the same. There's no "up" to play for, and no visible penalty for coasting.</div>
+        </div>
+      </div>
+      <div style="padding: 36px 40px 36px 0; border-right: 1px solid var(--rule-2); border-top: 1px solid var(--rule-2); display: flex; gap: 28px;">
+        <div class="mono" style="font-size: 26px; color: var(--orange); width: 48px; flex-shrink: 0; font-weight: 700;">03</div>
+        <div>
+          <h2 class="section" style="margin-bottom: 14px;">Flat reward</h2>
+          <div class="body" style="font-size: 24px;">Compensation tracks hours, not reliability or performance. Pays the same for a player who cancels and one who doesn't.</div>
+        </div>
+      </div>
+      <div style="padding: 36px 0 36px 40px; border-top: 1px solid var(--rule-2); display: flex; gap: 28px;">
+        <div class="mono" style="font-size: 26px; color: var(--orange); width: 48px; flex-shrink: 0; font-weight: 700;">04</div>
+        <div>
+          <h2 class="section" style="margin-bottom: 14px;">No stakes per match</h2>
+          <div class="body" style="font-size: 24px;">Every match is interchangeable. A player has nothing to lose by skipping one — because nothing about the next one changes.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>DIAGNOSIS</span>
+      <span>№ 05 / 11</span>
+    </div>
+  </section>
+
+  <!-- 6. Three pillars -->
+  <section data-label="Three Pillars" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>THE PROPOSAL</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>06 · THREE PILLARS OF THE REVAMP</div>
+    <h1 class="title" style="margin-bottom: 56px;">
+      Fix the format. The rest follows.
+    </h1>
+
+    <div class="pillars" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="pillar">
+        <div class="p-num">PILLAR / 01</div>
+        <div class="p-name">Format</div>
+        <div class="p-desc">Studios become tiers. Every shift is a championship. Promotion &amp; relegation create stakes on every match.</div>
+        <div style="flex:1;"></div>
+        <div class="marker-sticker">STAKES ON EVERY MATCH</div>
+      </div>
+      <div class="pillar accent-p">
+        <div class="p-num">PILLAR / 02</div>
+        <div class="p-name">Reward</div>
+        <div class="p-desc">Pay base for hours. Pay bonus for wins. Pay premium for reliability. Compensation mirrors business value.</div>
+        <div style="flex:1;"></div>
+        <div class="marker-sticker orange-st">RELIABILITY = REVENUE</div>
+      </div>
+      <div class="pillar">
+        <div class="p-num">PILLAR / 03</div>
+        <div class="p-name">Progression</div>
+        <div class="p-desc">Six career ranks from Academy to Champion. SPS-based criteria. Visible ladder. A career path inside the studio.</div>
+        <div style="flex:1;"></div>
+        <div class="marker-sticker">A CAREER · NOT A SHIFT</div>
+      </div>
+    </div>
+
+    <!-- ESIC TRUST RIBBON ─────────────────────────────────────────────── -->
+    <div style="margin-top: 32px; display: flex; align-items: center; gap: 24px; padding: 18px 26px; background: #0a0b0a; border: 1px solid var(--rule-2); border-left: 3px solid var(--neon);">
+      <div style="display: flex; align-items: center; gap: 12px; padding-right: 24px; border-right: 1px solid var(--rule-2);">
+        <div style="width: 34px; height: 34px; border: 2px solid var(--neon); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; color: var(--neon);">★</div>
+        <div class="mono" style="font-size: 13px; letter-spacing: 0.16em; color: var(--neon); text-transform: uppercase; white-space: nowrap;">ESIC Gold Standard</div>
+      </div>
+      <div class="body" style="font-size: 17px; color: var(--ink-2); line-height: 1.4;">
+        Every SIS match runs under <span class="accent">Esports Integrity Commission</span> Gold Standard accreditation — a public credential already held by our production, not a new asset to build. The revamp layers on top of certified integrity; it doesn't replace it.
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>THE PROPOSAL</span>
+      <span>№ 06 / 11</span>
+    </div>
+  </section>
+
+  <!-- 7. INTERACTIVE tournament structure -->
+  <section data-label="Tournament Structure" class="slide" id="ts-slide" style="padding-bottom: 100px;">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>TOURNAMENT STRUCTURE · INTERACTIVE</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>07 · THE H2H LEAGUE FORMAT — PICK A TITLE · CLICK A TIER</div>
+    <h1 class="title" style="margin-bottom: 20px; max-width: 1600px; font-size: 48px;">
+      Every studio is a tier. Every shift is a cycle. <span class="accent">Win to rise</span>, <span class="orange">lose to fall</span>.
+    </h1>
+
+    <!-- Tabs -->
+    <div class="ts-tabs" id="ts-tabs"></div>
+
+    <div class="ts-wrap" style="margin-bottom: 80px;">
+      <!-- Pyramid -->
+      <div class="pyr-diagram" id="ts-pyramid">
+        <div class="pyr-legend">
+          <div class="lg-row"><span class="lg-arrow up">▲</span> PROMOTE · top of tier</div>
+          <div class="lg-row"><span class="lg-arrow down">▼</span> RELEGATE · bottom of tier</div>
+        </div>
+        <!-- pyramid rows injected by JS -->
+      </div>
+
+      <!-- Detail -->
+      <div class="tier-detail" id="ts-detail">
+        <!-- injected -->
+      </div>
+    </div>
+
+    <div class="runner bot" style="bottom: 20px;">
+      <span><span class="accent">●</span> CLICK ANY TIER TO SEE STAKES, CRITERIA &amp; REWARDS</span>
+      <span>№ 07 / 11</span>
+    </div>
+  </section>
+
+  <!-- 8. Shift cycle flow -->
+  <section data-label="Shift Cycle" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>HOW A SHIFT RUNS</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>08 · LIFE OF A SHIFT — FIVE STEPS, ONE LOOP</div>
+    <h1 class="title" style="margin-bottom: 48px; max-width: 1500px;">
+      A repeatable cycle that builds narrative,<br>
+      not fatigue.
+    </h1>
+
+    <div class="flow-wrap">
+      <div class="flow-step">
+        <div class="fs-num">STEP 01</div>
+        <div class="fs-name">Seed</div>
+        <div class="fs-desc">Players placed into tiers from prior shift's final standings.</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">STEP 02</div>
+        <div class="fs-name">Play</div>
+        <div class="fs-desc">Round-robin inside each tier across the shift window. Every match counts toward the table.</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">STEP 03</div>
+        <div class="fs-name">Table</div>
+        <div class="fs-desc">Live standings update after every match. W/L/pts visible on-air and internally.</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">STEP 04</div>
+        <div class="fs-name">Promote</div>
+        <div class="fs-desc"><span class="accent">Top of each tier</span> ascends one level. Tier 1 winner earns the shift's Champion title.</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">STEP 05</div>
+        <div class="fs-name">Relegate</div>
+        <div class="fs-desc"><span class="orange">Bottom of each tier</span> descends one level. Creates urgency from minute one.</div>
+      </div>
+    </div>
+
+    <div class="flow-loop">↻ LOOP · EVERY SHIFT, EVERY DAY, EVERY WEEK</div>
+
+    <div class="row gap-l" style="margin-top: 48px;">
+      <div class="col" style="flex:1; padding: 24px 0; border-top: 2px solid var(--neon);">
+        <div class="small" style="margin-bottom: 8px;">WEEKLY ROLLUP</div>
+        <div class="body" style="font-size: 24px;">14 shifts per week = 14 micro-championships. Top-of-table point totals crown a <span class="accent">Player of the Week</span> per title.</div>
+      </div>
+      <div class="col" style="flex:1; padding: 24px 0; border-top: 2px solid var(--neon);">
+        <div class="small" style="margin-bottom: 8px;">MONTHLY RESEED</div>
+        <div class="body" style="font-size: 24px;">Full ladder reseed based on a 4-week rolling average. Prevents entrenchment; lets rookies climb fast.</div>
+      </div>
+      <div class="col" style="flex:1; padding: 24px 0; border-top: 2px solid var(--neon);">
+        <div class="small" style="margin-bottom: 8px;">SEASONAL FINAL</div>
+        <div class="body" style="font-size: 24px;">Quarterly cross-title <span class="accent">Super Shift</span> — Tier 1 champions from each title play a showcase broadcast.</div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>HOW A SHIFT RUNS</span>
+      <span>№ 08 / 11</span>
+    </div>
+  </section>
+
+  <!-- 9. Progression + reward -->
+  <section data-label="Progression" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>PROGRESSION · REWARD</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>09 · THE LADDER — SIX RANKS · CLEAR CRITERIA</div>
+    <h1 class="title" style="margin-bottom: 32px; max-width: 1500px;">
+      A career inside the studio.
+    </h1>
+
+    <div class="small" style="margin-bottom: 14px;">VISIBLE TO EVERY GAMER · UPDATED WEEKLY</div>
+    <div class="ladder">
+      <div class="rung">
+        <div class="r-num">01</div>
+        <div class="r-name">Academy</div>
+        <div class="r-desc">Entry. All gamers start here. First 8 weeks.</div>
+        <div class="r-pay">base</div>
+      </div>
+      <div class="rung">
+        <div class="r-num">02</div>
+        <div class="r-name">Rookie</div>
+        <div class="r-desc">50+ shifts completed. Cancel rate &lt; 6%.</div>
+        <div class="r-pay">base + 2.5%</div>
+      </div>
+      <div class="rung">
+        <div class="r-num">03</div>
+        <div class="r-name">Regular</div>
+        <div class="r-desc">Promoted at least once. Cancel rate &lt; 4%.</div>
+        <div class="r-pay">base + 7.5%</div>
+      </div>
+      <div class="rung">
+        <div class="r-num">04</div>
+        <div class="r-name">Specialist</div>
+        <div class="r-desc">Held top-3 tier for a month. Cancel &lt; 3%.</div>
+        <div class="r-pay">base + 12.5%</div>
+      </div>
+      <div class="rung">
+        <div class="r-num">05</div>
+        <div class="r-name">Elite</div>
+        <div class="r-desc">D1 performance for 3+ months. Cancel rate &lt; 2%.</div>
+        <div class="r-pay">base + 30%</div>
+      </div>
+      <div class="rung champ">
+        <div class="r-num">★</div>
+        <div class="r-name">Champion</div>
+        <div class="r-desc">Division title holder. 8+ wins/shift avg.</div>
+        <div class="r-pay">base + 35%</div>
+      </div>
+    </div>
+
+    <div class="row gap-l" style="margin-top: 44px;">
+      <div class="col" style="flex:1;">
+        <div class="small" style="margin-bottom: 14px;">COMPENSATION FORMULA</div>
+        <div class="body lg"><b>Base</b> <span style="color: var(--muted);">(hours)</span> + <b class="accent">Win bonus</b> <span style="color: var(--muted);">(per match)</span> + <b class="orange">Reliability</b> <span style="color: var(--muted);">(streak mult.)</span></div>
+      </div>
+      <div class="col" style="flex:1; border-left: 1px solid var(--rule-2); padding-left: 40px;">
+        <div class="small" style="margin-bottom: 14px;">THE LEVER</div>
+        <div class="body lg">No-cancel streak unlocks a <span class="orange">tier multiplier</span>. <span class="accent">Reliability is the only KPI tied directly to the P&amp;L.</span></div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>PROGRESSION · REWARD</span>
+      <span>№ 09 / 11</span>
+    </div>
+  </section>
+
+  <!-- 10. Projected impact -->
+  <section data-label="Projected Impact" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>IMPACT</span>
+    </div>
+    <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>10 · PROJECTED IMPACT</div>
+    <h1 class="title" style="margin-bottom: 24px; max-width: 1500px;">
+      The math gets interesting fast.
+    </h1>
+
+    <!-- CONSERVATIVE RATES BAND · placed above the table to clear the slide runner -->
+    <div class="mono" style="margin-bottom: 24px; padding: 10px 18px; background: #111312; border-left: 3px solid #FFD93B; display: inline-block; max-width: 1200px; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-2); line-height: 1.5;">
+      <span style="color: #FFD93B; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;">Conservative rates per cancel:</span>
+      <span class="accent">NBA £650</span> ·
+      <span style="color: #60E0FF;">EAFC £350</span> ·
+      <span class="orange">eAMF £400</span> ·
+      blended <strong style="color: var(--ink);">£524/cancel</strong>
+      <span style="color: var(--muted);">(title mix 54/20/27%)</span>
+      &nbsp;&nbsp;<span style="color: var(--muted);">|</span>&nbsp;&nbsp;
+      <span style="color: var(--neon); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;">Liberal:</span>
+      <strong style="color: var(--ink);">£1,000 blended</strong>
+      <span style="color: var(--muted);">(internal ops baseline)</span>
+    </div>
+
+    <div class="row gap-l" style="flex:1;">
+      <div class="col" style="flex: 1.3;">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Cancellations saved / yr</th>
+              <th style="text-align:right;">Recovered · <span style="color: var(--muted); font-weight: 500;">conservative</span></th>
+              <th style="text-align:right;">Recovered · <span style="color: var(--muted); font-weight: 500;">liberal</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="color: var(--muted);">Current baseline</td><td class="num">0</td><td class="num" style="text-align:right;">—</td><td class="num" style="text-align:right;">—</td></tr>
+            <tr><td>Pilot (+1%)</td><td class="num">2,200</td><td class="num" style="text-align:right; color: var(--ink-2);">£1.15M</td><td class="num accent" style="text-align:right;">£2.2M</td></tr>
+            <tr><td>Realistic (+3%)</td><td class="num">6,600</td><td class="num" style="text-align:right; color: var(--ink-2);">£3.46M</td><td class="num accent" style="text-align:right;">£6.6M</td></tr>
+            <tr class="highlight"><td class="flag">Target (+5%)</td><td class="num accent">11,000</td><td class="num" style="text-align:right; color: var(--ink); font-weight: 600;">£5.77M</td><td class="num" style="color: var(--neon); text-align:right; font-weight: 700;">£11.0M</td></tr>
+            <tr><td>Stretch (+8%)</td><td class="num">17,600</td><td class="num" style="text-align:right; color: var(--ink-2);">£9.23M</td><td class="num accent" style="text-align:right;">£17.6M</td></tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="col gap-m" style="flex: 0.9; border-left: 1px solid var(--rule-2); padding-left: 52px; justify-content: center;">
+        <div class="small">SECONDARY EFFECTS · NOT IN TABLE</div>
+        <div class="col gap-s">
+          <div class="body" style="font-size: 22px;"><span class="accent mono">→</span> Higher partner confidence · contract uplift</div>
+          <div class="body" style="font-size: 22px;"><span class="accent mono">→</span> Bettor retention on named tournaments</div>
+          <div class="body" style="font-size: 22px;"><span class="accent mono">→</span> Lower gamer churn · reduced hiring cost</div>
+          <div class="body" style="font-size: 22px;"><span class="accent mono">→</span> Measurable, ladder-visible KPIs</div>
+          <div class="body" style="font-size: 22px; color: var(--neon);"><span class="accent mono">→</span> Rev‑share: every recovered £1 flows to SIS's own cut</div>
+          <div class="body" style="font-size: 18px; color: var(--neon); margin-top: 8px; border-top: 1px solid var(--rule-2); padding-top: 14px;"><span class="mono" style="font-size: 13px; letter-spacing: 0.14em;">Anchor:</span> SIS publicly positions CG as "adds 10% to your sportsbook". The +1 / +5 / +8% reliability ladder compounds that margin promise directly.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>CONSERVATIVE: PER‑TITLE RATES · LIBERAL: £1,000 BLENDED · INTERNAL BASELINE</span>
+      <span>№ 10 / 11</span>
+    </div>
+  </section>
+
+  <!-- 11. The ask -->
+  <section data-label="The Ask" class="slide neon">
+    <div class="grid-bg"></div>
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
+      <span>THE ASK</span>
+    </div>
+    <div style="flex:1; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1;">
+      <div class="eyebrow" style="color: #1a2305;"><span class="sq"></span>11 · WHAT WE'RE ASKING FOR</div>
+      <h1 class="display" style="margin-bottom: 40px; font-size: 128px; color: #0a0b0a;">
+        A 6-week pilot.<br>
+        One title. One shift.<br>
+        Measured in pounds.
+      </h1>
+      <div class="rule thick" style="margin: 36px 0 32px; width: 420px; background: #0a0b0a;"></div>
+
+      <div class="row gap-l" style="max-width: 1600px;">
+        <div class="col gap-s" style="flex:1;">
+          <div class="small" style="color: #1a2305;">SCOPE</div>
+          <div class="body" style="font-size: 24px; color: #1a2305;">NBA · 6 studios · single shift · tiered format with daily promotion / relegation.</div>
+        </div>
+        <div class="col gap-s" style="flex:1;">
+          <div class="small" style="color: #1a2305;">SUCCESS CRITERIA</div>
+          <div class="body" style="font-size: 24px; color: #1a2305;">≥ 2% reduction in cancellations vs prior-quarter baseline. Measured weekly.</div>
+        </div>
+        <div class="col gap-s" style="flex:1;">
+          <div class="small" style="color: #1a2305;">NEXT</div>
+          <div class="body" style="font-size: 24px; color: #1a2305;">If green · roll to EAFC and eAMF in Q3. Reliability tracked on the leaderboard.</div>
+        </div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <span style="color: #1a2305;">END · QUESTIONS?</span>
+      <span style="color: #1a2305;">№ 11 / 11</span>
+    </div>
+  </section>
+
+</deck-stage>
+
+<!-- Tweaks -->
+<div id="tweaks">
+  <h4>Tweaks</h4>
+  <div class="lbl">Accent</div>
+  <div class="row-t">
+    <button data-accent="#b8ff2b" class="active">Neon green</button>
+    <button data-accent="#39ff14">Pure green</button>
+    <button data-accent="#a3e635">Lime</button>
+  </div>
+  <div class="lbl">Secondary</div>
+  <div class="row-t">
+    <button data-secondary="#ff6a1f" class="active">Orange</button>
+    <button data-secondary="#ff3b3b">Red</button>
+    <button data-secondary="#ffb800">Amber</button>
+  </div>
+  <div class="lbl">NBA cycle length</div>
+  <div class="row-t">
+    <button data-cycle="shift" class="active">Per shift</button>
+    <button data-cycle="daily">Daily</button>
+    <button data-cycle="weekly">Weekly</button>
+  </div>
+</div>
+
+<!-- Interactive tournament structure logic -->
+<script>
+(function() {
+  const TITLES = {
+    nba: {
+      id: 'nba',
+      name: 'NBA',
+      sub: '6 STUDIOS · 4-MIN STAGGER · 264/DAY',
+      cycle: 'Per shift',
+      tiers: [
+        { code: 'T1', name: 'Championship',  players: 4, stake: 'Shift Champion title + division championship bonus',         promote: '—',                           relegate: 'Bottom finisher drops to T2',         win: '£40', reliability: '0 – 35% (career rank)', champion: '£120' },
+        { code: 'T2', name: 'Contender',     players: 4, stake: 'One promotion spot to Championship',                       promote: 'Top finisher → T1 next shift', relegate: 'Bottom finisher → T3',                win: '£30', reliability: '0 – 35% (career rank)', champion: '£60'  },
+        { code: 'T3', name: 'Playoff',       players: 4, stake: 'Mid-tier — promote one, relegate one',                     promote: 'Top finisher → T2 next shift', relegate: 'Bottom finisher → T4',                win: '£25', reliability: '0 – 35% (career rank)', champion: '£50'  },
+        { code: 'T4', name: 'Division',      players: 4, stake: 'Mid-tier — promote one, relegate one',                     promote: 'Top finisher → T3 next shift', relegate: 'Bottom finisher → T5',                win: '£22', reliability: '0 – 35% (career rank)', champion: '£44'  },
+        { code: 'T5', name: 'Qualifier',     players: 4, stake: 'Promotion out of entry tiers',                             promote: 'Top finisher → T4 next shift', relegate: 'Bottom finisher → T6',                win: '£20', reliability: '0 – 35% (career rank)', champion: '£40'  },
+        { code: 'T6', name: 'Rookie',        players: 4, stake: 'Entry tier — only way is up',                              promote: 'Top two finishers → T5 next shift', relegate: '— (bottom of ladder)',          win: '£18', reliability: '0 – 35% (career rank)', champion: '£36'  }
+      ]
+    },
+    eafc: {
+      id: 'eafc',
+      name: 'EAFC',
+      sub: '3 STUDIOS · 5-MIN STAGGER · 276/DAY',
+      cycle: 'Weekly',
+      tiers: [
+        { code: 'D1', name: 'Premier',    players: 4, stake: 'Weekly title + Player of the Week',                 promote: '—',                               relegate: 'Bottom 2 finishers → D2 next week',    win: '£32', reliability: '0 – 35% (career rank)', champion: '£150' },
+        { code: 'D2', name: 'Challenger', players: 4, stake: 'Two promotion slots up · two relegation slots down', promote: 'Top 2 finishers → D1 next week',  relegate: 'Bottom 2 finishers → D3 next week',    win: '£25', reliability: '0 – 35% (career rank)', champion: '£70'  },
+        { code: 'D3', name: 'Rookie',     players: 4, stake: 'Entry division — two promotion slots',              promote: 'Top 2 finishers → D2 next week',   relegate: '— (bottom of ladder)',                 win: '£20', reliability: '0 – 35% (career rank)', champion: '£50'  }
+      ]
+    },
+    eamf: {
+      id: 'eamf',
+      name: 'eAMF',
+      sub: '3 STUDIOS · 10-MIN STAGGER · 132/DAY',
+      cycle: 'Seasonal',
+      tiers: [
+        { code: 'C1', name: 'Super Studio', players: 4, stake: 'Season playoff berth + Super Shift final',                 promote: '—',                                 relegate: 'Bottom finisher → C2 next season',   win: '£36', reliability: '0 – 35% (career rank)', champion: '£200' },
+        { code: 'C2', name: 'Contender',    players: 4, stake: 'One promotion · one relegation',                           promote: 'Top finisher → C1 next season',     relegate: 'Bottom finisher → C3 next season',   win: '£26', reliability: '0 – 35% (career rank)', champion: '£80'  },
+        { code: 'C3', name: 'Rookie',       players: 4, stake: 'Entry conference — earn the Contender seat',               promote: 'Top finisher → C2 next season',     relegate: '— (bottom of ladder)',                win: '£20', reliability: '0 – 35% (career rank)', champion: '£60'  }
+      ]
+    }
+  };
+
+  const state = { title: 'nba', tierIdx: 0 };
+
+  const tabsEl = document.getElementById('ts-tabs');
+  const pyrEl = document.getElementById('ts-pyramid');
+  const detailEl = document.getElementById('ts-detail');
+
+  function renderTabs() {
+    tabsEl.innerHTML = '';
+    Object.values(TITLES).forEach(t => {
+      const b = document.createElement('button');
+      b.className = 'ts-tab' + (t.id === state.title ? ' active' : '');
+      b.innerHTML = `<div class="t-name">${t.name}</div><div class="t-sub">${t.sub}</div>`;
+      b.addEventListener('click', () => {
+        state.title = t.id;
+        state.tierIdx = 0;
+        renderAll();
+      });
+      tabsEl.appendChild(b);
+    });
+  }
+
+  function renderPyramid() {
+    const t = TITLES[state.title];
+    // Keep legend, rebuild tier rows
+    const legend = pyrEl.querySelector('.pyr-legend');
+    pyrEl.innerHTML = '';
+    pyrEl.appendChild(legend);
+
+    t.tiers.forEach((tier, i) => {
+      const row = document.createElement('div');
+      row.className = 'pyr-row-i';
+      const cell = document.createElement('div');
+      cell.className = 'pyr-tier' + (i === state.tierIdx ? ' selected' : '');
+      cell.innerHTML = `
+        <div class="pt-tag">${tier.code} · ${tier.players} PLAYERS</div>
+        <div class="pt-name">${tier.name}</div>
+        <div class="pt-meta">${i === 0 ? '▲ Top of the pyramid' : (i === t.tiers.length - 1 ? '▼ Entry tier' : '↕ Promote / relegate')}</div>
+      `;
+      cell.addEventListener('click', () => {
+        state.tierIdx = i;
+        renderPyramid();
+        renderDetail();
+      });
+      row.appendChild(cell);
+      pyrEl.appendChild(row);
+    });
+  }
+
+  function renderDetail() {
+    const t = TITLES[state.title];
+    const tier = t.tiers[state.tierIdx];
+    detailEl.innerHTML = `
+      <div class="td-head">
+        <div>
+          <div class="td-tag">${t.name} · ${tier.code}</div>
+          <div class="td-title">${tier.name}</div>
+        </div>
+        <div class="td-badge">${tier.players} players · ${t.cycle} cycle</div>
+      </div>
+
+      <div class="td-section">
+        <div class="td-label">Stakes</div>
+        <div class="td-value">${tier.stake}</div>
+      </div>
+
+      <div class="td-section">
+        <div class="td-label">Progression criteria</div>
+        <div class="td-criteria">
+          <div class="cr"><div class="cr-key">▲</div><div class="cr-txt">${tier.promote}</div><div class="cr-val">PROMOTE</div></div>
+          <div class="cr" style="border-left-color: var(--orange);"><div class="cr-key" style="color: var(--orange);">▼</div><div class="cr-txt">${tier.relegate}</div><div class="cr-val" style="color: var(--orange);">RELEGATE</div></div>
+        </div>
+      </div>
+
+      <div class="td-section">
+        <div class="td-label">Per-match &amp; streak reward</div>
+        <div class="td-rewards">
+          <div class="rw"><div class="rw-lbl">Win bonus</div><div class="rw-val">${tier.win}</div></div>
+          <div class="rw orange-rw"><div class="rw-lbl">Reliability</div><div class="rw-val">${tier.reliability}</div></div>
+          <div class="rw"><div class="rw-lbl">Tier champ</div><div class="rw-val">${tier.champion}</div></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderAll() {
+    renderTabs();
+    renderPyramid();
+    renderDetail();
+  }
+
+  renderAll();
+
+  // Tweaks wiring
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "accent": "#b8ff2b",
+    "secondary": "#ff6a1f",
+    "cycle": "shift"
+  }/*EDITMODE-END*/;
+  const tweakState = { ...TWEAK_DEFAULTS };
+  const panel = document.getElementById('tweaks');
+
+  function applyAccent(c) { document.documentElement.style.setProperty('--neon', c); }
+  function applySecondary(c) { document.documentElement.style.setProperty('--orange', c); }
+  function applyCycle(c) {
+    const labelMap = { shift: 'Per shift', daily: 'Daily', weekly: 'Weekly' };
+    TITLES.nba.cycle = labelMap[c] || 'Per shift';
+    if (state.title === 'nba') renderDetail();
+  }
+
+  function applyTweaks() {
+    applyAccent(tweakState.accent);
+    applySecondary(tweakState.secondary);
+    applyCycle(tweakState.cycle);
+    panel.querySelectorAll('button[data-accent]').forEach(b => b.classList.toggle('active', b.dataset.accent === tweakState.accent));
+    panel.querySelectorAll('button[data-secondary]').forEach(b => b.classList.toggle('active', b.dataset.secondary === tweakState.secondary));
+    panel.querySelectorAll('button[data-cycle]').forEach(b => b.classList.toggle('active', b.dataset.cycle === tweakState.cycle));
+  }
+
+  panel.querySelectorAll('button[data-accent]').forEach(b => b.addEventListener('click', () => { tweakState.accent = b.dataset.accent; applyTweaks(); window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accent: tweakState.accent } }, '*'); }));
+  panel.querySelectorAll('button[data-secondary]').forEach(b => b.addEventListener('click', () => { tweakState.secondary = b.dataset.secondary; applyTweaks(); window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { secondary: tweakState.secondary } }, '*'); }));
+  panel.querySelectorAll('button[data-cycle]').forEach(b => b.addEventListener('click', () => { tweakState.cycle = b.dataset.cycle; applyTweaks(); window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { cycle: tweakState.cycle } }, '*'); }));
+
+  applyTweaks();
+
+  window.addEventListener('message', (e) => {
+    const d = e.data;
+    if (!d || typeof d !== 'object') return;
+    if (d.type === '__activate_edit_mode') panel.classList.add('on');
+    if (d.type === '__deactivate_edit_mode') panel.classList.remove('on');
+  });
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+})();
+</script>
+
+</body>
+</html>

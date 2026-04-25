@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SIS — Shift Structure · Revenue Impact · V3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b0a;
+    --bg-2: #111312;
+    --bg-3: #17191a;
+    --ink: #f2f3ef;
+    --ink-2: #cfd1cb;
+    --muted: #8a8f86;
+    --rule: #222624;
+    --rule-2: #2e3330;
+    --neon: #b8ff2b;
+    --neon-dim: #7fb31d;
+    --orange: #ff6a1f;
+    --orange-dim: #c74a0c;
+    --blue: #4ac4ff;
+    --gold: #ffc845;
+    --purple: #b48dff;
+    --panel: #0f1110;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+
+  .page {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 80px 96px 120px;
+  }
+
+  .runner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 64px;
+  }
+  .sis-mark {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .sis-mark .dot {
+    width: 10px; height: 10px; background: var(--neon); border-radius: 2px;
+    box-shadow: 0 0 10px rgba(184,255,43,0.7);
+  }
+
+  h1.display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 84px;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    margin-bottom: 32px;
+    max-width: 1300px;
+  }
+  h2.section {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow .sq {
+    width: 10px; height: 10px;
+    background: var(--neon);
+    box-shadow: 0 0 10px rgba(184,255,43,0.5);
+  }
+  .eyebrow.blue .sq { background: var(--blue); box-shadow: 0 0 10px rgba(74,196,255,0.5); }
+  .eyebrow.gold .sq { background: var(--gold); box-shadow: 0 0 10px rgba(255,200,69,0.5); }
+  .eyebrow.muted .sq { background: var(--muted); box-shadow: none; }
+
+  .lede {
+    font-size: 24px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    max-width: 1100px;
+    text-wrap: pretty;
+  }
+  .body {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 1000px;
+    text-wrap: pretty;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .accent { color: var(--neon); }
+  .orange-text { color: var(--orange); }
+  .blue-text { color: var(--blue); }
+  .gold-text { color: var(--gold); }
+  .purple-text { color: var(--purple); }
+  .muted-text { color: var(--muted); }
+
+  .section-break { height: 1px; background: var(--rule); margin: 88px 0; }
+
+  /* ===== 24H TWO-RING CLOCK ===== */
+  .clock-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    margin-top: 44px;
+  }
+  .clock {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .clock svg { width: 100%; height: 100%; display: block; }
+  .clock-legend {
+    display: flex; flex-direction: column; gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+  .cl-row { display: flex; gap: 16px; align-items: flex-start; }
+  .cl-sw {
+    flex-shrink: 0;
+    width: 28px; height: 28px; border-radius: 2px;
+    margin-top: 2px;
+  }
+  .cl-sw.day { background: var(--gold); }
+  .cl-sw.night { background: var(--blue); }
+  .cl-sw.hand { background: var(--neon); }
+  .cl-content .lbl {
+    font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .cl-content .big {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    margin-bottom: 4px;
+  }
+  .cl-content .detail {
+    font-size: 12px;
+    color: var(--ink-2);
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== STAT STRIP ===== */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 40px;
+  }
+  .stat { background: var(--bg); padding: 28px 24px 32px; }
+  .stat .n {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    margin-bottom: 10px;
+  }
+  .stat .n.accent { color: var(--neon); }
+  .stat .n.gold { color: var(--gold); }
+  .stat .n.blue { color: var(--blue); }
+  .stat .n.orange-text { color: var(--orange); }
+  .stat .l {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .stat .sub {
+    font-size: 12px; color: var(--ink-2); line-height: 1.4;
+  }
+
+  /* ===== SCHEDULE GRID ===== */
+  .sched-wrap {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    padding: 32px 24px 32px;
+    border-radius: 2px;
+    margin-top: 36px;
+    overflow: hidden;
+  }
+  .sched-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 8px;
+  }
+  .sched-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    font-weight: 500;
+    text-transform: none;
+  }
+  .sched {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  .sched svg { display: block; width: 100%; height: auto; }
+  .sched-foot {
+    display: flex; gap: 32px; flex-wrap: wrap;
+    margin-top: 18px;
+    padding: 0 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .legend-sw { display: inline-block; width: 12px; height: 12px; margin-right: 6px; vertical-align: -1px; }
+
+  /* ===== CALLOUT ===== */
+  .callout {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--neon);
+    padding: 32px 32px;
+    border-radius: 2px;
+  }
+  .callout.orange { border-left-color: var(--orange); }
+  .callout.blue { border-left-color: var(--blue); }
+  .callout .eye {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .callout .huge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--neon);
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    margin-bottom: 10px;
+  }
+  .callout.orange .huge { color: var(--orange); }
+  .callout.blue .huge { color: var(--blue); }
+  .callout p {
+    font-size: 15px; line-height: 1.55; color: var(--ink-2);
+  }
+
+  /* ===== TWO UP ===== */
+  .two-up {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 36px;
+  }
+
+  /* ===== POOL STRUCTURE ===== */
+  .pools {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 36px;
+  }
+  .pool {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    padding: 32px;
+    border-radius: 2px;
+    position: relative;
+  }
+  .pool.day { border-top: 2px solid var(--gold); }
+  .pool.night { border-top: 2px solid var(--blue); }
+  .pool-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .pool-head .ttl {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+  .pool-head .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pool .window {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--ink-2);
+    margin-bottom: 24px;
+  }
+  .pool .window .t { color: var(--ink); font-weight: 600; }
+
+  /* Gamer dots visualization */
+  .gamers-viz {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 6px;
+    padding: 16px 0 20px;
+  }
+  .g-dot {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: var(--bg-3);
+    border: 1px solid var(--rule);
+  }
+  .g-dot.active-day { background: var(--gold); border-color: var(--gold); }
+  .g-dot.active-night { background: var(--blue); border-color: var(--blue); }
+
+  .pool-stats {
+    border-top: 1px solid var(--rule);
+    padding-top: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+  }
+  .ps-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .ps-row .k { color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; font-size: 11px; }
+  .ps-row .v { color: var(--ink); font-weight: 600; }
+
+  /* ===== ROSTER STACK ===== */
+  .roster {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 36px;
+  }
+  .roster-card {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    padding: 28px;
+    border-radius: 2px;
+  }
+  .roster-card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .roster-card .n {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    color: var(--neon);
+  }
+  .roster-card.mid .n { color: var(--gold); }
+  .roster-card.cas .n { color: var(--orange); }
+  .roster-card .desc {
+    font-size: 14px; line-height: 1.5; color: var(--ink-2);
+    margin-bottom: 14px;
+  }
+  .roster-card .math {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+  }
+
+  /* ===== IMPLICATIONS ===== */
+  .imps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 36px;
+  }
+  .imp { background: var(--bg); padding: 32px; }
+  .imp .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--neon);
+    margin-bottom: 14px;
+  }
+  .imp h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    margin-bottom: 12px;
+  }
+  .imp p {
+    font-size: 14px; line-height: 1.55; color: var(--ink-2);
+  }
+
+  /* Decision */
+  .decision {
+    margin-top: 56px;
+    padding: 44px 44px;
+    background: var(--neon);
+    color: #0a0b0a;
+    border-radius: 2px;
+  }
+  .decision .eye {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #1a2305;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .decision .eye::before { content: ""; width: 10px; height: 10px; background: #0a0b0a; }
+  .decision h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 18px;
+    max-width: 1100px;
+  }
+  .decision p {
+    font-size: 17px; line-height: 1.5; color: #1a2305;
+    max-width: 1000px; margin-bottom: 10px;
+  }
+
+  .assumptions {
+    margin-top: 44px;
+    padding: 22px 28px;
+    border: 1px dashed var(--rule-2);
+    border-radius: 2px;
+  }
+  .assumptions .title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .assumptions ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-2);
+    letter-spacing: 0.02em;
+  }
+  .assumptions li::before { content: "· "; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="runner">
+    <div class="sis-mark"><span class="dot"></span>SIS · INTERNAL · ANALYSIS</div>
+    <div>SHIFT STRUCTURE · V3 · REVENUE IMPACT</div>
+  </div>
+
+  <!-- HERO -->
+  <section>
+    <div class="eyebrow"><span class="sq"></span>THE STRUCTURE · NBA PILOT</div>
+    <h1 class="display">
+      <span class="accent">Six Night studios, four Day</span> (S5–S6 offline on Day), <span class="gold-text">Night</span> shift (18:30 → 07:00) is the restructure target. A new match closes roughly every <span class="accent">ten minutes</span> on the bank.
+    </h1>
+    <p class="lede">
+      Night runs 6 studios (4 gamers each = <span class="accent">24 on the floor</span>, <span class="accent">129 matches/shift</span>). Day currently runs 4 studios (<span class="accent">16 on the floor</span>, <span class="accent">86 matches/shift</span>, S5–S6 offline). The 10‑min stagger means the bank is always running multiple live matches. The existing Night shift is the restructure target — the 4‑week trial runs on Studios 5–6 (Division 3). EAFC and eAMF will inherit the structure after NBA proves out.
+    </p>
+    <p class="body" style="font-size: 15px; color: var(--muted); margin-top: 12px; letter-spacing: 0.02em;">
+      <span class="mono" style="color: var(--ink);">Note on nomenclature:</span> a <em>studio</em> here means a per‑title production booth, not a building. SIS runs two hubs — <span class="accent">Manchester</span> and <span class="accent">Milton Keynes (MK10)</span> — with multiple booths per hub. "6 studios" = 6 NBA booths running in parallel on the Night shift across 3 divisions of two. Day currently runs 4 (S1–S4); S5–S6 are offline on Day. On Night, Studios 4–6 lose their last match to avoid overlap with the incoming Day shift.
+    </p>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- NUMBERS RECONCILIATION PANEL ───────────────────────────────────── -->
+  <section>
+    <div class="eyebrow"><span class="sq"></span>00 · NUMBERS · RECONCILED ACROSS DECKS</div>
+    <h2 class="section">The same math, seen from four angles.</h2>
+    <p class="body" style="max-width: 1100px;">
+      Three SIS docs quote different volume numbers depending on what they're counting. This panel bridges them so the leadership deck, the structure doc, and the public‑facing SIS figure all derive from the same chassis.
+    </p>
+
+    <div class="stat-strip" style="grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 28px;">
+      <div class="stat">
+        <div class="l">Public figure · sis.tv · all titles</div>
+        <div class="n">275,000</div>
+        <div class="sub">Events / yr · all CG titles combined · ≈ 753 / day</div>
+      </div>
+      <div class="stat">
+        <div class="l">NBA Night shift (6 studios)</div>
+        <div class="n">129</div>
+        <div class="sub">S1–3: 22 + S4–6: 21 (last cancelled) · Day: 86 (4 studios)</div>
+      </div>
+      <div class="stat">
+        <div class="l">NBA · Day + Night (24/7) · target</div>
+        <div class="n">~94,170</div>
+        <div class="sub">129 × 2 shifts × 365 (post Day S5–6 expansion) · current: ~78,475</div>
+      </div>
+      <div class="stat">
+        <div class="l">Cancellation baseline · NBA 24/7</div>
+        <div class="n orange-text">£4.71M</div>
+        <div class="sub">~4,700 cancels / yr × £1,000 revenue lost / cancel · 5.0% rate</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 28px; padding: 22px 26px; background: var(--bg-2); border-left: 3px solid var(--accent);">
+      <div class="mono" style="font-size: 12px; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px;">Bridge · how the numbers line up</div>
+      <p class="body" style="font-size: 17px; color: var(--ink-2); line-height: 1.55; max-width: 1100px;">
+        Currently Night runs 6 studios (129 matches/shift) and Day runs 4 (86 matches/shift) → 215 matches/day (~78,475/yr). At target state (Day expanded to 6 studios) that becomes 258/day → ~94,170/yr. EAFC and eAMF stay on their current formats while NBA is proven; once they inherit the structure later, the all‑titles bank rebuilds back toward the public 275k figure. <strong>This deck quotes NBA‑only numbers from here on. The existing Night shift is the restructure target.</strong>
+      </p>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- 1. CLOCK -->
+  <section>
+    <div class="eyebrow gold"><span class="sq"></span>01 · THE 24H CLOCK · DAY + NIGHT</div>
+    <h2 class="section">Two 12.5‑hour shifts: Day 06:30 → 19:00, Night 18:30 → 07:00. Night is the restructure target.</h2>
+    <p class="body">
+      Night runs 6 studios at 32‑minute match slots; Day currently runs 4 (S5–S6 offline). On the Night shift, Studios 1–3 get 22 matches and Studios 4–6 get 21 (last event cancelled to avoid overlap with the incoming shift). Night stagger: S1 19:00, S2 19:10, … S6 19:50. Day mirrors at 07:00+ across S1–S4. Both shifts are 12.5h long with 1h unpaid break = 11.5h paid. The 4‑week restructure trial runs on the existing Night shift (Studios 5–6, Division 3).
+    </p>
+
+    <div class="clock-wrap">
+      <div class="clock">
+        <svg viewBox="-260 -260 520 520">
+          <!-- outer ring background -->
+          <circle cx="0" cy="0" r="220" fill="#111312" stroke="#222624" stroke-width="1"/>
+
+          <!-- NIGHT arc: 18:30 → 07:00 (wraps midnight, goes up through 00 - TOP half)
+               sweep=0 makes it go counterclockwise (through 00 at top)
+               18:30 at angle 187.5°: (-218.1, -28.7)
+               07:00 at angle 15°: (212.5, 56.9) -->
+          <path d="M 0,0 L -218.1,-28.7 A 220,220 0 1 0 212.5,56.9 Z"
+                fill="#4ac4ff" opacity="0.22" stroke="none"/>
+          <path d="M 0,0 L -218.1,-28.7 A 220,220 0 1 0 212.5,56.9 Z"
+                fill="none" stroke="#4ac4ff" stroke-width="1.4" opacity="0.9"/>
+
+          <!-- DAY arc: 06:30 → 19:00 (goes down through 12 - BOTTOM half)
+               sweep=0 makes it go counterclockwise (through 12 at bottom)
+               06:30 at angle 7.5°: (218.1, 28.7)
+               19:00 at angle 195°: (-212.5, -56.9) -->
+          <path d="M 0,0 L 218.1,28.7 A 220,220 0 1 0 -212.5,-56.9 Z"
+                fill="#ffc845" opacity="0.22" stroke="none"/>
+          <path d="M 0,0 L 218.1,28.7 A 220,220 0 1 0 -212.5,-56.9 Z"
+                fill="none" stroke="#ffc845" stroke-width="1.4" opacity="0.9"/>
+
+          <!-- hour ticks -->
+          <g stroke="#2e3330" stroke-width="1">
+            <!-- generate 24 ticks -->
+            <!-- we'll hardcode: for h in 0..23, line from (cos*200, sin*200) to (cos*215, sin*215), angle=h/24*360 - 90 -->
+            <line x1="0" y1="-200" x2="0" y2="-215" />
+            <line x1="51.76" y1="-193.19" x2="55.64" y2="-207.64" />
+            <line x1="100" y1="-173.2" x2="107.5" y2="-186.2" />
+            <line x1="141.42" y1="-141.42" x2="152.03" y2="-152.03" />
+            <line x1="173.2" y1="-100" x2="186.2" y2="-107.5" />
+            <line x1="193.19" y1="-51.76" x2="207.64" y2="-55.64" />
+            <line x1="200" y1="0" x2="215" y2="0" />
+            <line x1="193.19" y1="51.76" x2="207.64" y2="55.64" />
+            <line x1="173.2" y1="100" x2="186.2" y2="107.5" />
+            <line x1="141.42" y1="141.42" x2="152.03" y2="152.03" />
+            <line x1="100" y1="173.2" x2="107.5" y2="186.2" />
+            <line x1="51.76" y1="193.19" x2="55.64" y2="207.64" />
+            <line x1="0" y1="200" x2="0" y2="215" />
+            <line x1="-51.76" y1="193.19" x2="-55.64" y2="207.64" />
+            <line x1="-100" y1="173.2" x2="-107.5" y2="186.2" />
+            <line x1="-141.42" y1="141.42" x2="-152.03" y2="152.03" />
+            <line x1="-173.2" y1="100" x2="-186.2" y2="107.5" />
+            <line x1="-193.19" y1="51.76" x2="-207.64" y2="55.64" />
+            <line x1="-200" y1="0" x2="-215" y2="0" />
+            <line x1="-193.19" y1="-51.76" x2="-207.64" y2="-55.64" />
+            <line x1="-173.2" y1="-100" x2="-186.2" y2="-107.5" />
+            <line x1="-141.42" y1="-141.42" x2="-152.03" y2="-152.03" />
+            <line x1="-100" y1="-173.2" x2="-107.5" y2="-186.2" />
+            <line x1="-51.76" y1="-193.19" x2="-55.64" y2="-207.64" />
+          </g>
+
+          <!-- hour labels (every 6h) -->
+          <g font-family="JetBrains Mono" font-size="13" fill="#8a8f86" text-anchor="middle" letter-spacing="0.14em">
+            <text x="0" y="-232">00</text>
+            <text x="232" y="5">06</text>
+            <text x="0" y="245">12</text>
+            <text x="-232" y="5">18</text>
+          </g>
+
+          <!-- changeover markers 06:30 and 18:30 -->
+          <!-- 06:30 at angle 7.5° → (218.1, 28.7) -->
+          <circle cx="218.1" cy="28.7" r="5" fill="#b8ff2b"/>
+          <text x="248" y="33" font-family="JetBrains Mono" font-size="12" fill="#b8ff2b" letter-spacing="0.1em">06:30</text>
+          <!-- 18:30 at angle 187.5° → (-218.1, -28.7) -->
+          <circle cx="-218.1" cy="-28.7" r="5" fill="#b8ff2b"/>
+          <text x="-248" y="-36" font-family="JetBrains Mono" font-size="12" fill="#b8ff2b" text-anchor="end" letter-spacing="0.1em">18:30</text>
+
+          <!-- 07:00 and 19:00 (end markers) small -->
+          <!-- 7h angle 15°: (212.5, 56.9) -->
+          <circle cx="212.5" cy="56.9" r="3" fill="#ffc845"/>
+          <!-- 19h angle 195°: (-212.5, -56.9) -->
+          <circle cx="-212.5" cy="-56.9" r="3" fill="#4ac4ff"/>
+
+          <!-- center labels -->
+          <text x="0" y="-20" font-family="Space Grotesk" font-size="28" fill="#f2f3ef" text-anchor="middle" font-weight="500" letter-spacing="-0.01em">24 H</text>
+          <text x="0" y="4" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.18em">DAY LIVE · NIGHT TBD</text>
+          <text x="0" y="26" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.18em">24 GAMERS / SHIFT</text>
+
+          <!-- inner shift labels -->
+          <text x="130" y="110" font-family="JetBrains Mono" font-size="13" fill="#ffc845" font-weight="600" letter-spacing="0.18em" text-anchor="middle">DAY</text>
+          <text x="-130" y="-110" font-family="JetBrains Mono" font-size="13" fill="#4ac4ff" font-weight="600" letter-spacing="0.18em" text-anchor="middle">NIGHT</text>
+        </svg>
+      </div>
+
+      <div class="clock-legend">
+        <div class="cl-row">
+          <div class="cl-sw day"></div>
+          <div class="cl-content">
+            <div class="lbl">Day Shift · NBA pilot · LIVE</div>
+            <div class="big">06:30 → 19:00</div>
+            <div class="detail">16 gamers on (4 × 4 studios · S5–S6 offline) · 86 matches · S3–4 last event cancelled (shift overlap)</div>
+          </div>
+        </div>
+        <div class="cl-row">
+          <div class="cl-sw night"></div>
+          <div class="cl-content">
+            <div class="lbl">Night Shift · RESTRUCTURE TARGET</div>
+            <div class="big">18:30 → 07:00</div>
+            <div class="detail">6 studios · 129 matches/shift · 4‑week restructure trial on Studios 5–6 (D3)</div>
+          </div>
+        </div>
+        <div class="cl-row">
+          <div class="cl-sw hand"></div>
+          <div class="cl-content">
+            <div class="lbl">Changeover</div>
+            <div class="big">06:30 · 19:00</div>
+            <div class="detail">Clean handover between shifts — outgoing settles, incoming takes first serve</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat">
+        <div class="l">Gamers / day shift</div>
+        <div class="n accent">24</div>
+        <div class="sub">6 studios × 4 gamers</div>
+      </div>
+      <div class="stat">
+        <div class="l">Matches / day shift</div>
+        <div class="n accent">129</div>
+        <div class="sub">S1–3: 22 + S4–6: 21 (last cancelled)</div>
+      </div>
+      <div class="stat">
+        <div class="l">Day shift length</div>
+        <div class="n">12h 30m</div>
+        <div class="sub">06:30 → 19:00</div>
+      </div>
+      <div class="stat">
+        <div class="l">Match cadence</div>
+        <div class="n gold">1 / 10m</div>
+        <div class="sub">10‑min stagger across 6 studios (3 divisions)</div>
+      </div>
+      <div class="stat">
+        <div class="l">Matches / week · NBA</div>
+        <div class="n blue">903</div>
+        <div class="sub">129/shift × 7 · 1,806 at 24/7</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- 2. SCHEDULE -->
+  <section>
+    <div class="eyebrow blue"><span class="sq"></span>02 · THE STAGGER — HOW ONE SHIFT FLOWS</div>
+    <h2 class="section">Six studios, ten minutes apart. A new match closes every ~10 minutes.</h2>
+    <p class="body">
+      Night shift begins. Studio 1 tips off at <span class="accent mono">19:00</span>. Ten minutes later Studio 2. By 19:50 all six studios are running, each on its own 32‑minute slot cadence. A new NBA match closes roughly every <span class="accent">10 minutes</span> on the bank — a continuous feed for broadcast, betting and the gamer leaderboard. Studios 4–6 lose their last match to avoid overlap with the incoming Day shift.
+    </p>
+    <p class="body" style="font-size: 14px; color: var(--muted); margin-top: 8px;">
+      The 6 studios are paired into 3 divisions: Division 1 (S1+S2), Division 2 (S3+S4), Division 3 (S5+S6). Each division has its own tier ladder, Championship title (1 per division), and win bonus rate. The trial runs on Division 3 (Studios 5–6) only.
+    </p>
+
+    <div class="sched-wrap">
+      <div class="sched-head">
+        <span class="sched-title">Day Shift · All 6 Studios · First 3.5 hours</span>
+        <span>32 MIN SLOT · 10 MIN STAGGER · 3 DIVISIONS · TIME →</span>
+      </div>
+
+      <div class="sched">
+        <!-- 6-studio stagger SVG with division groupings
+             Chart area: x=200–1580 (1380px) for 210 min (07:00–10:30)
+             px/min = 6.571 · 32min match = 210.3px · 10min stagger = 65.7px
+             Colors: D1=#b8ff2b  D2=#38bdf8  D3=#fbbf24 -->
+        <svg viewBox="0 0 1600 380" preserveAspectRatio="xMidYMid meet" style="font-size: inherit;">
+          <!-- TIME AXIS -->
+          <g font-family="JetBrains Mono" font-size="14" fill="#8a8f86" letter-spacing="0.12em">
+            <text x="200" y="18">07:00</text>
+            <text x="397" y="18">07:30</text>
+            <text x="594" y="18">08:00</text>
+            <text x="791" y="18">08:30</text>
+            <text x="989" y="18">09:00</text>
+            <text x="1186" y="18">09:30</text>
+            <text x="1383" y="18">10:00</text>
+          </g>
+          <!-- vertical gridlines -->
+          <g stroke="#222624" stroke-width="1">
+            <line x1="200" y1="28" x2="200" y2="350"/>
+            <line x1="397" y1="28" x2="397" y2="350"/>
+            <line x1="594" y1="28" x2="594" y2="350"/>
+            <line x1="791" y1="28" x2="791" y2="350"/>
+            <line x1="989" y1="28" x2="989" y2="350"/>
+            <line x1="1186" y1="28" x2="1186" y2="350"/>
+            <line x1="1383" y1="28" x2="1383" y2="350"/>
+          </g>
+
+          <!-- ═══ DIVISION 1 · S1 + S2 · £2.80/£2.60 WIN · 22 MATCHES · 1 CHAMPIONSHIP TITLE ═══ -->
+          <rect x="0" y="32" width="195" height="18" fill="#b8ff2b" opacity="0.12" rx="2"/>
+          <text x="8" y="46" font-family="JetBrains Mono" font-size="11" fill="#b8ff2b" letter-spacing="0.14em" font-weight="600">D1 · £2.80–2.60/WIN · 22 M</text>
+
+          <!-- STUDIO 1 · 07:00 · 22 matches -->
+          <g>
+            <text x="8" y="72" font-family="JetBrains Mono" font-size="15" fill="#f2f3ef" font-weight="600" letter-spacing="0.08em">STUDIO 1</text>
+            <text x="8" y="84" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" letter-spacing="0.1em">07:00 · 22 MATCHES · £2.80</text>
+            <rect x="200" y="60" width="210.3" height="20" fill="#b8ff2b" opacity="0.88" rx="1"/>
+            <rect x="410.3" y="60" width="210.3" height="20" fill="#b8ff2b" opacity="0.78" rx="1"/>
+            <rect x="620.6" y="60" width="210.3" height="20" fill="#b8ff2b" opacity="0.68" rx="1"/>
+            <rect x="830.9" y="60" width="210.3" height="20" fill="#b8ff2b" opacity="0.58" rx="1"/>
+            <rect x="1041.1" y="60" width="210.3" height="20" fill="#b8ff2b" opacity="0.48" rx="1"/>
+            <rect x="1251.4" y="60" width="210.3" height="20" fill="#b8ff2b" opacity="0.38" rx="1"/>
+            <rect x="1461.7" y="60" width="118.3" height="20" fill="#b8ff2b" opacity="0.28" rx="1"/>
+            <g font-family="JetBrains Mono" font-size="11" fill="#0a0b0a" font-weight="600">
+              <text x="208" y="74">M1</text><text x="418" y="74">M2</text><text x="628" y="74">M3</text>
+              <text x="838" y="74" fill="#1a2305">M4</text><text x="1049" y="74" fill="#1a2305">M5</text>
+              <text x="1259" y="74" fill="#1a2305">M6</text><text x="1469" y="74" fill="#1a2305">M7</text>
+            </g>
+          </g>
+
+          <!-- STUDIO 2 · 07:10 · 22 matches -->
+          <g>
+            <text x="8" y="108" font-family="JetBrains Mono" font-size="15" fill="#f2f3ef" font-weight="600" letter-spacing="0.08em">STUDIO 2</text>
+            <text x="8" y="120" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" letter-spacing="0.1em">07:10 · 22 MATCHES · £2.60</text>
+            <rect x="265.7" y="96" width="210.3" height="20" fill="#b8ff2b" opacity="0.84" rx="1"/>
+            <rect x="476" y="96" width="210.3" height="20" fill="#b8ff2b" opacity="0.74" rx="1"/>
+            <rect x="686.3" y="96" width="210.3" height="20" fill="#b8ff2b" opacity="0.64" rx="1"/>
+            <rect x="896.6" y="96" width="210.3" height="20" fill="#b8ff2b" opacity="0.54" rx="1"/>
+            <rect x="1106.9" y="96" width="210.3" height="20" fill="#b8ff2b" opacity="0.44" rx="1"/>
+            <rect x="1317.1" y="96" width="210.3" height="20" fill="#b8ff2b" opacity="0.34" rx="1"/>
+            <rect x="1527.4" y="96" width="52.6" height="20" fill="#b8ff2b" opacity="0.26" rx="1"/>
+          </g>
+
+          <!-- Division separator -->
+          <line x1="0" y1="130" x2="1580" y2="130" stroke="#2e3330" stroke-width="1" stroke-dasharray="4,4"/>
+
+          <!-- ═══ DIVISION 2 · S3 + S4 · £2.40/£2.20 WIN · 22/21 MATCHES · 1 CHAMPIONSHIP TITLE ═══ -->
+          <rect x="0" y="136" width="195" height="18" fill="#38bdf8" opacity="0.12" rx="2"/>
+          <text x="8" y="150" font-family="JetBrains Mono" font-size="11" fill="#38bdf8" letter-spacing="0.14em" font-weight="600">D2 · £2.40–2.20/WIN · 22/21 M</text>
+
+          <!-- STUDIO 3 · 07:20 · 22 matches -->
+          <g>
+            <text x="8" y="176" font-family="JetBrains Mono" font-size="15" fill="#f2f3ef" font-weight="600" letter-spacing="0.08em">STUDIO 3</text>
+            <text x="8" y="188" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" letter-spacing="0.1em">07:20 · 22 MATCHES · £2.40</text>
+            <rect x="331.4" y="164" width="210.3" height="20" fill="#38bdf8" opacity="0.84" rx="1"/>
+            <rect x="541.7" y="164" width="210.3" height="20" fill="#38bdf8" opacity="0.74" rx="1"/>
+            <rect x="752" y="164" width="210.3" height="20" fill="#38bdf8" opacity="0.64" rx="1"/>
+            <rect x="962.3" y="164" width="210.3" height="20" fill="#38bdf8" opacity="0.54" rx="1"/>
+            <rect x="1172.6" y="164" width="210.3" height="20" fill="#38bdf8" opacity="0.44" rx="1"/>
+            <rect x="1382.9" y="164" width="197.1" height="20" fill="#38bdf8" opacity="0.34" rx="1"/>
+          </g>
+
+          <!-- STUDIO 4 · 07:30 · 21 matches -->
+          <g>
+            <text x="8" y="212" font-family="JetBrains Mono" font-size="15" fill="#f2f3ef" font-weight="600" letter-spacing="0.08em">STUDIO 4</text>
+            <text x="8" y="224" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" letter-spacing="0.1em">07:30 · 21 MATCHES · £2.20</text>
+            <rect x="397.1" y="200" width="210.3" height="20" fill="#38bdf8" opacity="0.80" rx="1"/>
+            <rect x="607.4" y="200" width="210.3" height="20" fill="#38bdf8" opacity="0.70" rx="1"/>
+            <rect x="817.7" y="200" width="210.3" height="20" fill="#38bdf8" opacity="0.60" rx="1"/>
+            <rect x="1028" y="200" width="210.3" height="20" fill="#38bdf8" opacity="0.50" rx="1"/>
+            <rect x="1238.3" y="200" width="210.3" height="20" fill="#38bdf8" opacity="0.40" rx="1"/>
+            <rect x="1448.6" y="200" width="131.4" height="20" fill="#38bdf8" opacity="0.30" rx="1"/>
+          </g>
+
+          <!-- Division separator -->
+          <line x1="0" y1="236" x2="1580" y2="236" stroke="#2e3330" stroke-width="1" stroke-dasharray="4,4"/>
+
+          <!-- ═══ DIVISION 3 · S5 + S6 · £2.00/£1.80 WIN · 21 MATCHES · 1 CHAMPIONSHIP TITLE · TRIAL ═══ -->
+          <rect x="0" y="242" width="195" height="18" fill="#fbbf24" opacity="0.12" rx="2"/>
+          <text x="8" y="256" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" letter-spacing="0.14em" font-weight="600">D3 · £2.00–1.80/WIN · 21 M · TRIAL</text>
+
+          <!-- STUDIO 5 · 07:40 · 21 matches -->
+          <g>
+            <text x="8" y="282" font-family="JetBrains Mono" font-size="15" fill="#f2f3ef" font-weight="600" letter-spacing="0.08em">STUDIO 5</text>
+            <text x="8" y="294" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" letter-spacing="0.1em">07:40 · 21 MATCHES · £2.00</text>
+            <rect x="462.9" y="270" width="210.3" height="20" fill="#fbbf24" opacity="0.80" rx="1"/>
+            <rect x="673.1" y="270" width="210.3" height="20" fill="#fbbf24" opacity="0.70" rx="1"/>
+            <rect x="883.4" y="270" width="210.3" height="20" fill="#fbbf24" opacity="0.60" rx="1"/>
+            <rect x="1093.7" y="270" width="210.3" height="20" fill="#fbbf24" opacity="0.50" rx="1"/>
+            <rect x="1304" y="270" width="210.3" height="20" fill="#fbbf24" opacity="0.40" rx="1"/>
+          </g>
+
+          <!-- STUDIO 6 · 07:50 · 21 matches -->
+          <g>
+            <text x="8" y="318" font-family="JetBrains Mono" font-size="15" fill="#f2f3ef" font-weight="600" letter-spacing="0.08em">STUDIO 6</text>
+            <text x="8" y="330" font-family="JetBrains Mono" font-size="10" fill="#8a8f86" letter-spacing="0.1em">07:50 · 21 MATCHES · £1.80</text>
+            <rect x="528.6" y="306" width="210.3" height="20" fill="#fbbf24" opacity="0.76" rx="1"/>
+            <rect x="738.9" y="306" width="210.3" height="20" fill="#fbbf24" opacity="0.66" rx="1"/>
+            <rect x="949.1" y="306" width="210.3" height="20" fill="#fbbf24" opacity="0.56" rx="1"/>
+            <rect x="1159.4" y="306" width="210.3" height="20" fill="#fbbf24" opacity="0.46" rx="1"/>
+            <rect x="1369.7" y="306" width="210.3" height="20" fill="#fbbf24" opacity="0.36" rx="1"/>
+          </g>
+
+          <!-- Bottom axis arrow -->
+          <line x1="200" y1="350" x2="1580" y2="350" stroke="#8a8f86" stroke-width="1"/>
+          <polygon points="1580,346 1588,350 1580,354" fill="#8a8f86"/>
+        </svg>
+      </div>
+
+      <div class="sched-foot">
+        <span><span class="legend-sw" style="background: #b8ff2b;"></span>D1 · S1–S2 · 22 M · £2.80–2.60</span>
+        <span><span class="legend-sw" style="background: #38bdf8;"></span>D2 · S3–S4 · 22/21 M · £2.40–2.20</span>
+        <span><span class="legend-sw" style="background: #fbbf24;"></span>D3 · S5–S6 · 21 M · £2.00–1.80 · TRIAL</span>
+        <span>1 CHAMPIONSHIP TITLE PER DIVISION · 10 MIN STAGGER · 32 MIN SLOTS</span>
+      </div>
+    </div>
+
+    <div class="two-up">
+      <div class="callout">
+        <div class="eye">BROADCAST CADENCE · CONTINUOUS FEED</div>
+        <div class="huge">Match / 10 min</div>
+        <p>Once all 6 studios are live (from 07:50 on Day / 19:50 on Night), a new NBA match closes roughly every 5 minutes across the bank. Win bonuses descend from £2.80 (S1) to £1.80 (S6) — higher stakes at the top, a ladder to climb. No dead air, 12.5 hours straight.</p>
+      </div>
+      <div class="callout blue">
+        <div class="eye">CROSS‑STUDIO VARIATION · FRESH FEEL</div>
+        <div class="huge">6 rare‑pair sets</div>
+        <p>Each studio's 4‑gamer cohort uses a different rotation grid where all 6 pairings appear but at different frequencies. Channel‑jumping between studios feels fresh because the marquee matchup is always different. Cross-division variation (D1 vs D2 vs D3) adds another layer of variety for punters.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- 03 · PER-STUDIO ROTATION (DOUBLES) -->
+  <section>
+    <div class="eyebrow blue"><span class="sq"></span>03 · PER‑STUDIO ROTATION — FATIGUE‑SAFE SCHEDULING</div>
+    <h2 class="section">4 gamers, 22 matches, 11 each — max 3 in a row, min 2 per block, everyone plays everyone.</h2>
+    <p class="body">
+      Inside each studio, the 4‑gamer cohort cycles through 22 matches in a <strong>fatigue‑safe rotation</strong>. Each match is 1v1 (2 play, 2 rest); matches run 4×5‑min quarters with potential 3‑min OT (up to 4 times) in 32‑min slots. Each gamer plays exactly 11 of 22 matches (50%), with a hard cap of 3 consecutive games and no more than two blocks‑of‑3 per shift — <strong>all triples front‑loaded into the first half</strong> so the second half runs on blocks of 2 or fewer. All 6 pairings appear with near‑balanced counts (3–4 each), giving managers precise control over matchup quality.
+    </p>
+
+    <div class="sched-wrap">
+      <div class="sched-head">
+        <span class="sched-title">Studio 1 · per‑match cohort assignment (matches 1–22)</span>
+        <span>4 GAMERS · A · B · C · D · 11 MATCHES EACH · MAX 3 CONSECUTIVE · ALL 6 PAIRINGS</span>
+      </div>
+      <div class="sched">
+        <!-- 22 match slots laid out left-to-right; each slot is a column.
+             Slot width: (1440 / 22) ≈ 65.5
+             Rows: 4 gamers (A B C D). Filled cell = playing this match. -->
+        <svg viewBox="0 0 1600 260" preserveAspectRatio="xMidYMid meet">
+          <!-- match number row -->
+          <g font-family="JetBrains Mono" font-size="11" fill="#8a8f86" letter-spacing="0.08em" text-anchor="middle">
+            <text x="172" y="22">M1</text><text x="237.5" y="22">M2</text><text x="303" y="22">M3</text><text x="368.5" y="22">M4</text>
+            <text x="434" y="22">M5</text><text x="499.5" y="22">M6</text><text x="565" y="22">M7</text><text x="630.5" y="22">M8</text>
+            <text x="696" y="22">M9</text><text x="761.5" y="22">M10</text><text x="827" y="22">M11</text><text x="892.5" y="22">M12</text>
+            <text x="958" y="22">M13</text><text x="1023.5" y="22">M14</text><text x="1089" y="22">M15</text><text x="1154.5" y="22">M16</text>
+            <text x="1220" y="22">M17</text><text x="1285.5" y="22">M18</text><text x="1351" y="22">M19</text><text x="1416.5" y="22">M20</text>
+            <text x="1482" y="22">M21</text><text x="1547.5" y="22">M22</text>
+          </g>
+          <!-- Fatigue-safe rotation v2 (validated by backtracking solver 2026-04-24).
+               Constraints: max 3 consecutive, max 2 blocks-of-3/shift, no consecutive single blocks,
+               all 6 pairings present, TRIPLES IN FIRST HALF ONLY (fatigue front-loading).
+               New pattern:
+               A:  ·  · ## ##  · ## ##  ·  · ## ##  · ## ##  ·  ·  · ## ##  · ##  ·   (11)
+               B: ## ## ##  ·  ·  · ## ## ##  ·  ·  ·  · ## ##  · ## ##  ·  ·  · ##   (11)
+               C:  ·  ·  · ## ##  ·  · ## ##  ·  · ## ##  · ## ##  ·  · ## ##  · ##   (11)
+               D: ## ##  ·  · ## ##  ·  ·  · ## ## ##  ·  ·  · ## ##  ·  · ## ##  ·   (11)
+               Pairs: BD:3, AB:4, AC:3, CD:4, AD:4, BC:4 — all 6 present, balanced ✓
+               A blocks: [2,2,2,2,2,1] — NO triples ✓
+               B blocks: [3,3,2,2,1] — triples at M1-3, M7-9 (both first half ✓)
+               C blocks: [2,2,2,2,2,1] — NO triples ✓
+               D blocks: [2,2,3,2,2] — triple at M10-12 (first half ✓) -->
+          <!-- gridlines -->
+          <g stroke="#222624" stroke-width="1">
+            <line x1="140" y1="32" x2="140" y2="220"/>
+            <line x1="1580" y1="32" x2="1580" y2="220"/>
+          </g>
+          <!-- player labels -->
+          <g font-family="JetBrains Mono" font-size="14" fill="#f2f3ef" font-weight="600" letter-spacing="0.1em">
+            <text x="24" y="76">GAMER A</text>
+            <text x="24" y="116">GAMER B</text>
+            <text x="24" y="156">GAMER C</text>
+            <text x="24" y="196">GAMER D</text>
+          </g>
+          <!-- x for match k: 142 + (k-1)*65.5. Width 60, height 28.
+               Opacity: 0.92 = block of 3, 0.75 = block of 2, 0.55 = single -->
+
+          <!-- Row A (y=62): M3,4 (blk2), M6,7 (blk2), M10,11 (blk2), M13,14 (blk2), M18,19 (blk2), M21 (single) -->
+          <g fill="#b8ff2b">
+            <rect x="273" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="338.5" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="469.5" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="535" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="731.5" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="797" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="928" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="993.5" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1255.5" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1321" y="62" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1452" y="62" width="60" height="28" rx="1" opacity="0.55"/>
+          </g>
+          <!-- Row B (y=102): M1,2,3 (blk3), M7,8,9 (blk3), M14,15 (blk2), M17,18 (blk2), M22 (single) -->
+          <g fill="#b8ff2b">
+            <rect x="142" y="102" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="207.5" y="102" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="273" y="102" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="535" y="102" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="600.5" y="102" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="666" y="102" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="993.5" y="102" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1059" y="102" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1190" y="102" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1255.5" y="102" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1517.5" y="102" width="60" height="28" rx="1" opacity="0.55"/>
+          </g>
+          <!-- Row C (y=142): M4,5 (blk2), M8,9 (blk2), M12,13 (blk2), M15,16 (blk2), M19,20 (blk2), M22 (single) -->
+          <g fill="#b8ff2b">
+            <rect x="338.5" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="404" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="600.5" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="666" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="862.5" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="928" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1059" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1124.5" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1321" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1386.5" y="142" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1517.5" y="142" width="60" height="28" rx="1" opacity="0.55"/>
+          </g>
+          <!-- Row D (y=182): M1,2 (blk2), M5,6 (blk2), M10,11,12 (blk3), M16,17 (blk2), M20,21 (blk2) -->
+          <g fill="#b8ff2b">
+            <rect x="142" y="182" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="207.5" y="182" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="404" y="182" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="469.5" y="182" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="731.5" y="182" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="797" y="182" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="862.5" y="182" width="60" height="28" rx="1" opacity="0.92"/>
+            <rect x="1124.5" y="182" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1190" y="182" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1386.5" y="182" width="60" height="28" rx="1" opacity="0.75"/>
+            <rect x="1452" y="182" width="60" height="28" rx="1" opacity="0.75"/>
+          </g>
+
+          <!-- footer caption -->
+          <text x="140" y="240" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" letter-spacing="0.1em">11/22 EACH · MAX 3 CONSECUTIVE (FIRST HALF ONLY) · PAIRS: AB:4 AC:3 AD:4 BC:4 BD:3 CD:4</text>
+        </svg>
+      </div>
+      <div class="sched-foot">
+        <span><span class="legend-sw" style="background: var(--neon);"></span>GAMER PLAYING</span>
+        <span>STUDIO 1 SHOWN (22 MATCHES) · S2–3 SAME · S4–6 USE 21‑MATCH VARIANT</span>
+        <span>SOURCE · DAILY STUDIO MATCHES TAB OF THE WORKBOOK</span>
+      </div>
+    </div>
+
+    <div class="two-up">
+      <div class="callout">
+        <div class="eye">FATIGUE‑SAFE ROTATION · WHY IT MATTERS</div>
+        <div class="huge">Max 3, first half only</div>
+        <p>Each match is 4×5‑min quarters with potential 3‑min OT (up to 4 times) in a 32‑min slot. Without limits, gamers could play 6+ in a row — over 2 hours of continuous competition. The hard cap of 3 consecutive games (no more than twice per shift) guarantees rest blocks of 2+ matches between intensity peaks. Critically, <strong>all triples are front‑loaded into the first half</strong> of the shift — late‑shift fatigue compounds with match length, so the second half runs entirely on blocks of 2 or 1.</p>
+      </div>
+      <div class="callout blue">
+        <div class="eye">EVERYONE PLAYS EVERYONE</div>
+        <div class="huge">All 6 pairings</div>
+        <p>The rotation ensures all 6 possible 1v1 pairings (AB, AC, AD, BC, BD, CD) appear across the shift. Pairing counts are near‑balanced (3–4 per pair) — and because the schedule is predictable, managers can assign specific gamers to specific slots. High‑skill matchups get the 4‑count pairings; weaker matchups get the 3‑count slots. This turns the schedule into a <strong>planning tool</strong>, not just a rotation — directly addressing today's biggest bottleneck in shift operations.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- 3. POOLS -->
+  <section>
+    <div class="eyebrow gold"><span class="sq"></span>04 · ROSTER POOLS — DAY + NIGHT</div>
+    <h2 class="section">~67 Night gamers, ~46 Day gamers. Two independent pools. ~113 NBA gamers total.</h2>
+    <p class="body">
+      Night runs 6 studios with 24 gamers concurrent (168 gamer‑shifts/week); Day runs 4 studios with 16 concurrent (112 gamer‑shifts/week, S5–S6 offline). Each pool uses a tiered cadence mix — Night: 2 × 5/wk + 15 × 4/wk + 15 × 3/wk + 18 × 2/wk + 17 × 1/wk = 67 gamers; Day: 1 × 5/wk + 10 × 4/wk + 10 × 3/wk + 12 × 2/wk + 13 × 1/wk = 46 gamers. Day and Night each have their own pool and their own tier ladder. Both shifts are already live (24/7 since 2021). The Night pool is the restructure target — the 4‑week trial of the new structure runs on S5–S6 here.
+    </p>
+
+    <div class="pools">
+      <div class="pool day">
+        <div class="pool-head">
+          <div class="ttl gold-text">Day Pool · LIVE · EXISTING</div>
+          <div class="tag">06:30 → 19:00</div>
+        </div>
+        <div class="window">WINDOW · <span class="t">12h 30m</span> · 16 GAMERS ON (4 STUDIOS · S5–S6 OFFLINE)</div>
+        <div class="gamers-viz">
+        </div>
+        <div class="pool-stats">
+          <div class="ps-row"><span class="k">Gamers / shift</span><span class="v">16</span></div>
+          <div class="ps-row"><span class="k">Matches / shift</span><span class="v">86</span></div>
+          <div class="ps-row"><span class="k">Pool size</span><span class="v gold-text">~46</span></div>
+          <div class="ps-row"><span class="k">Cadence mix</span><span class="v">1 × 5/wk · 10 × 4/wk · 10 × 3/wk · 12 × 2/wk · 13 × 1/wk</span></div>
+          <div class="ps-row"><span class="k">Gamer‑shifts / wk</span><span class="v">112</span></div>
+          <div class="ps-row"><span class="k">Tier ladder</span><span class="v gold-text">Independent · 8‑wk rolling SPS</span></div>
+        </div>
+      </div>
+
+      <div class="pool night">
+        <div class="pool-head">
+          <div class="ttl blue-text">Night Pool · LIVE · RESTRUCTURE TARGET</div>
+          <div class="tag">18:30 → 07:00</div>
+        </div>
+        <div class="window">WINDOW · <span class="t">12h 30m</span> · 24 GAMERS ON · NEW STRUCTURE TRIAL ON S5–S6</div>
+        <div class="gamers-viz">
+        </div>
+        <div class="pool-stats">
+          <div class="ps-row"><span class="k">Gamers / shift</span><span class="v">24</span></div>
+          <div class="ps-row"><span class="k">Matches / shift</span><span class="v">129</span></div>
+          <div class="ps-row"><span class="k">Pool size</span><span class="v blue-text">~67</span></div>
+          <div class="ps-row"><span class="k">Cadence mix</span><span class="v">Same shape as Day</span></div>
+          <div class="ps-row"><span class="k">Gamer‑shifts / wk</span><span class="v">168</span></div>
+          <div class="ps-row"><span class="k">Status</span><span class="v blue-text">Live (24/7 since 2021) · restructure trial on S5–S6 · D3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="roster">
+      <div class="roster-card">
+        <h4>Committed · 4 shifts / week</h4>
+        <div class="n">15</div>
+        <div class="desc">Core bookings. Anchor the shift with strong availability. Max 4/wk standard.</div>
+        <div class="math">15 × 4 = 60 shifts / wk</div>
+      </div>
+      <div class="roster-card mid">
+        <h4>Regular · 3 shifts / week</h4>
+        <div class="n">15</div>
+        <div class="desc">Solid mid‑cadence. Fill shoulder windows and cover off days.</div>
+        <div class="math">15 × 3 = 45 shifts / wk</div>
+      </div>
+      <div class="roster-card mid">
+        <h4>Moderate · 2 shifts / week</h4>
+        <div class="n">18</div>
+        <div class="desc">Part‑time availability. ~8 shifts/month, often weekends or specific days.</div>
+        <div class="math">18 × 2 = 36 shifts / wk</div>
+      </div>
+      <div class="roster-card cas">
+        <h4>Light · 1 shift / week</h4>
+        <div class="n">17</div>
+        <div class="desc">2–7 shifts/month. Students, second‑job, limited availability.</div>
+        <div class="math">17 × 1 = 17 shifts / wk</div>
+      </div>
+      <div class="roster-card" style="border-color: var(--orange-dim);">
+        <h4>Exception · 5 shifts / week</h4>
+        <div class="n">2</div>
+        <div class="desc">Business‑need exceptions only. Allowed above the 4/wk standard.</div>
+        <div class="math">2 × 5 = 10 shifts / wk</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 32px;">
+      <div class="eye">POOL BALANCE · NIGHT + DAY</div>
+      <div class="huge">Night: ~67 × 168 / wk · Day: ~46 × 112 / wk</div>
+      <p><strong>Night:</strong> 10 + 60 + 45 + 36 + 17 = <strong>168 gamer‑shifts/wk</strong> = 24 gamers × 7 days. <strong>Day:</strong> 5 + 40 + 30 + 24 + 13 = <strong>112 gamer‑shifts/wk</strong> = 16 gamers × 7 days. No over‑staffing, no under‑coverage on either shift. Standard max cadence is 4/wk — exceptions at 5/wk for business need only. Both shifts already run 24/7 — the new structure applies to both pools independently, ~113 NBA gamers total across Day and Night.</p>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- 5. REVENUE / CANCELLATION IMPACT -->
+  <section>
+    <div class="eyebrow"><span class="sq"></span>05 · REVENUE IMPACT — WHY THIS RECOVERS CANCELLATIONS</div>
+    <h2 class="section">The 6‑studio stagger is a <span class="accent">cancellation firewall</span> at NBA scale.</h2>
+    <p class="body">
+      Most SIS match cancellations trace back to the same handful of causes: a gamer no‑shows, a studio has a tech fault, a feed drops. In the current model these failures scale linearly — one problem cancels one match, or the whole studio‑shift. The 6‑studio fatigue‑safe structure with on‑call standby (1/shift; £50/day flat or regular pay + £50 if activated) turns most of those failures into recoverable incidents. Numbers below are <strong>NBA only</strong>; EAFC and eAMF will inherit the structure later but are not modelled here.
+    </p>
+
+    <!-- Baseline stat strip -->
+    <div class="stat-strip" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="stat">
+        <div class="l">Matches / shift</div>
+        <div class="n">129 / 86</div>
+        <div class="sub">Night: 129 (6 studios) · Day: 86 (4 studios)</div>
+      </div>
+      <div class="stat">
+        <div class="l">Matches / yr · NBA 24/7</div>
+        <div class="n">~94,170</div>
+        <div class="sub">129 × 2 shifts × 365 days</div>
+      </div>
+      <div class="stat">
+        <div class="l">Cost per cancel</div>
+        <div class="n">£1,000</div>
+        <div class="sub">Revenue lost per cancelled match · lost handle + overhead</div>
+      </div>
+      <div class="stat">
+        <div class="l">Cancellation pool · NBA 24/7 baseline</div>
+        <div class="n orange-text">£4.71M</div>
+        <div class="sub">~4,700 cancels / yr × £1,000 / cancel · 5.0% rate</div>
+      </div>
+    </div>
+
+    <!-- REVENUE WATERFALL -->
+    <div class="sched-wrap" style="margin-top: 32px;">
+      <div class="sched-head">
+        <span class="sched-title">Annual cancellation cost · NBA 24/7 model · current vs structured</span>
+        <span>NBA · £M / YEAR · 24/7 (DAY + NIGHT)</span>
+      </div>
+
+      <div class="sched">
+        <svg viewBox="0 0 1600 360" preserveAspectRatio="xMidYMid meet">
+          <!-- y axis: 0 to 5M, height 260, top=40, bot=300 -->
+          <!-- y scale: 260/5 = 52 per £M -->
+          <g stroke="#222624" stroke-width="1">
+            <line x1="160" y1="40" x2="1560" y2="40"/>
+            <line x1="160" y1="92" x2="1560" y2="92"/>
+            <line x1="160" y1="144" x2="1560" y2="144"/>
+            <line x1="160" y1="196" x2="1560" y2="196"/>
+            <line x1="160" y1="248" x2="1560" y2="248"/>
+            <line x1="160" y1="300" x2="1560" y2="300" stroke="#8a8f86"/>
+          </g>
+          <g font-family="JetBrains Mono" font-size="13" fill="#8a8f86" letter-spacing="0.08em" text-anchor="end">
+            <text x="150" y="44">£5.0M</text>
+            <text x="150" y="96">£4.0M</text>
+            <text x="150" y="148">£3.0M</text>
+            <text x="150" y="200">£2.0M</text>
+            <text x="150" y="252">£1.0M</text>
+            <text x="150" y="304">£0</text>
+          </g>
+
+          <!-- BARS. 5 scenarios. 24/7 model: cancel pool = 94,170 × £1k × rate.
+               At 5.0% (today): £4.71M. height = 4.71 * 52 = 245. y = 300-245 = 55
+               Stagger gain (-1%): 4.0% → £3.77M. height = 196. y = 104
+               Standby (-1.5% more): 2.5% → £2.35M. height = 122. y = 178
+               Doubles cohort rest (-1% more): 1.5% → £1.41M. height = 73. y = 227
+               Hot‑swap (-0.5% more): 1.0% → £0.94M. height = 49. y = 251 -->
+
+          <!-- Scenario 1: TODAY 5.0% £4.71M -->
+          <rect x="240" y="55" width="220" height="245" fill="#ff6a1f" opacity="0.85"/>
+          <text x="350" y="45" font-family="Space Grotesk" font-size="30" fill="#ff6a1f" font-weight="500" text-anchor="middle">£4.71M</text>
+          <text x="350" y="325" font-family="JetBrains Mono" font-size="14" fill="#cfd1cb" font-weight="600" text-anchor="middle" letter-spacing="0.12em">TODAY</text>
+          <text x="350" y="345" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.1em">5.0% BASELINE · NBA 24/7</text>
+
+          <!-- Scenario 2: + Stagger (4.0%) £3.77M -->
+          <rect x="510" y="104" width="220" height="196" fill="#ff6a1f" opacity="0.55"/>
+          <text x="620" y="94" font-family="Space Grotesk" font-size="30" fill="#cfd1cb" font-weight="500" text-anchor="middle">£3.77M</text>
+          <text x="620" y="325" font-family="JetBrains Mono" font-size="14" fill="#cfd1cb" font-weight="600" text-anchor="middle" letter-spacing="0.12em">+ STAGGER</text>
+          <text x="620" y="345" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.1em">4.0% · 10‑MIN STUDIO STAGGER</text>
+
+          <!-- Scenario 3: + Standby (2.5%) £2.35M -->
+          <rect x="780" y="178" width="220" height="122" fill="#ffc845" opacity="0.85"/>
+          <text x="890" y="168" font-family="Space Grotesk" font-size="30" fill="#ffc845" font-weight="500" text-anchor="middle">£2.35M</text>
+          <text x="890" y="325" font-family="JetBrains Mono" font-size="14" fill="#cfd1cb" font-weight="600" text-anchor="middle" letter-spacing="0.12em">+ STANDBY POOL</text>
+          <text x="890" y="345" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.1em">2.5% · 2 RESERVES / SHIFT</text>
+
+          <!-- Scenario 4: + Doubles cohort rest (1.5%) £1.41M -->
+          <rect x="1050" y="227" width="220" height="73" fill="#ffc845" opacity="0.7"/>
+          <text x="1160" y="217" font-family="Space Grotesk" font-size="30" fill="#ffc845" font-weight="500" text-anchor="middle">£1.41M</text>
+          <text x="1160" y="325" font-family="JetBrains Mono" font-size="14" fill="#cfd1cb" font-weight="600" text-anchor="middle" letter-spacing="0.12em">+ DOUBLES REST</text>
+          <text x="1160" y="345" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.1em">1.5% · BLOCK ON/OFF ≥2</text>
+
+          <!-- Scenario 5: + Hot-swap = 1.0% £0.94M -->
+          <rect x="1320" y="251" width="220" height="49" fill="#b8ff2b" opacity="0.95"/>
+          <text x="1430" y="241" font-family="Space Grotesk" font-size="30" fill="#b8ff2b" font-weight="500" text-anchor="middle">£0.94M</text>
+          <text x="1430" y="325" font-family="JetBrains Mono" font-size="14" fill="#cfd1cb" font-weight="600" text-anchor="middle" letter-spacing="0.12em">+ HOT‑SWAP</text>
+          <text x="1430" y="345" font-family="JetBrains Mono" font-size="11" fill="#8a8f86" text-anchor="middle" letter-spacing="0.1em">1.0% · TARGET STATE</text>
+
+          <!-- Recovery arrow -->
+          <line x1="460" y1="55" x2="1320" y2="251" stroke="#b8ff2b" stroke-width="1.4" stroke-dasharray="6,4" opacity="0.5"/>
+          <text x="890" y="80" font-family="JetBrains Mono" font-size="13" fill="#b8ff2b" text-anchor="middle" letter-spacing="0.1em" font-weight="600">£3.77M RECOVERED / YR AT TARGET STATE · NBA 24/7</text>
+        </svg>
+      </div>
+
+      <div class="sched-foot">
+        <span><span class="legend-sw" style="background: var(--orange);"></span>CANCELLATION COST — BURNING MONEY</span>
+        <span><span class="legend-sw" style="background: var(--gold);"></span>INTERMEDIATE STATE</span>
+        <span><span class="legend-sw" style="background: var(--neon);"></span>TARGET STATE — £0.94M RESIDUAL</span>
+        <span>EACH +1% RELIABILITY = £942K/YR (NBA 24/7)</span>
+      </div>
+    </div>
+
+    <!-- Cancellation cause breakdown -->
+    <h3 class="sub" style="margin-top: 64px; margin-bottom: 20px;">Where the recovery actually comes from</h3>
+    <p class="body" style="margin-bottom: 28px;">
+      The £3.77M (NBA 24/7) headline breaks down across five specific failure modes. Each is addressed by a specific property of the 6‑studio structure with on‑call standby.
+    </p>
+
+    <div class="imps" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="imp">
+        <div class="num">01 · £1.28M / YR</div>
+        <h4>Gamer no‑show / last‑minute schedule change</h4>
+        <p><strong>Today:</strong> A no‑show forces a last‑minute schedule change — usually 1 direct cancellation, but the remaining gamers drop to a 3‑gamer schedule. Morale drops, error rates climb, and further cancellations cascade. Sometimes multiple studios fall to 3‑gamer setups or a studio goes down entirely. <strong>Now:</strong> On‑call standby slots in before the shift's first match. Studio stays at 4 gamers; no morale hit, no cascade.</p>
+      </div>
+      <div class="imp">
+        <div class="num">02 · £0.88M / YR</div>
+        <h4>Late shift start — 15‑min rule</h4>
+        <p><strong>Today:</strong> If the studio comes up 15 minutes late, the event is cancelled outright. <strong>Now:</strong> The 10‑min stagger gives each studio more pre‑show preparation time for schedule changes, reducing the chance of hitting the 15‑minute threshold. The structured handover window further buffers against cold‑start risk.</p>
+      </div>
+      <div class="imp">
+        <div class="num">03 · £0.69M / YR</div>
+        <h4>Mid‑shift tech fault</h4>
+        <p><strong>Today:</strong> When a tech fault hits, some events are cancelled but continuity is the priority — events are cancelled as‑we‑go and whenever the studio is back operational, work resumes. <strong>Now:</strong> With 6 studios firing staggered, a single studio going down loses at worst its remaining matches. The other 5 keep the feed alive; broadcast continuity is maintained.</p>
+      </div>
+      <div class="imp">
+        <div class="num">04 · £0.59M / YR</div>
+        <h4>Gamer fatigue errors</h4>
+        <p><strong>Today:</strong> 1‑on‑1‑off cadence produces late‑session mistakes — each match is 4 × 5‑min quarters (+ up to 4 × 3‑min OT) inside a 32‑min slot, and alternating all shift wears gamers down. Disputed results climb, void rate rises. <strong>Now:</strong> Fatigue‑safe rotation caps play at 3 in a row (max twice/shift), with minimum 2‑match blocks and guaranteed rest gaps. Cleaner settlements, fewer voids.</p>
+      </div>
+      <div class="imp">
+        <div class="num">05 · £0.33M / YR</div>
+        <h4>Slot‑boundary void</h4>
+        <p><strong>Today:</strong> When a shift ends abruptly, in‑flight markets get voided. <strong>Now:</strong> 32‑min slots line up cleanly with the shift window. S4–6 last match is cancelled by design (shift overlap), so there's no rush to finish — markets close in natural match order, not by clock.</p>
+      </div>
+      <div class="imp">
+        <div class="num">06 · UPSIDE</div>
+        <h4>EAFC / eAMF inheritance</h4>
+        <p>Not counted in the recovery above: once the NBA pilot proves out, EAFC and eAMF can adopt the same 6‑studio + fatigue‑safe rotation structure. The all‑titles cancellation pool today exceeds the NBA figure significantly; pulling that down by the same proportion would recover several £M more. Quantify after pilot.</p>
+      </div>
+    </div>
+
+    <!-- The cost of making this happen -->
+    <div class="two-up" style="margin-top: 36px;">
+      <div class="callout">
+        <div class="eye">INCREMENTAL INVESTMENT · NIGHT RESTRUCTURE</div>
+        <div class="huge">~£0.24M / yr</div>
+        <p>SIS already spends ~£2.66M/yr on NBA gamers + hosts (6 Night studios, 4 Day studios). The Night‑only restructure adds ~£238K: bonus restructure (£212K) + on‑call system (£26K). Day shift retains its current bonus structure. Against £3.14M recovery at current volume (78,475 matches/yr, 5% → 1% cancel) that's a <strong>13.2× return — net gain £2.90M/yr.</strong> Future expansion: both shifts at 6 studios, additional ~£730K incremental, 94,170 matches/yr, £3.77M recovery, 3.9× ROI. <strong>Trial: cost‑neutral with 1 on‑call/shift — saves ~£1.3K vs current S5–6 ops.</strong></p>
+      </div>
+      <div class="callout orange">
+        <div class="eye">RISK — WHAT KILLS THE MODEL</div>
+        <div class="huge">Gamer supply</div>
+        <p>The structure depends on sourcing ~67 Night NBA gamers and ~46 Day gamers who'll accept freelance 1–4 shifts/wk at the new bonus rates. The trial on Studios 5–6 (8 gamers) tests whether the supply model and incentive structure work before scaling to the full 24‑gamer shift.</p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="eyebrow"><span class="sq"></span>06 · CONTINUOUS CAREER PROGRESSION</div>
+    <h2 class="section">Track the whole career. Focus on the last 8 weeks.</h2>
+
+    <div class="imps">
+      <div class="imp">
+        <div class="num">01</div>
+        <h4>No seasonal resets — performance accumulates.</h4>
+        <p>A gamer's full career history stays on record. Lifetime stats, total shifts completed, historical tier positions — all tracked continuously. There are no artificial "season starts" that wipe the slate. A gamer who's proven themselves over 200 shifts has a richer profile than one with 20.</p>
+      </div>
+      <div class="imp">
+        <div class="num">02</div>
+        <h4>8‑week rolling SPS average drives tier position.</h4>
+        <p>The primary ranking metric is the rolling average of the last 8 weeks of SPS scores. This window is long enough to smooth out bad days, short enough to reward sustained improvement. A 4/wk committed gamer refreshes their window in 2 weeks; a 1/wk light gamer takes 8 weeks for a full 8‑shift sample. Both are on the same scale.</p>
+      </div>
+      <div class="imp">
+        <div class="num">03</div>
+        <h4>Peer overlap is structural, not accidental.</h4>
+        <p>Every Night shift you work, you're on the same 24‑gamer roster across 6 studios (Day: 16 gamers, 4 studios). With the fatigue‑safe rotation, every gamer faces every other gamer in their studio across the shift. The head‑to‑head sample is real and feeds cleanly into the rolling SPS alongside the density/narrative/reliability components.</p>
+      </div>
+      <div class="imp">
+        <div class="num">04</div>
+        <h4>"Career in the Studio" unlocks reliability multipliers.</h4>
+        <p>Longevity and consistency compound into real pay. Academy (entry, 0%) → Rookie (50+ shifts, &lt;6% cancel, +2.5%) → Regular (promoted from D3, &lt;4%, +7.5%) → Specialist (1+ month top 3, &lt;3%, +12.5%) → Elite (3+ months D1, &lt;2%, +30%) → Champion (division title holder, 1 per division, 8+ wins/shift, +35%). Each step boosts the reliability multiplier on every shift, for the rest of the career.</p>
+      </div>
+      <div class="imp">
+        <div class="num">05</div>
+        <h4>Broadcast gets a continuous narrative arc.</h4>
+        <p>No "pre‑season" dead air. With a new match closing every ~10 minutes and 24 gamers ranked live across 6 studios, the bug/lower‑third has fresh content continuously. "Torres breaks into Elite after 6 months" is a storyline that builds over weeks, not a reset artefact.</p>
+      </div>
+      <div class="imp">
+        <div class="num">06</div>
+        <h4>Day vs Night: parallel ladders, shared career.</h4>
+        <p>Each shift pool runs its own tier ladder. But career stats, reliability tier, and bonus multiplier are portable — a gamer's "Career in the Studio" profile follows them. End‑of‑month "Championship Night" (Day T1 vs Night T1) becomes the marquee cross‑pool event.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- STRATEGY ALIGNMENT -->
+  <section>
+    <div class="eyebrow"><span class="sq"></span>07 · SIS COMPETITIVE GAMING — STRATEGIC ALIGNMENT</div>
+    <h2 class="section">This restructure is <span class="accent">built for where SIS is going</span>, not just where it is.</h2>
+    <p class="body">
+      SIS is scaling its Competitive Gaming portfolio aggressively — 225,000+ annual eBasketball and eSoccer events through the H2H Global Gaming League, now live in 15+ US states via Hard Rock Bet, bet365 and Genius Sports distribution. The product drives ~10% turnover uplift for sportsbook partners and holds the ESIC Gold Standard — the highest integrity accreditation in esports. eAmerican Football has joined the portfolio alongside eBasketball and eSoccer. Every metric that matters to partners — content volume, feed reliability, match integrity — depends on the same operational foundation this restructure builds: lower cancel rates, measurable gamer quality, fatigue‑safe scheduling, and 24/7 continuity.
+    </p>
+    <p class="body" style="margin-top: 16px;">
+      The restructure delivers the infrastructure for scale: <strong>Night 129 + Day 86 matches/shift (target: 129 + 129 post Day S5–6 expansion)</strong> at a target 1% cancel rate, SPS‑driven career tracking that makes gamer quality auditable, and a title‑agnostic structure that EAFC and eAmerican Football can inherit directly. The Night trial on Studios 5–6 validates the model at zero incremental cost before scaling.
+    </p>
+  </section>
+
+  <div class="section-break"></div>
+
+  <!-- ASSUMPTIONS -->
+  <div class="assumptions">
+    <div class="title">Working assumptions</div>
+    <ul>
+      <li>Night shift: 6 studios × 4 gamers (24 concurrent) · Day shift: 4 studios × 4 gamers (16 concurrent) · S5–S6 offline on Day</li>
+      <li>~67‑gamer Night pool · 2 EXC (5/wk) + 15 COM (4/wk) + 15 REG (3/wk) + 18 MOD (2/wk) + 17 LT (1/wk) = 168 gamer‑shifts/wk</li>
+      <li>~46‑gamer Day pool · 1 EXC (5/wk) + 10 COM (4/wk) + 10 REG (3/wk) + 12 MOD (2/wk) + 13 LT (1/wk) = 112 gamer‑shifts/wk</li>
+      <li>~113‑gamer NBA roster total (67 Night + 46 Day)</li>
+      <li>On‑call: 1 standby/shift · £50/day flat or regular pay + £50 if activated · 15% call‑in rate</li>
+      <li>Match slot: 32 min · Night: 129 matches/shift (S1–3: 22, S4–6: 21) · Day: 86 matches/shift (S1–2: 22, S3–4: 21)</li>
+      <li>Multiplier tiers: Academy 0% → Rookie +2.5% → Regular +7.5% → Specialist +12.5% → Elite +30% → Champion +35%</li>
+      <li>SPS = 0.45 × event_density + 0.25 × narrative_delta + 0.15 × reliability + 0.15 × settlement_accuracy · 8‑wk rolling window</li>
+      <li>Financial: current £2.66M/yr → new £2.90M/yr (Night restructure only) → incremental £238K → 13.2× ROI against £3.14M cancel recovery (78,475 matches/yr). Future expansion (both shifts × 6 studios): £0.97M incremental, 94,170 matches/yr, £3.77M recovery, 3.9× ROI</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

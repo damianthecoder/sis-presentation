@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIS — NBA Esports Presentation Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 24px 80px;
+  }
+
+  header {
+    margin-bottom: 56px;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #111;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+    max-width: 600px;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .card {
+    display: block;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 28px 28px 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  }
+
+  .card:hover {
+    border-color: #ccc;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    transform: translateY(-1px);
+  }
+
+  .card:active {
+    transform: translateY(0);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .card-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: #111;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #111;
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.55;
+    margin-left: 40px;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    margin-left: 40px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: #f0f0f0;
+    color: #666;
+  }
+
+  .chip.core { background: #e8f5e9; color: #2e7d32; }
+  .chip.analytics { background: #e3f2fd; color: #1565c0; }
+  .chip.trial { background: #fff3e0; color: #e65100; }
+  .chip.visual { background: #f3e5f5; color: #7b1fa2; }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+    font-size: 13px;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 40px 16px 60px; }
+    h1 { font-size: 26px; }
+    .card { padding: 20px; }
+    .card-desc { margin-left: 0; margin-top: 8px; }
+    .card-tags { margin-left: 0; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header>
+    <div class="tag">SIS Competitive Gaming</div>
+    <h1>NBA Esports — Presentation Suite</h1>
+    <p class="subtitle">Night shift restructure proposal for SIS NBA eBasketball operations. Select a component to view.</p>
+  </header>
+
+  <div class="cards">
+
+    <a class="card" href="SIS Trial Proposal.html">
+      <div class="card-header">
+        <div class="card-number">01</div>
+        <div class="card-title">Trial Proposal</div>
+      </div>
+      <div class="card-desc">4-week Division 3 Night trial on Studios 5–6. Covers bonus structure, scheduling, progression, on-call model, success criteria, cost comparison, and ROI.</div>
+      <div class="card-tags">
+        <span class="chip trial">Trial</span>
+        <span class="chip">ROI</span>
+        <span class="chip">Cost breakdown</span>
+      </div>
+    </a>
+
+    <a class="card" href="Shift Structure v3.html">
+      <div class="card-header">
+        <div class="card-number">02</div>
+        <div class="card-title">Shift Structure</div>
+      </div>
+      <div class="card-desc">Operational structure deck — 24-hour clock, 10-minute stagger, Night/Day pool sizing, match volume, revenue impact, career progression, and strategic alignment.</div>
+      <div class="card-tags">
+        <span class="chip core">Core</span>
+        <span class="chip">Scheduling</span>
+        <span class="chip">Pools</span>
+      </div>
+    </a>
+
+    <a class="card" href="Shift Economics Analysis.html">
+      <div class="card-header">
+        <div class="card-number">03</div>
+        <div class="card-title">Shift Economics Analysis</div>
+      </div>
+      <div class="card-desc">Deep-dive analytics — supply/demand modelling, roster week heatmap, SPS scoring framework, tier structure options, and the case for structured competition.</div>
+      <div class="card-tags">
+        <span class="chip analytics">Analytics</span>
+        <span class="chip">SPS</span>
+        <span class="chip">Heatmap</span>
+      </div>
+    </a>
+
+    <a class="card" href="SIS Tournament Revamp.html">
+      <div class="card-header">
+        <div class="card-number">04</div>
+        <div class="card-title">Tournament Revamp</div>
+      </div>
+      <div class="card-desc">Competition pyramid and tournament structure for EAFC and eAmerican Football — 3-studio model, tier progression, and broadcast narrative integration.</div>
+      <div class="card-tags">
+        <span class="chip visual">Interactive</span>
+        <span class="chip">EAFC</span>
+        <span class="chip">eAMF</span>
+      </div>
+    </a>
+
+    <a class="card" href="SIS Ladder Animation.html">
+      <div class="card-header">
+        <div class="card-number">05</div>
+        <div class="card-title">Ladder Animation</div>
+      </div>
+      <div class="card-desc">Animated 4-week ladder visualisation — watch gamers move through tiers in real time. Cancellation waterfall and pyramid scene included.</div>
+      <div class="card-tags">
+        <span class="chip visual">Interactive</span>
+        <span class="chip">Animation</span>
+        <span class="chip">React</span>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    <span>SIS — Sports Information Services</span>
+    <span class="mono">April 2026</span>
+  </footer>
+</div>
+
+</body>
+</html>
