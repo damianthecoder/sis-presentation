@@ -882,20 +882,20 @@
   </section>
 
   <!-- 7. INTERACTIVE tournament structure -->
-  <section data-label="Tournament Structure" class="slide" id="ts-slide" style="padding-bottom: 100px;">
+  <section data-label="Tournament Structure" class="slide" id="ts-slide" style="padding-bottom: 140px;">
     <div class="runner top">
       <span class="sis-mark"><span class="dot"></span>SIS · INTERNAL</span>
       <span>TOURNAMENT STRUCTURE · INTERACTIVE</span>
     </div>
     <div class="eyebrow" style="margin-top: 72px;"><span class="sq"></span>07 · THE H2H LEAGUE FORMAT — PICK A TITLE · CLICK A TIER</div>
     <h1 class="title" style="margin-bottom: 20px; max-width: 1600px; font-size: 48px;">
-      Every studio is a tier. Every shift is a cycle. <span class="accent">Win to rise</span>, <span class="orange">lose to fall</span>.
+      Every gamer holds a rank. Every shift is a cycle. <span class="accent">Win to rise</span>, <span class="orange">lose to fall</span>.
     </h1>
 
     <!-- Tabs -->
     <div class="ts-tabs" id="ts-tabs"></div>
 
-    <div class="ts-wrap" style="margin-bottom: 80px;">
+    <div class="ts-wrap" style="margin-bottom: 24px;">
       <!-- Pyramid -->
       <div class="pyr-diagram" id="ts-pyramid">
         <div class="pyr-legend">
@@ -911,7 +911,7 @@
       </div>
     </div>
 
-    <div class="runner bot" style="bottom: 20px;">
+    <div class="runner bot">
       <span><span class="accent">●</span> CLICK ANY TIER TO SEE STAKES, CRITERIA &amp; REWARDS</span>
       <span>№ 07 / 11</span>
     </div>
@@ -1183,15 +1183,16 @@
     nba: {
       id: 'nba',
       name: 'NBA',
-      sub: '6 STUDIOS · 4-MIN STAGGER · 264/DAY',
-      cycle: 'Per shift',
+      sub: '6 STUDIOS · 3 DIVISIONS · 10-MIN STAGGER · ~129/SHIFT',
+      cycle: 'Career rank · 8-wk SPS',
+      rankBased: true,
       tiers: [
-        { code: 'T1', name: 'Championship',  players: 4, stake: 'Shift Champion title + division championship bonus',         promote: '—',                           relegate: 'Bottom finisher drops to T2',         win: '£40', reliability: '0 – 35% (career rank)', champion: '£120' },
-        { code: 'T2', name: 'Contender',     players: 4, stake: 'One promotion spot to Championship',                       promote: 'Top finisher → T1 next shift', relegate: 'Bottom finisher → T3',                win: '£30', reliability: '0 – 35% (career rank)', champion: '£60'  },
-        { code: 'T3', name: 'Playoff',       players: 4, stake: 'Mid-tier — promote one, relegate one',                     promote: 'Top finisher → T2 next shift', relegate: 'Bottom finisher → T4',                win: '£25', reliability: '0 – 35% (career rank)', champion: '£50'  },
-        { code: 'T4', name: 'Division',      players: 4, stake: 'Mid-tier — promote one, relegate one',                     promote: 'Top finisher → T3 next shift', relegate: 'Bottom finisher → T5',                win: '£22', reliability: '0 – 35% (career rank)', champion: '£44'  },
-        { code: 'T5', name: 'Qualifier',     players: 4, stake: 'Promotion out of entry tiers',                             promote: 'Top finisher → T4 next shift', relegate: 'Bottom finisher → T6',                win: '£20', reliability: '0 – 35% (career rank)', champion: '£40'  },
-        { code: 'T6', name: 'Rookie',        players: 4, stake: 'Entry tier — only way is up',                              promote: 'Top two finishers → T5 next shift', relegate: '— (bottom of ladder)',          win: '£18', reliability: '0 – 35% (career rank)', champion: '£36'  }
+        { code: 'T1', name: 'Champion',    slot: '1 GAMER',   stake: 'Highest career rank. 1 per division (3 league-wide). Top multiplier; unlocks the division championship bonus.', promote: '—',                                              relegate: 'Title passes when next shift Champion is crowned', multiplier: '+35%',   criteria: 'Division title holder · 8+ wins/shift avg',     perk: 'Division Champ bonus · D1 £12 · D2 £5 · D3 £4 / shift' },
+        { code: 'T2', name: 'Elite',       slot: '4 GAMERS',  stake: 'Peak regular-season tier. Sustained D1 form. Every shift is championship-eligible.',                            promote: 'Win the next division title → Champion (T1)',     relegate: 'Drop below D1 form for 1 month → Specialist (T3)', multiplier: '+30%',   criteria: '3+ months in D1 · cancel rate <2%',             perk: 'Eligible for division championship pool' },
+        { code: 'T3', name: 'Specialist',  slot: '7 GAMERS',  stake: 'Long-term progression rank. Top-3 studios for a full month.',                                                   promote: 'Sustain D1 for 3+ months → Elite (T2)',           relegate: 'Drop out of top-3 studios → Regular (T4)',         multiplier: '+12.5%', criteria: 'Top-3 studios for 1+ month · cancel rate <3%',  perk: '—' },
+        { code: 'T4', name: 'Regular',     slot: '13 GAMERS', stake: 'Promoted out of D3. Settled into the senior pool.',                                                              promote: 'Hold top-3 for a month → Specialist (T3)',        relegate: 'Drop back to D3 → Rookie (T5)',                    multiplier: '+7.5%',  criteria: 'Promoted out of D3 · cancel rate <4%',          perk: '—' },
+        { code: 'T5', name: 'Rookie',      slot: '19 GAMERS', stake: 'First multiplier above zero. 50+ shifts of consistent play.',                                                    promote: 'Earn a D1/D2 seat → Regular (T4)',                relegate: 'Cancel rate >6% or shifts lapse → Academy (T6)',  multiplier: '+2.5%',  criteria: '50+ shifts · cancel rate <6%',                   perk: '—' },
+        { code: 'T6', name: 'Academy',     slot: '23 GAMERS', stake: 'Entry rank. Every gamer starts here. No multiplier yet.',                                                        promote: '50 shifts logged at <6% cancels → Rookie (T5)',   relegate: '— (entry rank)',                                   multiplier: '0%',     criteria: 'Entry rank · no prerequisites',                  perk: '—' }
       ]
     },
     eafc: {
@@ -1251,10 +1252,11 @@
       row.className = 'pyr-row-i';
       const cell = document.createElement('div');
       cell.className = 'pyr-tier' + (i === state.tierIdx ? ' selected' : '');
+      const slotLbl = tier.slot || `${tier.players} PLAYERS`;
       cell.innerHTML = `
-        <div class="pt-tag">${tier.code} · ${tier.players} PLAYERS</div>
+        <div class="pt-tag">${tier.code} · ${slotLbl}</div>
         <div class="pt-name">${tier.name}</div>
-        <div class="pt-meta">${i === 0 ? '▲ Top of the pyramid' : (i === t.tiers.length - 1 ? '▼ Entry tier' : '↕ Promote / relegate')}</div>
+        <div class="pt-meta">${i === 0 ? '▲ Top of the pyramid' : (i === t.tiers.length - 1 ? '▼ Entry rank' : '↕ Promote / relegate')}</div>
       `;
       cell.addEventListener('click', () => {
         state.tierIdx = i;
@@ -1269,13 +1271,26 @@
   function renderDetail() {
     const t = TITLES[state.title];
     const tier = t.tiers[state.tierIdx];
+    const isRank = t.rankBased === true;
+    const badgeSlot = tier.slot || `${tier.players} players`;
+    const rwLabel = isRank ? 'Reliability multiplier &amp; rank perks' : 'Per-match &amp; streak reward';
+    const col1 = isRank
+      ? { lbl: 'Multiplier',  val: tier.multiplier, klass: '' }
+      : { lbl: 'Win bonus',   val: tier.win,        klass: '' };
+    const col2 = isRank
+      ? { lbl: 'Criteria',    val: tier.criteria,   klass: 'orange-rw' }
+      : { lbl: 'Reliability', val: tier.reliability, klass: 'orange-rw' };
+    const col3 = isRank
+      ? { lbl: 'Rank perk',   val: tier.perk,       klass: '' }
+      : { lbl: 'Tier champ',  val: tier.champion,   klass: '' };
+
     detailEl.innerHTML = `
       <div class="td-head">
         <div>
           <div class="td-tag">${t.name} · ${tier.code}</div>
           <div class="td-title">${tier.name}</div>
         </div>
-        <div class="td-badge">${tier.players} players · ${t.cycle} cycle</div>
+        <div class="td-badge">${badgeSlot} · ${t.cycle}</div>
       </div>
 
       <div class="td-section">
@@ -1292,11 +1307,11 @@
       </div>
 
       <div class="td-section">
-        <div class="td-label">Per-match &amp; streak reward</div>
+        <div class="td-label">${rwLabel}</div>
         <div class="td-rewards">
-          <div class="rw"><div class="rw-lbl">Win bonus</div><div class="rw-val">${tier.win}</div></div>
-          <div class="rw orange-rw"><div class="rw-lbl">Reliability</div><div class="rw-val">${tier.reliability}</div></div>
-          <div class="rw"><div class="rw-lbl">Tier champ</div><div class="rw-val">${tier.champion}</div></div>
+          <div class="rw ${col1.klass}"><div class="rw-lbl">${col1.lbl}</div><div class="rw-val">${col1.val}</div></div>
+          <div class="rw ${col2.klass}"><div class="rw-lbl">${col2.lbl}</div><div class="rw-val">${col2.val}</div></div>
+          <div class="rw ${col3.klass}"><div class="rw-lbl">${col3.lbl}</div><div class="rw-val">${col3.val}</div></div>
         </div>
       </div>
     `;
@@ -1322,6 +1337,7 @@
   function applyAccent(c) { document.documentElement.style.setProperty('--neon', c); }
   function applySecondary(c) { document.documentElement.style.setProperty('--orange', c); }
   function applyCycle(c) {
+    if (TITLES.nba.rankBased) return;
     const labelMap = { shift: 'Per shift', daily: 'Daily', weekly: 'Weekly' };
     TITLES.nba.cycle = labelMap[c] || 'Per shift';
     if (state.title === 'nba') renderDetail();
