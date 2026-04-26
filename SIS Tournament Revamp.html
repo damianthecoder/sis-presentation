@@ -278,11 +278,12 @@
   .pyr-diagram {
     border: 1px solid var(--rule-2);
     background: var(--bg-2);
-    padding: 40px 20px 16px 20px;
+    padding: 40px 20px 12px 20px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 0;
     justify-content: flex-start;
+    align-self: start;
     position: relative;
   }
   .pyr-row-i { display: flex; gap: 12px; justify-content: center; }
@@ -306,10 +307,10 @@
   .pyr-row-i:nth-child(5) .pyr-tier { width: 390px; }
   .pyr-row-i:nth-child(6) .pyr-tier { width: 440px; }
   .pyr-row-i:nth-child(7) .pyr-tier { width: 490px; }
-  .pyr-tier { padding: 5px 12px; }
-  .pyr-tier .pt-tag { font-size: 13px; }
-  .pyr-tier .pt-name { font-size: 18px; }
-  .pyr-tier .pt-meta { font-size: 11px; margin-top: 0; }
+  .pyr-tier { padding: 3px 12px; }
+  .pyr-tier .pt-tag { font-size: 13px; line-height: 1.3; }
+  .pyr-tier .pt-name { font-size: 18px; line-height: 1.15; }
+  .pyr-tier .pt-meta { font-size: 11px; line-height: 1.25; margin-top: 0; }
   .pyr-tier:hover {
     border-color: var(--neon);
     background: #1a1e1b;
