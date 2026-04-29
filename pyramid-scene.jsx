@@ -1,4 +1,4 @@
-// Pyramid animation scene — shows 24 players moving between 6 tiers across 4 weeks.
+// Pyramid animation scene — shows 24 players moving between 6 tiers across a sample cycle.
 
 const ACCENT = '#b8ff2b';
 const ORANGE = '#ff6a1f';
@@ -42,7 +42,7 @@ function tierLabelPos(tierIdx) {
   return { x: tierLeft, y, w };
 }
 
-// Total animation time: 28 shifts × 1.1s each + intro(1.2s) + outro(2s) = ~34s
+// Total animation time: sample shifts × 1.1s each + intro(1.2s) + outro(2s) = ~34s
 const SHIFT_DUR = 1.1;
 const INTRO = 1.2;
 const OUTRO = 2.0;
@@ -263,9 +263,9 @@ function HighlightCard({ feature, shiftIdx, top }) {
   );
 }
 
-// ── Week marker on timeline ────────────────────────────────────────────────
+// ── Cycle marker on timeline ───────────────────────────────────────────────
 function WeekLabel({ shiftIdx }) {
-  const { week, day } = shiftLabel(Math.min(27, Math.floor(shiftIdx)));
+  const { cycle, day } = shiftLabel(Math.min(27, Math.floor(shiftIdx)));
   return (
     <div style={{
       position: 'absolute',
@@ -282,7 +282,7 @@ function WeekLabel({ shiftIdx }) {
         letterSpacing: '-0.03em',
         lineHeight: 1,
       }}>
-        Week {week}
+        Cycle {cycle}
       </div>
       <div style={{
         fontFamily: 'JetBrains Mono, monospace',
@@ -454,11 +454,11 @@ function PyramidScene() {
           fontSize: 14, letterSpacing: '0.14em',
           color: MUTED,
         }}>
-          NBA · 6 STUDIOS · 24 GAMERS · 4 WEEKS · PILOT VIEW
+          NBA · 6 STUDIOS · 24 GAMERS · SIX-WEEK TRIAL VIEW
         </div>
       </div>
 
-      {/* Week label — bottom-left big */}
+      {/* Cycle label — bottom-left big */}
       <WeekLabel shiftIdx={shiftFloat} />
 
       {/* Legend under week label */}
@@ -516,7 +516,7 @@ function PyramidScene() {
       {/* Shift progress bar */}
       <ShiftProgress shiftIdx={shiftFloat} />
 
-      {/* Week markers below progress */}
+      {/* Cycle markers below progress */}
       <div style={{
         position: 'absolute',
         left: 60, right: 60, bottom: 40,
@@ -534,7 +534,7 @@ function PyramidScene() {
             color: Math.floor(shiftFloat / 7) + 1 >= w ? ACCENT : MUTED,
             transition: 'color 300ms',
           }}>
-            WEEK {w}
+            CYCLE {w}
           </div>
         ))}
       </div>
@@ -556,14 +556,14 @@ function PyramidScene() {
             color: ACCENT,
           }}>
             <span style={{ display: 'inline-block', width: 10, height: 10, background: ACCENT, marginRight: 10 }}/>
-            SIS LADDER · 4-WEEK SIMULATION
+            SIS LADDER · RELIABILITY SIMULATION
           </div>
           <div style={{
             fontFamily: 'Space Grotesk, sans-serif',
             fontSize: 56, fontWeight: 500,
             color: INK, letterSpacing: '-0.02em',
           }}>
-            24 gamers. 6 tiers. 28 shifts.
+            24 gamers. 6 tiers. Sample shift cycle.
           </div>
           <div style={{
             fontFamily: 'Inter, sans-serif',
@@ -573,7 +573,7 @@ function PyramidScene() {
             textAlign: 'center',
             lineHeight: 1.45,
           }}>
-            Pilot cohort. At scale (1,200 gamers) the same pyramid shape holds with hundreds per tier — see Shift Economics Analysis for the scaled view.
+            Trial cohort. At scale (1,200 gamers) the same pyramid shape holds with hundreds per tier — see Shift Economics Analysis for the scaled view.
           </div>
         </div>
       )}
@@ -611,7 +611,7 @@ function PyramidScene() {
             fontSize: 20, color: MUTED,
             marginTop: 12,
           }}>
-            4 weeks · 672 matches · 0 cancellations because there was something to play for.
+            Reliability ladder · 672 sample matches · 0 cancellations because there was something to play for.
           </div>
         </div>
       )}

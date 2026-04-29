@@ -926,12 +926,12 @@ function buildPositions() {
 }
 const POSITIONS = buildPositions();
 function shiftLabel(i) {
-  const week = Math.floor(i / 7) + 1;
+  const cycle = Math.floor(i / 7) + 1;
   const day = i % 7 + 1;
   return {
-    week,
+    cycle,
     day,
-    label: `W${week} · D${day}`
+    label: `C${cycle} · D${day}`
   };
 }
 const FEATURED = [{
@@ -1220,7 +1220,7 @@ function WeekLabel({
   shiftIdx
 }) {
   const {
-    week,
+    cycle,
     day
   } = shiftLabel(Math.min(27, Math.floor(shiftIdx)));
   return React.createElement("div", {
@@ -1241,7 +1241,7 @@ function WeekLabel({
       letterSpacing: '-0.03em',
       lineHeight: 1
     }
-  }, "Week ", week), React.createElement("div", {
+  }, "Cycle ", cycle), React.createElement("div", {
     style: {
       fontFamily: 'JetBrains Mono, monospace',
       fontSize: 20,
@@ -1436,7 +1436,7 @@ function PyramidScene() {
       letterSpacing: '0.14em',
       color: MUTED
     }
-  }, "NBA \xB7 6 STUDIOS \xB7 24 GAMERS \xB7 4 WEEKS \xB7 PILOT VIEW")), React.createElement(WeekLabel, {
+  }, "NBA \xB7 6 STUDIOS \xB7 24 GAMERS \xB7 SIX-WEEK TRIAL VIEW")), React.createElement(WeekLabel, {
     shiftIdx: shiftFloat
   }), React.createElement("div", {
     style: {
@@ -1526,7 +1526,7 @@ function PyramidScene() {
       color: Math.floor(shiftFloat / 7) + 1 >= w ? ACCENT : MUTED,
       transition: 'color 300ms'
     }
-  }, "WEEK ", w))), t < INTRO && React.createElement("div", {
+  }, "CYCLE ", w))), t < INTRO && React.createElement("div", {
     style: {
       position: 'absolute',
       inset: 0,
@@ -1554,7 +1554,7 @@ function PyramidScene() {
       background: ACCENT,
       marginRight: 10
     }
-  }), "SIS LADDER \xB7 4-WEEK SIMULATION"), React.createElement("div", {
+  }), "SIS LADDER \xB7 RELIABILITY SIMULATION"), React.createElement("div", {
     style: {
       fontFamily: 'Space Grotesk, sans-serif',
       fontSize: 56,
@@ -1562,7 +1562,7 @@ function PyramidScene() {
       color: INK,
       letterSpacing: '-0.02em'
     }
-  }, "24 gamers. 6 tiers. 28 shifts."), React.createElement("div", {
+  }, "24 gamers. 6 tiers. Sample shift cycle."), React.createElement("div", {
     style: {
       fontFamily: 'Inter, sans-serif',
       fontSize: 18,
@@ -1572,7 +1572,7 @@ function PyramidScene() {
       textAlign: 'center',
       lineHeight: 1.45
     }
-  }, "Pilot cohort. At scale (1,200 gamers) the same pyramid shape holds with hundreds per tier \u2014 see Shift Economics Analysis for the scaled view.")), t > TOTAL - OUTRO && React.createElement("div", {
+  }, "Trial cohort. At scale (1,200 gamers) the same pyramid shape holds with hundreds per tier \u2014 see Shift Economics Analysis for the scaled view.")), t > TOTAL - OUTRO && React.createElement("div", {
     style: {
       position: 'absolute',
       inset: 0,
@@ -1613,7 +1613,7 @@ function PyramidScene() {
       color: MUTED,
       marginTop: 12
     }
-  }, "4 weeks \xB7 672 matches \xB7 0 cancellations because there was something to play for.")));
+  }, "Reliability ladder \xB7 672 sample matches \xB7 0 cancellations because there was something to play for.")));
 }
 Object.assign(window, {
   PyramidScene,

@@ -1,5 +1,5 @@
-// Pre-computed 4-week simulation of 24 players across 6 tiers (4 per tier).
-// Each "shift" = top finisher promotes, bottom relegates. 28 shifts total.
+// Pre-computed sample simulation of 24 players across 6 tiers (4 per tier).
+// Each "shift" = top finisher promotes, bottom relegates.
 // We hand-scripted three featured storylines so the viewer sees narrative arcs.
 
 // Tiers, top (T1) to bottom (T6)
@@ -48,7 +48,7 @@ const PLAYERS = [
 ];
 
 // Hand-scripted tier-per-shift for each player.
-// 29 entries per player: state before shift 0, then after each of 28 shifts.
+// 29 entries per player: state before shift 0, then after each sample shift.
 // Tiers: 0 = T1 (top), 5 = T6 (bottom).
 //
 // Storylines:
@@ -85,7 +85,7 @@ function buildPositions() {
   // direction: 'up' (promoted from lower tier) or 'down' (relegated from higher)
   // Most shifts: one swap between two adjacent tiers. Some shifts: multiple.
   const shifts = [
-    // Week 1 — Yara rising, Rivera wobble starts
+    // Cycle 1 — Yara rising, Rivera wobble starts
     { swaps: [['P21',5]] },                 // Yara: T6→T5
     { swaps: [['P17',4], ['P01','down']] }, // Ellis T5→T4; Rivera T1→T2
     { swaps: [['P21',4]] },                 // Yara: T5→T4
@@ -94,7 +94,7 @@ function buildPositions() {
     { swaps: [['P09',0]] },                 // Lenoir T3→T2 (just background noise... actually skip)
     { swaps: [['P03',0]] },                 // small T1 reshuffle - use no-op
 
-    // Week 2 — Yara jumps to T2, Rivera keeps sliding
+    // Cycle 2 — Yara jumps to T2, Rivera keeps sliding
     { swaps: [['P21',2]] },                 // Yara T3→T2
     { swaps: [['P01','down']] },            // Rivera T2→T3
     { swaps: [['P14',2]] },                 // Mbeki T3→T2
@@ -103,7 +103,7 @@ function buildPositions() {
     { swaps: [['P10',1]] },                 // Park T3→T2
     { swaps: [['P14',1]] },                 // Mbeki T2→T1
 
-    // Week 3 — Yara holds T1, Mbeki flirts with T1
+    // Cycle 3 — Yara holds T1, Mbeki flirts with T1
     { swaps: [['P06',2]] },
     { swaps: [['P14','down']] },            // Mbeki T1→T2
     { swaps: [['P01','up']] },              // Rivera T3→T2 (partial recovery)
@@ -112,7 +112,7 @@ function buildPositions() {
     { swaps: [['P21','hold']] },            // filler: no movement for Yara
     { swaps: [['P12',1]] },
 
-    // Week 4 — Yara caps champion, Rivera stuck, Mbeki locked in T1-T2
+    // Cycle 4 — Yara caps champion, Rivera stuck, Mbeki locked in T1-T2
     { swaps: [['P14','down']] },            // Mbeki T1→T2
     { swaps: [['P03','down']] },            // Kim T1→T2
     { swaps: [['P14',1]] },                 // Mbeki T2→T1
@@ -165,13 +165,13 @@ function buildPositions() {
 }
 
 const POSITIONS = buildPositions();
-// POSITIONS[shift] = [[T1 players], [T2 players], ...] (length 29: initial + 28 shifts)
+// POSITIONS[shift] = [[T1 players], [T2 players], ...] (length 29: initial + sample shifts)
 
-// Day/week labels for each shift index
+// Day/cycle labels for each shift index
 function shiftLabel(i) {
-  const week = Math.floor(i / 7) + 1;
+  const cycle = Math.floor(i / 7) + 1;
   const day = (i % 7) + 1;
-  return { week, day, label: `W${week} · D${day}` };
+  return { cycle, day, label: `C${cycle} · D${day}` };
 }
 
 // Featured storylines — for right-side highlight cards
