@@ -34,7 +34,9 @@
  *   });
  *
  * Persistence: current slide index is saved to localStorage keyed by the
- * document path, so refresh returns you to the same place.
+ * document path, so refresh returns you to the same place. Use persist="off"
+ * to disable this for decks that should always start on slide 1, or set
+ * persist-key="..." to version the storage key after major deck edits.
  *
  * Usage:
  *   <deck-stage width="1920" height="1080">
@@ -485,6 +487,9 @@
     }
 
     _restoreIndex() {
+      if (this.getAttribute('persist') === 'off') return;
+      const customKey = this.getAttribute('persist-key');
+      this._storageKey = STORAGE_PREFIX + (customKey || (location.pathname || '/'));
       try {
         const raw = localStorage.getItem(this._storageKey);
         if (raw != null) {
@@ -497,6 +502,9 @@
     }
 
     _persistIndex() {
+      if (this.getAttribute('persist') === 'off') return;
+      const customKey = this.getAttribute('persist-key');
+      this._storageKey = STORAGE_PREFIX + (customKey || (location.pathname || '/'));
       try { localStorage.setItem(this._storageKey, String(this._index)); }
       catch (e) { /* ignore */ }
     }
