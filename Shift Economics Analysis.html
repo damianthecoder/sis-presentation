@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIS — Shift Economics & Tournament Viability</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +32,24 @@
     font-family: 'Inter', Helvetica, Arial, sans-serif;
     font-feature-settings: "ss01" 1, "cv11" 1;
   }
+
+  .suite-nav {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 20;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--rule-2);
+    background: rgba(10,11,10,0.88);
+    padding: 10px 12px;
+  }
+  .suite-nav:hover { border-color: var(--neon); color: var(--neon); }
+  .suite-nav:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
 
   .page {
     max-width: 1600px;
@@ -603,6 +622,7 @@
 </style>
 </head>
 <body>
+<a class="suite-nav" href="index.html">Back to suite</a>
 
 <div class="page">
 
@@ -618,7 +638,7 @@
       If NBA runs across <span class="accent">6 Night studios and 4 Day</span>, and most gamers work <span class="accent">1–4 shifts a week</span>, what does the tournament actually look like?
     </h1>
     <p class="lede">
-      Short answer: the binding NBA model is <span class="accent">Night 6 studios + Day 4 studios (24/7)</span>, with a restructure trial on the existing Night shift (Studios 5–6, Division 3). Each studio runs 21–22 matches in 32‑min slots with a 4‑gamer cohort cycling through a fatigue‑safe rotation. The Night pool needs ~67 unique gamers, the Day pool ~46 (<span class="accent">~113 NBA gamers total</span>). The ladder still works — and the unit of competition becomes <span class="accent">per‑shift performance scored against a rolling benchmark</span>, with a real per‑studio peer set every gamer actually faces.
+      Short answer: the binding NBA model is <span class="accent">Night 6 studios + Day 4 studios (24/7)</span>, with the existing Night shift (Studios 5–6, Division 3) used as the 4-week live validation window inside the 6-week leadership pilot. Each studio runs 21–22 matches in 32‑min slots with a 4‑gamer cohort cycling through a fatigue‑safe rotation. The Night pool needs ~67 unique gamers, the Day pool ~46 (<span class="accent">~113 NBA gamers total</span>). The ladder still works — and the unit of competition becomes <span class="accent">per‑shift performance scored against a rolling benchmark</span>, with a real per‑studio peer set every gamer actually faces.
     </p>
 
     <div style="margin-top: 28px; padding: 18px 22px; background: var(--bg-2); border-left: 3px solid var(--orange); max-width: 1100px;">
@@ -1425,98 +1445,62 @@
     <div class="eyebrow"><span class="sq"></span>03 · THE FIX — RE‑DEFINE THE COMPETITION UNIT</div>
     <h2 class="section">Track the whole career. Rank on the last 8 weeks. No resets.</h2>
     <p class="body">
-      The system tracks a gamer's <span class="accent">full career history</span> — every shift, every SPS score, every tier position. But the metric that drives current ranking is the <span class="accent">8‑week rolling SPS average</span>: long enough to smooth noise, short enough to reward real improvement.
-      A gamer's full career record stays on file; their active tier position reflects recent form.
+      The system tracks a gamer's <span class="accent">full career history</span> — every shift, every SPS score, every tier position. But the metric that drives current ranking is the <span class="accent">8‑week rolling SPS average</span>: long enough to smooth noise, short enough to reward real improvement. A gamer's full career record stays on file; their active tier position reflects recent form.
     </p>
 
     <div class="rank-diagram">
       <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px;">SHIFT PERFORMANCE SCORE · SPS</div>
       <div class="rank-formula">
-        SPS = <span class="k">0.45</span> × <span class="v">event_density_z</span>       <span class="muted-text">// matches, goals/baskets, swings vs baseline for this hour</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="k">0.25</span> × <span class="v">narrative_delta_z</span>    <span class="muted-text">// lead changes, clutch moments, late drama</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="k">0.15</span> × <span class="v">reliability</span>         <span class="muted-text">// on‑time, zero voids, feed uptime</span><br>
+        SPS = <span class="k">0.45</span> × <span class="v">event_density_z</span> <span class="muted-text">// matches, goals/baskets, swings vs baseline</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="k">0.25</span> × <span class="v">narrative_delta_z</span> <span class="muted-text">// lead changes, clutch moments, late drama</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="k">0.15</span> × <span class="v">reliability</span> <span class="muted-text">// on‑time, zero voids, feed uptime</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;+ <span class="k">0.15</span> × <span class="v">settlement_accuracy</span> <span class="muted-text">// zero disputes, clean market close</span>
       </div>
-
       <p class="body" style="max-width: 1100px;">
-        <strong>Tier position</strong> = rolling average of all SPS scores from the last 8 weeks. A 4‑shift/wk committed gamer accumulates ~32 data points in that window; a 1‑shift/wk light gamer gets ~8 — both are meaningful.
-        Promote when the 8‑week average crosses a tier threshold; relegate when it drops below.
-        The full career record persists — lifetime stats, historical tier positions, total shifts — but the 8‑week window is what drives active ranking.
-        At the 6‑studio night‑shift scale, peer overlap is high enough that head‑to‑head signal feeds in cleanly alongside the rolling average.
+        Final coefficients should be regressed on the 6-week leadership pilot. The working formula is stable enough for the 4-week live validation window: it rewards event density, keeps the broadcast narrative visible, and makes reliability a measurable pay signal rather than a soft expectation.
       </p>
+    </div>
 
-      <!-- SPS WEIGHT SENSITIVITY STRIP ────────────────────────────────── -->
-      <div style="margin-top: 36px; padding: 22px 26px; background: #111312; border-left: 3px solid var(--neon);">
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--neon); margin-bottom: 10px;">WEIGHTS ARE ILLUSTRATIVE · REGRESSED ON PILOT DATA</div>
-        <p class="body" style="font-size: 17px; color: var(--ink-2); max-width: 1100px; margin-bottom: 20px;">
-          Final coefficients come from a regression on the 6‑week pilot. The strip below shows how tier composition holds under a <span class="accent">±20% perturbation</span> of each weight in turn — the core ranking is stable, not knife‑edge.
-        </p>
+    <div class="problems">
+      <div class="problem">
+        <div class="num">OUTPUT 01</div>
+        <h4>One ranked pool, not isolated studios.</h4>
+        <p>Every gamer has a career record and a current active tier. The studio cohort still matters, but rank is not trapped inside a single booth.</p>
+      </div>
+      <div class="problem">
+        <div class="num">OUTPUT 02</div>
+        <h4>Promotion has a visible basis.</h4>
+        <p>Promote when the rolling SPS average crosses a threshold. Relegate when it drops below. The rule is auditable and explainable.</p>
+      </div>
+      <div class="problem">
+        <div class="num">OUTPUT 03</div>
+        <h4>Cadence variance is absorbed.</h4>
+        <p>A 4-shift/week gamer refreshes the active sample quickly; a 1-shift/week gamer moves more slowly. Both are scored on the same structure.</p>
+      </div>
+      <div class="problem">
+        <div class="num">OUTPUT 04</div>
+        <h4>Pilot data determines the weights.</h4>
+        <p>The six-week pilot produces the data needed to tune SPS weights before full Night expansion or future EAFC/eAMF inheritance.</p>
+      </div>
+    </div>
+  </section>
 
-        <!-- Illustrative sensitivity numbers · pilot-pending. Churn = % of top-tier
-             membership that differs from baseline under each scenario. -->
-        <svg viewBox="0 0 960 298" width="100%" style="max-width: 960px; display: block;" role="img" aria-label="SPS weight sensitivity strip">
-          <!-- column headers -->
-          <g font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="0.12em" fill="#6a6a5e" text-anchor="middle">
-            <text x="100" y="22">BASELINE</text>
-            <text x="270" y="22">+20% DENSITY</text>
-            <text x="440" y="22">+20% NARRATIVE</text>
-            <text x="610" y="22">+20% RELIABILITY</text>
-            <text x="780" y="22">+20% SETTLEMENT</text>
-          </g>
+  <div class="decision">
+    <div class="eyebrow"><span class="sq"></span>ECONOMIC DECISION</div>
+    <h2>Use the 6-week leadership pilot to validate the NBA Night model before expanding the cost base.</h2>
+    <p>The economics support a contained test: Night-only restructure has a clear annualized ROI case, while the live validation window protects Day shift and non-NBA titles from premature change.</p>
+    <div class="signoff">Decision options · expand NBA Night · adjust and re-run · revert</div>
+  </div>
 
-          <!-- tier labels on right -->
-          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#6a6a5e" letter-spacing="0.1em">
-            <text x="880" y="52">T1 · CHAMPIONSHIP</text>
-            <text x="880" y="82">T2 · CONTENDER</text>
-            <text x="880" y="112">T3 · PLAYOFF</text>
-            <text x="880" y="142">T4 · DIVISION</text>
-            <text x="880" y="172">T5 · QUALIFIER</text>
-            <text x="880" y="202">T6 · ROOKIE</text>
-          </g>
-
-          <!-- Each column: 6 stacked tier cells, 140 wide, 30 tall, gap between columns.
-               Baseline at x=40, others at x=210, 380, 550, 720. Cell rect centred.
-               Fill opacity carries the "retained from baseline" narrative —
-               full opacity = same as baseline, reduced opacity = some churn. -->
-
-          <!-- BASELINE column · all retained -->
-          <g transform="translate(40,36)">
-            <rect x="0" y="0"   width="140" height="28" fill="#b8ff2b" opacity="0.95"/>
-            <rect x="0" y="32"  width="140" height="28" fill="#b8ff2b" opacity="0.80"/>
-            <rect x="0" y="64"  width="140" height="28" fill="#b8ff2b" opacity="0.62"/>
-            <rect x="0" y="96"  width="140" height="28" fill="#b8ff2b" opacity="0.48"/>
-            <rect x="0" y="128" width="140" height="28" fill="#b8ff2b" opacity="0.34"/>
-            <rect x="0" y="160" width="140" height="28" fill="#b8ff2b" opacity="0.22"/>
-            <text x="70" y="208" font-family="JetBrains Mono, monospace" font-size="12" fill="#b8ff2b" text-anchor="middle" font-weight="700" data-churn="baseline">0% churn</text>
-          </g>
-
-          <!-- +20% DENSITY · small churn in mid-tiers -->
-          <g transform="translate(210,36)">
-            <rect x="0" y="0"   width="140" height="28" fill="#b8ff2b" opacity="0.95"/>
-            <rect x="0" y="32"  width="140" height="28" fill="#b8ff2b" opacity="0.72"/>
-            <rect x="0" y="64"  width="140" height="28" fill="#ff6a1f" opacity="0.48"/>
-            <rect x="0" y="96"  width="140" height="28" fill="#ff6a1f" opacity="0.38"/>
-            <rect x="0" y="128" width="140" height="28" fill="#b8ff2b" opacity="0.32"/>
-            <rect x="0" y="160" width="140" height="28" fill="#b8ff2b" opacity="0.22"/>
-            <text x="70" y="208" font-family="JetBrains Mono, monospace" font-size="12" fill="#d0cec4" text-anchor="middle" font-weight="700" data-churn="density">8% churn</text>
-          </g>
-
-          <!-- +20% NARRATIVE · biggest shift (narrative is noisier signal) -->
-          <g transform="translate(380,36)">
-            <rect x="0" y="0"   width="140" height="28" fill="#ff6a1f" opacity="0.62"/>
-            <rect x="0" y="32"  width="140" height="28" fill="#b8ff2b" opacity="0.72"/>
-            <rect x="0" y="64"  width="140" height="28" fill="#ff6a1f" opacity="0.52"/>
-            <rect x="0" y="96"  width="140" height="28" fill="#b8ff2b" opacity="0.46"/>
-            <rect x="0" y="128" width="140" height="28" fill="#ff6a1f" opacity="0.38"/>
-            <rect x="0" y="160" width="140" height="28" fill="#b8ff2b" opacity="0.22"/>
-            <text x="70" y="208" font-family="JetBrains Mono, monospace" font-size="12" fill="#ffd93b" text-anchor="middle" font-weight="700" data-churn="narrative">13% churn</text>
-          </g>
-
-          <!-- +20% RELIABILITY · bottom tiers move most (relegation-sensitive) -->
-          <g transform="translate(550,36)">
-            <rect x="0" y="0"   width="140" height="28" fill="#b8ff2b" opacity="0.95"/>
-            <rect x="0" y="32"  width="140" height="28" fill="#b8ff2b" opacity="0.80"/>
-            <rect x="0" y="64"  width="140" height="28" fill="#b8ff2b" opacity="0.60"/>
-            <rect x="0" y="96"  width="140" height="28" fill="#ff6a1f" opacity="0.44"/>
-            <rect x="0" y="128" width="140" height="28" fill="#ff6a1f" opacity="0.38"/>
-            <rect x="0" y="160" width="140" height="28" fill="#ff6
+  <div class="assumptions">
+    <div class="title">Working assumptions</div>
+    <ul>
+      <li>Night shift: 6 studios × 4 gamers; Day shift: 4 studios × 4 gamers.</li>
+      <li>4-week Studios 5-6 Night validation window sits inside the 6-week leadership pilot.</li>
+      <li>EAFC and eAMF inherit only after NBA cancel-rate and SPS data prove the structure.</li>
+      <li>SPS weights are illustrative until regressed on pilot data.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

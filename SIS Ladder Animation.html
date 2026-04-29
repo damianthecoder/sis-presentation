@@ -2,11 +2,29 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIS Ladder — 4-Week Animation</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; height: 100%; background: #0a0a0a; overflow: hidden; }
   #root { position: fixed; inset: 0; }
+  .suite-nav {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 2147483500;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f3f3ee;
+    text-decoration: none;
+    border: 1px solid #3a3d35;
+    background: rgba(10,11,10,0.88);
+    padding: 10px 12px;
+  }
+  .suite-nav:hover { border-color: #b8ff2b; color: #b8ff2b; }
+  .suite-nav:focus-visible { outline: 3px solid #b8ff2b; outline-offset: 3px; }
   /* Static fallback shown only when the React pipeline fails to load */
   #fallback {
     position: fixed; inset: 0; display: none;
@@ -27,39 +45,27 @@
   }
 </style>
 <script>
-  // Track whether any CDN script errored. If so, show the static fallback
+  // Track whether any local script errored. If so, show the static fallback
   // instead of leaving the page blank.
-  window.__sisCdnFailed = false;
-  function sisCdnFail() { window.__sisCdnFailed = true; }
+  window.__sisBundleFailed = false;
+  function sisBundleFail() { window.__sisBundleFailed = true; }
 </script>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous" onerror="sisCdnFail()"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous" onerror="sisCdnFail()"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous" onerror="sisCdnFail()"></script>
+<script src="react.production.min.js" onerror="sisBundleFail()"></script>
+<script src="react-dom.production.min.js" onerror="sisBundleFail()"></script>
 </head>
 <body>
+<a class="suite-nav" href="index.html">Back to suite</a>
 <div id="root"></div>
 
 <div id="fallback" role="img" aria-label="SIS ladder — static preview (live animation unavailable)">
   <div class="tag">Live animation unavailable · static preview</div>
   <img src="check-v3-waterfall.jpg" alt="SIS ladder — cancellation waterfall reference frame">
   <div class="caption">
-    The animated 4‑week ladder couldn't load (CDN scripts failed). Shown is the reference waterfall frame from the Shift Structure deck. See <strong>pyramid-scene.jsx</strong> + <strong>sim-data.jsx</strong> in the project folder for the full 24‑gamer / 28‑shift simulation.
+    The animated 4‑week ladder couldn't load (local bundle failed). Shown is the reference waterfall frame from the Shift Structure deck. See <strong>pyramid-scene.jsx</strong> + <strong>sim-data.jsx</strong> in the project folder for the full 24‑gamer / 28‑shift simulation.
   </div>
 </div>
 
-<script type="text/babel" src="animations.jsx"></script>
-<script type="text/babel" src="sim-data.jsx"></script>
-<script type="text/babel" src="pyramid-scene.jsx"></script>
-<script type="text/babel">
-  function App() {
-    return (
-      <Stage width={1600} height={900} duration={TOTAL} background="#0a0b0a" persistKey="sis-ladder-anim">
-        <PyramidScene />
-      </Stage>
-    );
-  }
-  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-</script>
+<script src="ladder-bundle.js" onerror="sisBundleFail()"></script>
 
 <script>
   // After 5 s, if React never materialized (or an onerror flagged), show the
@@ -67,7 +73,7 @@
   (function () {
     function check() {
       var rootEmpty = !document.getElementById('root').firstChild;
-      if (window.__sisCdnFailed || !window.React || !window.ReactDOM || rootEmpty) {
+      if (window.__sisBundleFailed || !window.React || !window.ReactDOM || rootEmpty) {
         document.getElementById('fallback').classList.add('visible');
         document.getElementById('root').style.display = 'none';
       }

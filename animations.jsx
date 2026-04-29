@@ -1,7 +1,7 @@
 
 // animations.jsx
 // Reusable animation starter: Stage, Timeline, Sprite, easing helpers.
-// Usage (in an HTML file that loads React + Babel):
+// Usage (in an HTML file that loads React after JSX has been precompiled):
 //
 //   <Stage width={1280} height={720} duration={10} background="#f6f4ef">
 //     <MyScene />
@@ -670,4 +670,3 @@ Object.assign(window, {
   TextSprite, ImageSprite, RectSprite,
   Stage, PlaybackBar,
 });
-

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIS — Executive Brief · 6-Week Leadership Pilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --bg: #0a0b0a;
+    --bg-2: #111312;
+    --bg-3: #17191a;
+    --ink: #f2f3ef;
+    --ink-2: #cfd1cb;
+    --muted: #8a8f86;
+    --rule: #222624;
+    --rule-2: #2e3330;
+    --neon: #b8ff2b;
+    --orange: #ff6a1f;
+    --blue: #4ac4ff;
+    --gold: #ffc845;
+    --purple: #b48dff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; }
+  body { font-family: 'Inter', Helvetica, Arial, sans-serif; color: var(--ink); }
+
+  .suite-nav {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 2147483500;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--rule-2);
+    background: rgba(10,11,10,0.88);
+    padding: 10px 12px;
+  }
+  .suite-nav:hover { border-color: var(--neon); color: var(--neon); }
+  .suite-nav:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+
+  .slide {
+    background: var(--bg);
+    color: var(--ink);
+    padding: 96px 112px 88px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+  .slide.grey { background: var(--bg-2); }
+  .slide.neon { background: var(--neon); color: #0a0b0a; }
+  .slide.neon .muted, .slide.neon .small, .slide.neon .eyebrow, .slide.neon .body { color: #1a2305; }
+  .slide.neon .source-strip { border-color: rgba(10,11,10,0.35); color: #1a2305; }
+
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(184,255,43,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(184,255,43,0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+  .slide.neon .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(10,11,10,0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,11,10,0.08) 1px, transparent 1px);
+  }
+
+  .runner {
+    position: absolute;
+    left: 112px;
+    right: 112px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 2;
+  }
+  .runner.top { top: 44px; }
+  .runner.bot { bottom: 44px; }
+  .sis-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+  }
+  .slide.neon .sis-mark { color: #0a0b0a; }
+  .sis-mark .dot {
+    width: 12px;
+    height: 12px;
+    background: var(--neon);
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(184,255,43,0.8);
+  }
+  .slide.neon .sis-mark .dot { background: #0a0b0a; box-shadow: none; }
+
+  h1.display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 118px;
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    max-width: 1320px;
+  }
+  h1.title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 78px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    max-width: 1320px;
+  }
+  h2.section {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .eyebrow .sq {
+    width: 14px;
+    height: 14px;
+    background: var(--neon);
+    box-shadow: 0 0 14px rgba(184,255,43,0.5);
+  }
+  .body {
+    font-size: 30px;
+    line-height: 1.42;
+    color: var(--ink-2);
+    max-width: 1250px;
+  }
+  .body.lg { font-size: 36px; line-height: 1.34; }
+  .small {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .accent { color: var(--neon); }
+  .orange { color: var(--orange); }
+  .blue { color: var(--blue); }
+  .gold { color: var(--gold); }
+  .purple { color: var(--purple); }
+  .muted { color: var(--muted); }
+
+  .rule { height: 1px; background: var(--rule); width: 100%; }
+  .grow { flex: 1; }
+  .row { display: flex; }
+  .col { display: flex; flex-direction: column; }
+  .between { justify-content: space-between; }
+  .middle { align-items: center; }
+  .gap-m { gap: 28px; }
+  .gap-l { gap: 52px; }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--rule);
+    background: var(--rule);
+    gap: 1px;
+  }
+  .stat {
+    background: var(--bg);
+    padding: 34px 30px 38px;
+    min-height: 210px;
+  }
+  .grey .stat { background: var(--bg-2); }
+  .stat .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 76px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--neon);
+    margin-bottom: 16px;
+  }
+  .stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .stat .desc {
+    color: var(--ink-2);
+    font-size: 20px;
+    line-height: 1.38;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    flex: 1;
+    min-height: 0;
+    align-items: stretch;
+  }
+  .panel {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    padding: 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .grey .panel { background: var(--bg); }
+  .panel h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  .panel p, .panel li {
+    color: var(--ink-2);
+    font-size: 24px;
+    line-height: 1.42;
+  }
+  .panel ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .panel li::before { content: "·"; color: var(--neon); margin-right: 14px; }
+
+  .timeline {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 48px;
+  }
+  .phase {
+    background: var(--bg-2);
+    padding: 36px;
+    min-height: 310px;
+  }
+  .phase.live { background: var(--neon); color: #0a0b0a; }
+  .phase .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .phase.live .k { color: #1a2305; }
+  .phase h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 18px;
+  }
+  .phase p {
+    color: var(--ink-2);
+    font-size: 24px;
+    line-height: 1.38;
+  }
+  .phase.live p { color: #1a2305; }
+
+  .gate-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    border: 1px solid var(--rule);
+    background: var(--rule);
+    margin-top: 42px;
+  }
+  .gate {
+    background: var(--bg-2);
+    padding: 30px 24px;
+    min-height: 310px;
+  }
+  .gate .id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    color: var(--neon);
+    margin-bottom: 20px;
+  }
+  .gate h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px;
+    line-height: 1.08;
+    margin-bottom: 18px;
+  }
+  .gate p {
+    color: var(--ink-2);
+    font-size: 20px;
+    line-height: 1.38;
+  }
+
+  .source-strip {
+    position: absolute;
+    left: 112px;
+    right: 112px;
+    bottom: 104px;
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .source-strip a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 760px) {
+    .suite-nav { top: 10px; left: 10px; font-size: 10px; padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+<a class="suite-nav" href="index.html">Back to suite</a>
+
+<deck-stage width="1920" height="1080">
+
+  <section data-label="Cover" class="slide">
+    <div class="grid-bg"></div>
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>Executive brief</div>
+    </div>
+    <div class="grow row middle">
+      <div>
+        <div class="eyebrow"><span class="sq"></span>Leadership decision</div>
+        <h1 class="display">Authorize a 6-week NBA reliability pilot.</h1>
+        <div class="body lg" style="margin-top: 34px;">Use a four-week Studios 5-6 Night validation window to prove the operating model before extending it across shifts and titles.</div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <div>8-10 min readout</div>
+      <div>April 2026</div>
+    </div>
+  </section>
+
+  <section data-label="Ask" class="slide neon">
+    <div class="grid-bg"></div>
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>The ask</div>
+    </div>
+    <div class="grow col between">
+      <div>
+        <div class="eyebrow"><span class="sq"></span>Decision required</div>
+        <h1 class="title">Approve one contained pilot, not a full rollout.</h1>
+      </div>
+      <div class="two-col" style="max-height: 420px;">
+        <div class="panel" style="background: rgba(10,11,10,0.08); border-color: rgba(10,11,10,0.28);">
+          <h3>Approve</h3>
+          <p style="color:#1a2305;">Six-week leadership pilot: one setup week, four live validation weeks on Night Studios 5-6, one closeout and decision week.</p>
+        </div>
+        <div class="panel" style="background: rgba(10,11,10,0.08); border-color: rgba(10,11,10,0.28);">
+          <h3>Protect</h3>
+          <p style="color:#1a2305;">Day shift remains unchanged. EAFC and eAMF remain future inheritance surfaces until NBA gates pass.</p>
+        </div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <div>Contained scope</div>
+      <div>Clear stop/go gates</div>
+    </div>
+  </section>
+
+  <section data-label="Business Context" class="slide grey">
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>Business context</div>
+    </div>
+    <div class="grow col middle" style="justify-content:center;">
+      <div class="eyebrow"><span class="sq"></span>Why reliability matters</div>
+      <h1 class="title">SIS is selling high-frequency, high-integrity betting content. Operational reliability is part of the product.</h1>
+      <div class="stat-grid" style="margin-top: 54px; width: 100%;">
+        <div class="stat">
+          <div class="num">275k+</div>
+          <div class="label">Live events / yr</div>
+          <div class="desc">Current Competitive Gaming headline volume.</div>
+        </div>
+        <div class="stat">
+          <div class="num">24/7</div>
+          <div class="label">Broadcasts</div>
+          <div class="desc">Always-on content demands resilient shift structure.</div>
+        </div>
+        <div class="stat">
+          <div class="num">10</div>
+          <div class="label">Streams</div>
+          <div class="desc">Concurrent streams raise the cost of missed coverage.</div>
+        </div>
+        <div class="stat">
+          <div class="num">ESIC</div>
+          <div class="label">Gold Standard</div>
+          <div class="desc">Integrity promise must be matched by repeatable operations.</div>
+        </div>
+      </div>
+    </div>
+    <div class="source-strip">
+      Source: <a href="https://www.sis.tv/sis-competitive-gaming/">SIS Competitive Gaming</a> states 275,000+ live events per year, 24/7 broadcasts, 10 concurrent streams, ESIC Gold Standard since 2022, and "Add 10% to your sportsbook".
+    </div>
+    <div class="runner bot">
+      <div>Public claim alignment</div>
+      <div>01 / SIS product page</div>
+    </div>
+  </section>
+
+  <section data-label="Problem" class="slide">
+    <div class="grid-bg"></div>
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>Cancellation problem</div>
+    </div>
+    <div class="grow col between">
+      <div>
+        <div class="eyebrow"><span class="sq"></span>Problem</div>
+        <h1 class="title">The current model treats absence, fatigue and weak incentives as separate problems. They compound into cancellation risk.</h1>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <h3>Failure mode</h3>
+          <ul>
+            <li>No-show or late drop creates a direct content gap.</li>
+            <li>Flat progression weakens commitment after poor runs.</li>
+            <li>Recovery depends on manual intervention rather than designed cover.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Control lever</h3>
+          <ul>
+            <li>On-call cover converts many failures into recoverable incidents.</li>
+            <li>Tier movement gives every match a visible consequence.</li>
+            <li>SPS creates an auditable performance signal for progression.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <div>Reliability first</div>
+      <div>Cancellation risk</div>
+    </div>
+  </section>
+
+  <section data-label="Pilot Design" class="slide grey">
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>6-week pilot design</div>
+    </div>
+    <div class="grow col" style="justify-content:center;">
+      <div class="eyebrow"><span class="sq"></span>Canonical framing</div>
+      <h1 class="title">Six weeks total. Four weeks live. One decision.</h1>
+      <div class="timeline">
+        <div class="phase">
+          <div class="k">Week 1</div>
+          <h3>Setup + baseline</h3>
+          <p>Lock cohort, baseline cancellation rate, confirm on-call mechanics, set survey and SPS reporting cadence.</p>
+        </div>
+        <div class="phase live">
+          <div class="k">Weeks 2-5</div>
+          <h3>Live validation window</h3>
+          <p>Run the 4-week Studios 5-6 Night validation window with Division 3 cohort, on-call cover, SPS progression and bonus rules.</p>
+        </div>
+        <div class="phase">
+          <div class="k">Week 6</div>
+          <h3>Closeout + decision</h3>
+          <p>Evaluate gates, reconcile actual cost, publish decision pack: expand, adjust and re-run, or revert.</p>
+        </div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <div>6-week leadership pilot</div>
+      <div>4-week validation window</div>
+    </div>
+  </section>
+
+  <section data-label="Validation Window" class="slide">
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>4-week validation</div>
+    </div>
+    <div class="grow col between">
+      <div>
+        <div class="eyebrow"><span class="sq"></span>Operational test</div>
+        <h1 class="title">The 4-week run remains the proving ground. It is no longer the whole proposal.</h1>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <h3>Scope</h3>
+          <p>Night shift only, Studios 5-6, Division 3 cohort. Day shift and other titles remain outside pilot economics.</p>
+        </div>
+        <div class="panel">
+          <h3>Evidence</h3>
+          <p>Cancellation rate, SPS stability, bonus predictability, on-call activation rate and gamer satisfaction determine the next move.</p>
+        </div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <div>Controlled validation</div>
+      <div>No Day-shift dependency</div>
+    </div>
+  </section>
+
+  <section data-label="Economics" class="slide grey">
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>Economics</div>
+    </div>
+    <div class="grow col middle" style="justify-content:center;">
+      <div class="eyebrow"><span class="sq"></span>Modelled case</div>
+      <h1 class="title">The night-only restructure is a high-upside reliability bet with contained annualized cost.</h1>
+      <div class="stat-grid" style="margin-top: 54px; width: 100%;">
+        <div class="stat">
+          <div class="num">£238k</div>
+          <div class="label">Night incremental / yr</div>
+          <div class="desc">Bonus restructure plus on-call model.</div>
+        </div>
+        <div class="stat">
+          <div class="num">£3.14m</div>
+          <div class="label">Recovered value / yr</div>
+          <div class="desc">At current NBA volume and target cancellation recovery.</div>
+        </div>
+        <div class="stat">
+          <div class="num">13.2x</div>
+          <div class="label">Modelled ROI</div>
+          <div class="desc">Night-only restructure, current volume.</div>
+        </div>
+        <div class="stat">
+          <div class="num">~£0</div>
+          <div class="label">Trial drag</div>
+          <div class="desc">The validation window is designed to be cost-neutral.</div>
+        </div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <div>NBA internal model</div>
+      <div>See economics deck</div>
+    </div>
+  </section>
+
+  <section data-label="Success Gates" class="slide">
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>Success gates</div>
+    </div>
+    <div class="grow col" style="justify-content:center;">
+      <div class="eyebrow"><span class="sq"></span>Go / adjust / stop</div>
+      <h1 class="title">Expansion should be evidence-led, not enthusiasm-led.</h1>
+      <div class="gate-grid">
+        <div class="gate">
+          <div class="id">GATE 01</div>
+          <h3>Cancellation rate</h3>
+          <p>Material reduction versus baseline, with root-cause tracking for misses.</p>
+        </div>
+        <div class="gate">
+          <div class="id">GATE 02</div>
+          <h3>SPS stability</h3>
+          <p>Scores distribute sensibly and identify repeatable performance tiers.</p>
+        </div>
+        <div class="gate">
+          <div class="id">GATE 03</div>
+          <h3>Bonus predictability</h3>
+          <p>Gamers understand pay mechanics; variance does not create avoidable churn.</p>
+        </div>
+        <div class="gate">
+          <div class="id">GATE 04</div>
+          <h3>On-call usage</h3>
+          <p>Activation rate stays in the planned range and covers real operational gaps.</p>
+        </div>
+        <div class="gate">
+          <div class="id">GATE 05</div>
+          <h3>Satisfaction</h3>
+          <p>No mid-trial dropouts from pay, schedule or progression mechanics.</p>
+        </div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <div>Five gates</div>
+      <div>One decision pack</div>
+    </div>
+  </section>
+
+  <section data-label="Rollout Path" class="slide grey">
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>Rollout path</div>
+    </div>
+    <div class="grow col between">
+      <div>
+        <div class="eyebrow"><span class="sq"></span>Scale sequence</div>
+        <h1 class="title">Prove NBA Night first. Expand only after the evidence clears the gates.</h1>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <h3>After green light</h3>
+          <ul>
+            <li>Move from Studios 5-6 validation to full Night restructure.</li>
+            <li>Prepare Day S5-6 expansion as a separate capacity decision.</li>
+            <li>Use real SPS and attendance data to tune tier thresholds.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Later inheritance</h3>
+          <ul>
+            <li>EAFC and eAMF inherit the structure after NBA proves operational fit.</li>
+            <li>Title-specific economics stay separate until cancellation baselines are measured.</li>
+            <li>Public-facing tournament identity follows operational reliability, not the reverse.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="source-strip">
+      Source context: <a href="https://www.sis.tv/h2h-global-gaming-league-efootball-games-launched-on-hard-rock-bet-sportsbook/">Hard Rock Bet eFootball launch</a> says the total H2HGGL events offered on Hard Rock Bet would move to over 275,000 per year; <a href="https://www.sis.tv/sis-expands-h2h-gg-league-us-footprint-with-hard-rock-bet-sportsbook-agreement/">the earlier launch</a> covered 225,000+ eBasketball/eSoccer games and the 15th US state.
+    </div>
+    <div class="runner bot">
+      <div>NBA first</div>
+      <div>EAFC / eAMF later</div>
+    </div>
+  </section>
+
+  <section data-label="Decision Required" class="slide neon">
+    <div class="grid-bg"></div>
+    <div class="runner top">
+      <div class="sis-mark"><span class="dot"></span>SIS</div>
+      <div>Decision required</div>
+    </div>
+    <div class="grow col between">
+      <div>
+        <div class="eyebrow"><span class="sq"></span>Close</div>
+        <h1 class="display">Approve the six-week pilot.</h1>
+      </div>
+      <div class="body lg" style="max-width: 1240px;">
+        The decision is not whether to reorganize every title. The decision is whether to run a contained NBA validation window, measure it properly, and use evidence to decide the rollout.
+      </div>
+      <div class="stat-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="stat" style="background: rgba(10,11,10,0.08);">
+          <div class="label" style="color:#1a2305;">Authorize</div>
+          <div class="desc" style="color:#1a2305;">Six-week leadership pilot</div>
+        </div>
+        <div class="stat" style="background: rgba(10,11,10,0.08);">
+          <div class="label" style="color:#1a2305;">Run</div>
+          <div class="desc" style="color:#1a2305;">Four-week live validation</div>
+        </div>
+        <div class="stat" style="background: rgba(10,11,10,0.08);">
+          <div class="label" style="color:#1a2305;">Decide</div>
+          <div class="desc" style="color:#1a2305;">Expand, adjust, or revert</div>
+        </div>
+      </div>
+    </div>
+    <div class="runner bot">
+      <div>Approval ask</div>
+      <div>End</div>
+    </div>
+  </section>
+
+</deck-stage>
+</body>
+</html>

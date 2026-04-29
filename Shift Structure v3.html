@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIS — Shift Structure · Revenue Impact · V3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +33,24 @@
     font-family: 'Inter', Helvetica, Arial, sans-serif;
     font-feature-settings: "ss01" 1, "cv11" 1;
   }
+
+  .suite-nav {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 20;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--rule-2);
+    background: rgba(10,11,10,0.88);
+    padding: 10px 12px;
+  }
+  .suite-nav:hover { border-color: var(--neon); color: var(--neon); }
+  .suite-nav:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
 
   .page {
     max-width: 1600px;
@@ -502,9 +521,23 @@
     letter-spacing: 0.02em;
   }
   .assumptions li::before { content: "· "; color: var(--muted); }
+
+  .source-note {
+    margin-top: 24px;
+    padding: 18px 22px;
+    background: var(--bg-2);
+    border-left: 3px solid var(--blue);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .source-note a { color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
 </style>
 </head>
 <body>
+<a class="suite-nav" href="index.html">Back to suite</a>
 
 <div class="page">
 
@@ -520,7 +553,7 @@
       <span class="accent">Six Night studios, four Day</span> (S5–S6 offline on Day), <span class="gold-text">Night</span> shift (18:30 → 07:00) is the restructure target. A new match closes roughly every <span class="accent">ten minutes</span> on the bank.
     </h1>
     <p class="lede">
-      Night runs 6 studios (4 gamers each = <span class="accent">24 on the floor</span>, <span class="accent">129 matches/shift</span>). Day currently runs 4 studios (<span class="accent">16 on the floor</span>, <span class="accent">86 matches/shift</span>, S5–S6 offline). The 10‑min stagger means the bank is always running multiple live matches. The existing Night shift is the restructure target — the 4‑week trial runs on Studios 5–6 (Division 3). EAFC and eAMF will inherit the structure after NBA proves out.
+      Night runs 6 studios (4 gamers each = <span class="accent">24 on the floor</span>, <span class="accent">129 matches/shift</span>). Day currently runs 4 studios (<span class="accent">16 on the floor</span>, <span class="accent">86 matches/shift</span>, S5–S6 offline). The 10‑min stagger means the bank is always running multiple live matches. The existing Night shift is the restructure target — the 4‑week Studios 5–6 run is the live validation window inside the 6-week leadership pilot. EAFC and eAMF inherit the structure only after NBA proves out.
     </p>
     <p class="body" style="font-size: 15px; color: var(--muted); margin-top: 12px; letter-spacing: 0.02em;">
       <span class="mono" style="color: var(--ink);">Note on nomenclature:</span> a <em>studio</em> here means a per‑title production booth, not a building. SIS runs two hubs — <span class="accent">Manchester</span> and <span class="accent">Milton Keynes (MK10)</span> — with multiple booths per hub. "6 studios" = 6 NBA booths running in parallel on the Night shift across 3 divisions of two. Day currently runs 4 (S1–S4); S5–S6 are offline on Day. On Night, Studios 4–6 lose their last match to avoid overlap with the incoming Day shift.
@@ -541,7 +574,7 @@
       <div class="stat">
         <div class="l">Public figure · sis.tv · all titles</div>
         <div class="n">275,000</div>
-        <div class="sub">Events / yr · all CG titles combined · ≈ 753 / day</div>
+        <div class="sub">Live events / yr · public Competitive Gaming headline</div>
       </div>
       <div class="stat">
         <div class="l">NBA Night shift (6 studios)</div>
@@ -560,11 +593,14 @@
       </div>
     </div>
 
-    <div style="margin-top: 28px; padding: 22px 26px; background: var(--bg-2); border-left: 3px solid var(--accent);">
-      <div class="mono" style="font-size: 12px; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px;">Bridge · how the numbers line up</div>
+    <div style="margin-top: 28px; padding: 22px 26px; background: var(--bg-2); border-left: 3px solid var(--neon);">
+      <div class="mono" style="font-size: 12px; letter-spacing: 0.14em; color: var(--neon); text-transform: uppercase; margin-bottom: 10px;">Bridge · how the numbers line up</div>
       <p class="body" style="font-size: 17px; color: var(--ink-2); line-height: 1.55; max-width: 1100px;">
         Currently Night runs 6 studios (129 matches/shift) and Day runs 4 (86 matches/shift) → 215 matches/day (~78,475/yr). At target state (Day expanded to 6 studios) that becomes 258/day → ~94,170/yr. EAFC and eAMF stay on their current formats while NBA is proven; once they inherit the structure later, the all‑titles bank rebuilds back toward the public 275k figure. <strong>This deck quotes NBA‑only numbers from here on. The existing Night shift is the restructure target.</strong>
       </p>
+    </div>
+    <div class="source-note">
+      Source: <a href="https://www.sis.tv/sis-competitive-gaming/">SIS Competitive Gaming</a> currently states 275,000+ live events per year, 24/7 broadcasts, 10 concurrent streams and ESIC Gold Standard since 2022. The NBA-only figures in this deck are internal operating math, not public SIS volume claims.
     </div>
   </section>
 
@@ -575,7 +611,7 @@
     <div class="eyebrow gold"><span class="sq"></span>01 · THE 24H CLOCK · DAY + NIGHT</div>
     <h2 class="section">Two 12.5‑hour shifts: Day 06:30 → 19:00, Night 18:30 → 07:00. Night is the restructure target.</h2>
     <p class="body">
-      Night runs 6 studios at 32‑minute match slots; Day currently runs 4 (S5–S6 offline). On the Night shift, Studios 1–3 get 22 matches and Studios 4–6 get 21 (last event cancelled to avoid overlap with the incoming shift). Night stagger: S1 19:00, S2 19:10, … S6 19:50. Day mirrors at 07:00+ across S1–S4. Both shifts are 12.5h long with 1h unpaid break = 11.5h paid. The 4‑week restructure trial runs on the existing Night shift (Studios 5–6, Division 3).
+      Night runs 6 studios at 32‑minute match slots; Day currently runs 4 (S5–S6 offline). On the Night shift, Studios 1–3 get 22 matches and Studios 4–6 get 21 (last event cancelled to avoid overlap with the incoming shift). Night stagger: S1 19:00, S2 19:10, … S6 19:50. Day mirrors at 07:00+ across S1–S4. Both shifts are 12.5h long with 1h unpaid break = 11.5h paid. The 4‑week live validation window runs on the existing Night shift (Studios 5–6, Division 3) inside the 6-week leadership pilot.
     </p>
 
     <div class="clock-wrap">
@@ -1329,11 +1365,14 @@
     <div class="eyebrow"><span class="sq"></span>07 · SIS COMPETITIVE GAMING — STRATEGIC ALIGNMENT</div>
     <h2 class="section">This restructure is <span class="accent">built for where SIS is going</span>, not just where it is.</h2>
     <p class="body">
-      SIS is scaling its Competitive Gaming portfolio aggressively — 225,000+ annual eBasketball and eSoccer events through the H2H Global Gaming League, now live in 15+ US states via Hard Rock Bet, bet365 and Genius Sports distribution. The product drives ~10% turnover uplift for sportsbook partners and holds the ESIC Gold Standard — the highest integrity accreditation in esports. eAmerican Football has joined the portfolio alongside eBasketball and eSoccer. Every metric that matters to partners — content volume, feed reliability, match integrity — depends on the same operational foundation this restructure builds: lower cancel rates, measurable gamer quality, fatigue‑safe scheduling, and 24/7 continuity.
+      SIS is scaling its Competitive Gaming portfolio aggressively. SIS now headlines 275,000+ live events a year across Competitive Gaming, while earlier Hard Rock Bet coverage specified 225,000+ annual eBasketball and eSoccer games and a launch into the 15th US state. The product is publicly positioned as able to add 10% to sportsbook revenue and holds ESIC Gold Standard accreditation. eAmerican Football has joined the portfolio alongside eBasketball and eSoccer. Every metric that matters to partners — content volume, feed reliability, match integrity — depends on the same operational foundation this restructure builds: lower cancel rates, measurable gamer quality, fatigue‑safe scheduling, and 24/7 continuity.
     </p>
     <p class="body" style="margin-top: 16px;">
-      The restructure delivers the infrastructure for scale: <strong>Night 129 + Day 86 matches/shift (target: 129 + 129 post Day S5–6 expansion)</strong> at a target 1% cancel rate, SPS‑driven career tracking that makes gamer quality auditable, and a title‑agnostic structure that EAFC and eAmerican Football can inherit directly. The Night trial on Studios 5–6 validates the model at zero incremental cost before scaling.
+      The restructure delivers the infrastructure for scale: <strong>Night 129 + Day 86 matches/shift (target: 129 + 129 post Day S5–6 expansion)</strong> at a target 1% cancel rate, SPS‑driven career tracking that makes gamer quality auditable, and a title‑agnostic structure that EAFC and eAmerican Football can inherit after NBA proves out. The Night validation window on Studios 5–6 validates the model at zero incremental cost before scaling.
     </p>
+    <div class="source-note">
+      Sources: <a href="https://www.sis.tv/sis-competitive-gaming/">SIS Competitive Gaming</a> for 275,000+ live events/year, 24/7 broadcasts, ESIC Gold Standard and "Add 10% to your sportsbook"; <a href="https://www.sis.tv/h2h-global-gaming-league-efootball-games-launched-on-hard-rock-bet-sportsbook/">Hard Rock Bet eFootball launch</a> for the 275,000+ Hard Rock Bet event reference; <a href="https://www.sis.tv/sis-expands-h2h-gg-league-us-footprint-with-hard-rock-bet-sportsbook-agreement/">Hard Rock Bet 2025 launch</a> for 225,000+ eBasketball/eSoccer games and 15th US state; <a href="https://www.sis.tv/sis-extends-us-reach-of-its-esports-products-through-genius-sports/">Genius Sports</a> and <a href="https://www.sis.tv/sis-strengthens-bet365-partnership-with-global-launch-of-esoccer-product/">bet365 eSoccer</a> for distribution context.
+    </div>
   </section>
 
   <div class="section-break"></div>

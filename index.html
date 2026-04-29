@@ -75,6 +75,16 @@
     transform: translateY(-1px);
   }
 
+  .card:focus-visible {
+    outline: 3px solid #111;
+    outline-offset: 3px;
+  }
+
+  .card.primary {
+    border-color: #111;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  }
+
   .card:active {
     transform: translateY(0);
   }
@@ -135,6 +145,7 @@
   }
 
   .chip.core { background: #e8f5e9; color: #2e7d32; }
+  .chip.exec { background: #111; color: #fff; }
   .chip.analytics { background: #e3f2fd; color: #1565c0; }
   .chip.trial { background: #fff3e0; color: #e65100; }
   .chip.visual { background: #f3e5f5; color: #7b1fa2; }
@@ -172,27 +183,40 @@
   <header>
     <div class="tag">SIS Competitive Gaming</div>
     <h1>NBA Esports — Presentation Suite</h1>
-    <p class="subtitle">Night shift restructure proposal for SIS NBA eBasketball operations. Select a component to view.</p>
+    <p class="subtitle">Six-week leadership pilot for SIS NBA eBasketball operations. Start with the executive brief, then use the supporting decks for detail.</p>
   </header>
 
   <div class="cards">
 
-    <a class="card" href="SIS Trial Proposal.html">
+    <a class="card primary" href="SIS Executive Brief.html">
       <div class="card-header">
         <div class="card-number">01</div>
+        <div class="card-title">Start Here — Executive Brief</div>
+      </div>
+      <div class="card-desc">8-10 minute leadership deck. Frames the decision ask, business context, cancellation problem, six-week pilot design, success gates, rollout path, and decision required.</div>
+      <div class="card-tags">
+        <span class="chip exec">Start Here</span>
+        <span class="chip">6-week pilot</span>
+        <span class="chip">Leadership</span>
+      </div>
+    </a>
+
+    <a class="card" href="SIS Trial Proposal.html">
+      <div class="card-header">
+        <div class="card-number">02</div>
         <div class="card-title">Trial Proposal</div>
       </div>
-      <div class="card-desc">4-week Division 3 Night trial on Studios 5–6. Covers bonus structure, scheduling, progression, on-call model, success criteria, cost comparison, and ROI.</div>
+      <div class="card-desc">4-week Studios 5–6 Night validation window inside the 6-week leadership pilot. Covers bonus structure, scheduling, progression, on-call model, success criteria, cost comparison, and ROI.</div>
       <div class="card-tags">
         <span class="chip trial">Trial</span>
+        <span class="chip">Validation</span>
         <span class="chip">ROI</span>
-        <span class="chip">Cost breakdown</span>
       </div>
     </a>
 
     <a class="card" href="Shift Structure v3.html">
       <div class="card-header">
-        <div class="card-number">02</div>
+        <div class="card-number">03</div>
         <div class="card-title">Shift Structure</div>
       </div>
       <div class="card-desc">Operational structure deck — 24-hour clock, 10-minute stagger, Night/Day pool sizing, match volume, revenue impact, career progression, and strategic alignment.</div>
@@ -205,7 +229,7 @@
 
     <a class="card" href="Shift Economics Analysis.html">
       <div class="card-header">
-        <div class="card-number">03</div>
+        <div class="card-number">04</div>
         <div class="card-title">Shift Economics Analysis</div>
       </div>
       <div class="card-desc">Deep-dive analytics — supply/demand modelling, roster week heatmap, SPS scoring framework, tier structure options, and the case for structured competition.</div>
@@ -218,12 +242,13 @@
 
     <a class="card" href="SIS Tournament Revamp.html">
       <div class="card-header">
-        <div class="card-number">04</div>
+        <div class="card-number">05</div>
         <div class="card-title">Tournament Revamp</div>
       </div>
-      <div class="card-desc">Competition pyramid and tournament structure for EAFC and eAmerican Football — 3-studio model, tier progression, and broadcast narrative integration.</div>
+      <div class="card-desc">Competition pyramid and tournament structure. NBA is the first pilot surface; EAFC and eAmerican Football inherit the model only after the NBA validation gates pass.</div>
       <div class="card-tags">
         <span class="chip visual">Interactive</span>
+        <span class="chip">NBA first</span>
         <span class="chip">EAFC</span>
         <span class="chip">eAMF</span>
       </div>
@@ -231,14 +256,14 @@
 
     <a class="card" href="SIS Ladder Animation.html">
       <div class="card-header">
-        <div class="card-number">05</div>
+        <div class="card-number">06</div>
         <div class="card-title">Ladder Animation</div>
       </div>
       <div class="card-desc">Animated 4-week ladder visualisation — watch gamers move through tiers in real time. Cancellation waterfall and pyramid scene included.</div>
       <div class="card-tags">
         <span class="chip visual">Interactive</span>
         <span class="chip">Animation</span>
-        <span class="chip">React</span>
+        <span class="chip">Local bundle</span>
       </div>
     </a>
 
