@@ -571,6 +571,120 @@
 	    padding-top: 12px;
 	  }
 
+	  /* Bonus economics slide */
+	  .bonus-econ { padding-bottom: 104px; }
+	  .bonus-grid {
+	    display: grid;
+	    grid-template-columns: 0.95fr 1.1fr 0.95fr;
+	    gap: 28px;
+	    align-items: stretch;
+	    flex: 1;
+	    min-height: 0;
+	  }
+	  .bonus-panel {
+	    border: 1px solid var(--rule-2);
+	    background: var(--bg-2);
+	    padding: 26px 28px;
+	    display: flex;
+	    flex-direction: column;
+	    gap: 18px;
+	    min-width: 0;
+	  }
+	  .bonus-panel.accent-panel {
+	    background: rgba(184,255,43,0.08);
+	    border-color: var(--neon);
+	  }
+	  .bonus-panel .panel-label {
+	    font-family: 'JetBrains Mono', monospace;
+	    font-size: 16px;
+	    letter-spacing: 0.14em;
+	    color: var(--muted);
+	    text-transform: uppercase;
+	  }
+	  .bonus-panel .panel-title {
+	    font-family: 'Space Grotesk', sans-serif;
+	    font-size: 42px;
+	    line-height: 1.02;
+	    font-weight: 500;
+	    letter-spacing: -0.02em;
+	  }
+	  .bonus-panel .panel-copy {
+	    font-size: 22px;
+	    line-height: 1.32;
+	    color: var(--ink-2);
+	  }
+	  .bonus-metric {
+	    padding-top: 18px;
+	    border-top: 1px dashed var(--rule-2);
+	  }
+	  .bonus-metric .metric-num {
+	    font-family: 'Space Grotesk', sans-serif;
+	    font-size: 72px;
+	    line-height: 0.95;
+	    font-weight: 500;
+	    letter-spacing: -0.035em;
+	    color: var(--neon);
+	    font-feature-settings: "tnum" 1, "lnum" 1;
+	  }
+	  .bonus-metric .metric-label {
+	    margin-top: 8px;
+	    font-family: 'JetBrains Mono', monospace;
+	    font-size: 13px;
+	    letter-spacing: 0.1em;
+	    color: var(--muted);
+	    text-transform: uppercase;
+	    line-height: 1.45;
+	  }
+	  .bonus-stack {
+	    display: grid;
+	    grid-template-columns: 1fr;
+	    gap: 12px;
+	    margin-top: auto;
+	  }
+	  .bonus-row {
+	    display: grid;
+	    grid-template-columns: 1fr auto;
+	    gap: 16px;
+	    align-items: baseline;
+	    padding: 12px 0;
+	    border-bottom: 1px solid var(--rule);
+	  }
+	  .bonus-row:last-child { border-bottom: 0; }
+	  .bonus-row .k {
+	    font-family: 'JetBrains Mono', monospace;
+	    font-size: 14px;
+	    letter-spacing: 0.1em;
+	    text-transform: uppercase;
+	    color: var(--muted);
+	  }
+	  .bonus-row .v {
+	    font-family: 'Space Grotesk', sans-serif;
+	    font-size: 28px;
+	    color: var(--ink);
+	    font-weight: 500;
+	    white-space: nowrap;
+	  }
+	  .bonus-breakeven {
+	    background: var(--neon);
+	    color: #0a0b0a;
+	    border: 0;
+	  }
+	  .bonus-breakeven .panel-label,
+	  .bonus-breakeven .panel-copy,
+	  .bonus-breakeven .metric-label { color: #1a2305; }
+	  .bonus-breakeven .metric-num {
+	    color: #0a0b0a;
+	    font-size: 112px;
+	  }
+	  .bonus-source {
+	    margin-top: 20px;
+	    font-family: 'JetBrains Mono', monospace;
+	    font-size: 14px;
+	    letter-spacing: 0.08em;
+	    text-transform: uppercase;
+	    color: var(--muted);
+	  }
+
   /* Ladder for progression slide */
   .ladder {
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
@@ -702,6 +816,7 @@
   "Tournament Structure": "This is the core of the proposal — the H2H League Format. Every title gets a tiered structure with promotion and relegation. Click through the tabs at the top — NBA, EAFC, eAMF — to see how each title's league is shaped. Click any tier to see its stakes and promotion criteria.",
   "Shift Cycle":          "Here is the life of a single shift, step by step. Seed from yesterday's standings, play the matches, tally points, promote the top, relegate the bottom, reseed. Repeat every shift. Over a week it produces narrative and stakes.",
 	  "Progression":          "Progression and reward. Six career ranks from Academy to Champion, based on SPS and reliability. Pay base for hours, bonus for wins, premium for reliability multiplier. Reliability is the KPI tied directly to revenue protected.",
+	  "Bonus Economics":      "This is the pay model behind that progression. The current structure pays the base day rate and gives us attendance. The new NBA model adds win bonuses, division champion awards, reliability multipliers, and expected standby cover. On a full NBA year, that adds roughly seven hundred and thirty-two thousand pounds above base-only pay. One percentage point of reliability improvement is worth about nine hundred and forty-two thousand pounds of recovered revenue, so the model pays for itself before a full point of improvement.",
 	  "Projected Impact":     "Projected impact, shown two ways. Conservative applies title‑specific revenue recovery rates — six hundred and fifty pounds per NBA cancel, three fifty per EAFC, four hundred per eAMF — blending to about five hundred and twenty‑four pounds per cancel. The second view uses the thousand‑pound revenue-loss baseline. At one percent reliability gain we recover one point one five million conservative, two point two million at the baseline. At the five percent target, five point seven million or eleven million. The conservative view is roughly half the baseline view across the board — both tell the same story. And because CG runs on rev‑share, every pound recovered flows back into SIS's own cut — this isn't operator‑only upside.",
   "The Ask":              "What I am asking for. A six-week operating strategy trial on NBA, centered on Night Studios 5 and 6 as the controlled cell. Clear success criteria: cancellation rate, SPS stability, bonus predictability, on-call usage, and gamer satisfaction. If the gates pass, we expand to full NBA Night first. EAFC and eAMF inherit the format later, after the NBA operating model proves out."
 }
@@ -729,7 +844,7 @@
 	    </div>
     <div class="runner bot">
       <span>A PROPOSAL TO LEADERSHIP</span>
-      <span>№ 01 / 11</span>
+      <span>№ 01 / 12</span>
     </div>
   </section>
 
@@ -784,7 +899,7 @@
 
     <div class="runner bot">
       <span>CONTEXT</span>
-      <span>№ 02 / 11</span>
+      <span>№ 02 / 12</span>
     </div>
   </section>
 
@@ -822,7 +937,7 @@
 
 	    <div class="runner bot">
 	      <span>CANCELLATION IMPACT</span>
-	      <span>№ 03 / 11</span>
+	      <span>№ 03 / 12</span>
 	    </div>
 	  </section>
 
@@ -874,7 +989,7 @@
 
     <div class="runner bot">
       <span>THE OPPORTUNITY</span>
-      <span>№ 04 / 11</span>
+      <span>№ 04 / 12</span>
     </div>
   </section>
 
@@ -922,7 +1037,7 @@
 
     <div class="runner bot">
       <span>DIAGNOSIS</span>
-      <span>№ 05 / 11</span>
+      <span>№ 05 / 12</span>
     </div>
   </section>
 
@@ -962,7 +1077,7 @@
 
 	    <div class="runner bot">
 	      <span>THE PROPOSAL</span>
-      <span>№ 06 / 11</span>
+      <span>№ 06 / 12</span>
     </div>
   </section>
 
@@ -997,7 +1112,7 @@
 
     <div class="runner bot">
       <span><span class="accent">●</span> CLICK ANY TIER TO SEE STAKES, CRITERIA &amp; REWARDS</span>
-      <span>№ 07 / 11</span>
+      <span>№ 07 / 12</span>
     </div>
   </section>
 
@@ -1059,7 +1174,7 @@
 
     <div class="runner bot">
       <span>HOW A SHIFT RUNS</span>
-      <span>№ 08 / 11</span>
+      <span>№ 08 / 12</span>
     </div>
   </section>
 
@@ -1126,11 +1241,71 @@
 
     <div class="runner bot">
       <span>PROGRESSION · REWARD</span>
-      <span>№ 09 / 11</span>
+      <span>№ 09 / 12</span>
     </div>
   </section>
 
-  <!-- 10. Projected impact -->
+  <!-- 10. Bonus economics -->
+	  <section data-label="Bonus Economics" class="slide grey bonus-econ">
+	    <div class="runner top">
+	      <span class="sis-mark"><span class="dot"></span>SIS</span>
+	      <span>BONUS ECONOMICS</span>
+	    </div>
+    <h1 class="title" style="margin-bottom: 32px; max-width: 1540px;">
+      The bonus model pays for reliability, not attendance.
+    </h1>
+
+    <div class="bonus-grid">
+      <div class="bonus-panel">
+        <div class="panel-label">Current structure</div>
+        <div class="panel-title">Base pay buys presence.</div>
+        <div class="panel-copy">Everyone gets the same day-rate signal. The business pays for hours, but the reward system does not directly price avoided cancellations.</div>
+        <div class="bonus-metric">
+          <div class="metric-num">£3.51K</div>
+          <div class="metric-label">per NBA shift · 24 active gamers × £146.16 base day rate</div>
+        </div>
+        <div class="bonus-stack">
+          <div class="bonus-row"><div class="k">Reward signal</div><div class="v">Hours</div></div>
+          <div class="bonus-row"><div class="k">Reliability upside</div><div class="v">None</div></div>
+          <div class="bonus-row"><div class="k">Revenue link</div><div class="v">Indirect</div></div>
+        </div>
+      </div>
+
+      <div class="bonus-panel accent-panel">
+        <div class="panel-label">New NBA calculator</div>
+        <div class="panel-title">Every layer prices behaviour.</div>
+        <div class="panel-copy">Win bonuses create match-by-match stakes. Champion awards create tier pressure. Reliability multipliers make low cancellation rates financially visible.</div>
+        <div class="bonus-metric">
+          <div class="metric-num">£4.51K</div>
+          <div class="metric-label">per NBA shift · active model plus expected standby cover</div>
+        </div>
+        <div class="bonus-stack">
+          <div class="bonus-row"><div class="k">Win bonus</div><div class="v">£1.80–£2.80</div></div>
+          <div class="bonus-row"><div class="k">Title bonus</div><div class="v">£12 / £5 / £4</div></div>
+          <div class="bonus-row"><div class="k">Career multiplier</div><div class="v">0–35%</div></div>
+        </div>
+      </div>
+
+      <div class="bonus-panel bonus-breakeven">
+        <div class="panel-label">Break-even test</div>
+        <div class="panel-title">The extra spend clears before one point.</div>
+        <div class="panel-copy">The new model adds about £732K/year above base-only NBA pay. A one-point reliability gain protects roughly 942 cancellations/year, worth about £942K recovered.</div>
+        <div class="bonus-metric">
+          <div class="metric-num">0.78</div>
+          <div class="metric-label">percentage points of reliability improvement needed to cover the added model cost</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bonus-source">Source: NEW NBA BONUS STRUCTURE&amp;CALCULATOR.xlsx · 24 active gamers · 730 NBA shifts/year · £1,000 revenue lost per cancellation</div>
+
+    <div class="runner bot">
+      <span>PAY MODEL · RELIABILITY ECONOMICS</span>
+      <span>№ 10 / 12</span>
+    </div>
+  </section>
+
+  <!-- 11. Projected impact -->
 	  <section data-label="Projected Impact" class="slide impact-slide">
 	    <div class="runner top">
 	      <span class="sis-mark"><span class="dot"></span>SIS</span>
@@ -1191,7 +1366,7 @@
 
 	    <div class="runner bot">
 	      <span>IMPACT MODEL · REVENUE RECOVERY</span>
-	      <span>№ 10 / 11</span>
+	      <span>№ 11 / 12</span>
 	    </div>
 	  </section>
 
@@ -1227,7 +1402,7 @@
     </div>
     <div class="runner bot">
       <span style="color: #1a2305;">END · QUESTIONS?</span>
-      <span style="color: #1a2305;">№ 11 / 11</span>
+      <span style="color: #1a2305;">№ 12 / 12</span>
     </div>
   </section>
 
