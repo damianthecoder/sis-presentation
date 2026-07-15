@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIS — NBA Reliability Trial · Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --bg: #0a0b0a;
+    --bg-2: #111312;
+    --bg-3: #17191a;
+    --ink: #f2f3ef;
+    --ink-2: #cfd1cb;
+    --muted: #8a8f86;
+    --rule: #222624;
+    --rule-2: #2e3330;
+    --neon: #b8ff2b;
+    --neon-dim: #7fb31d;
+    --orange: #ff6a1f;
+    --orange-dim: #c74a0c;
+    --panel: #0f1110;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; }
+  body { font-family: 'Inter', Helvetica, Arial, sans-serif; color: var(--ink); }
+
+  .suite-nav {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 2147483500;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--rule-2);
+    background: rgba(10,11,10,0.88);
+    padding: 10px 12px;
+    opacity: 0.4;
+    transition: opacity 0.15s;
+  }
+  .suite-nav:hover { border-color: var(--neon); color: var(--neon); opacity: 1; }
+  .suite-nav:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+
+  .slide {
+    background: var(--bg);
+    color: var(--ink);
+    padding: 96px 112px 88px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+  .slide.grey { background: var(--bg-2); }
+  .slide.neon-band { background: var(--bg); }
+
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(184,255,43,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(184,255,43,0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .runner {
+    position: absolute;
+    left: 112px;
+    right: 112px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 2;
+  }
+  .runner.top { top: 44px; padding-left: 56px; }
+  .runner.bot { bottom: 44px; }
+
+  .sis-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    font-size: 22px;
+    color: var(--ink);
+  }
+  .sis-mark .dot {
+    width: 12px; height: 12px; background: var(--neon); border-radius: 2px;
+    display: inline-block;
+    box-shadow: 0 0 12px rgba(184,255,43,0.8);
+  }
+
+  h1.display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 132px;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+  h1.title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  h1.title.sm { font-size: 58px; }
+  h2.section {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .body {
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    max-width: 1200px;
+  }
+  .body.lg { font-size: 32px; line-height: 1.35; }
+  .small {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .accent { color: var(--neon); }
+  .orange { color: var(--orange); }
+
+  .rule { height: 1px; background: var(--rule); width: 100%; }
+  .rule.thick { height: 2px; background: var(--neon); }
+
+  .row { display: flex; }
+  .col { display: flex; flex-direction: column; }
+  .grid { display: grid; }
+  .between { justify-content: space-between; }
+  .middle { align-items: center; }
+  .gap-s { gap: 16px; }
+  .gap-m { gap: 28px; }
+  .gap-l { gap: 52px; }
+  .grow { flex: 1; }
+
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 96px;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+  }
+  .stat-num.lg { font-size: 150px; }
+  .stat-num.md { font-size: 120px; }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 19px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+  }
+  table.data th, table.data td {
+    text-align: left; padding: 16px 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  table.data th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500;
+    border-bottom: 2px solid var(--neon);
+    padding-bottom: 12px;
+  }
+  table.data td.num { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  table.data tr.highlight td { background: rgba(184,255,43,0.07); }
+  table.data tr.highlight td.flag { color: var(--neon); font-weight: 600; }
+
+  .source-inline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .source-inline a { color: var(--neon); text-decoration: underline; text-underline-offset: 3px; }
+
+  .marker-sticker {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--neon); color: #0a0b0a;
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .marker-sticker.orange-st { background: var(--orange); color: #fff; }
+
+  .callout {
+    display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: end;
+    padding: 22px 0; border-top: 2px solid var(--neon); border-bottom: 1px solid var(--rule);
+  }
+  .callout .c-num {
+    font-family: 'Space Grotesk', sans-serif; font-size: 140px; font-weight: 500;
+    line-height: 0.9; letter-spacing: -0.03em; color: var(--neon);
+  }
+  .callout .c-lbl { font-family: 'Inter', sans-serif; font-size: 24px; color: var(--muted); padding-bottom: 20px; line-height: 1.32; }
+
+  .bar-row { display: grid; grid-template-columns: 110px 1fr 260px; align-items: center; gap: 22px; padding: 14px 0; border-bottom: 1px dashed var(--rule-2); }
+  .bar-row .bar-lbl { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 600; color: var(--ink); }
+  .bar-row .bar-track { height: 24px; background: var(--bg-3); position: relative; border: 1px solid var(--rule-2); }
+  .bar-row .bar-fill { position: absolute; inset: 0 auto 0 0; background: var(--neon); box-shadow: 0 0 14px rgba(184,255,43,0.3); }
+  .bar-row .bar-val { font-family: 'JetBrains Mono', monospace; font-size: 27px; text-align: right; font-variant-numeric: tabular-nums; color: var(--neon); font-weight: 600; }
+
+  /* ── Stat grid (context slide) ──────────────────────────────────── */
+  .stat-grid { display: grid; border-top: 2px solid var(--neon); border-bottom: 1px solid var(--rule-2); }
+  .stat-cell { padding: 30px 30px; border-right: 1px solid var(--rule-2); }
+  .stat-cell:last-child { border-right: 0; }
+
+  /* ── Cause cards (the problem) ───────────────────────────────────── */
+  .cause-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 2px solid var(--orange); border-bottom: 1px solid var(--rule-2); }
+  .cause-card { padding: 26px 30px; border-right: 1px solid var(--rule-2); display: flex; flex-direction: column; gap: 12px; }
+  .cause-card:last-child { border-right: 0; }
+  .cause-card .cc-num { font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--orange); letter-spacing: 0.12em; font-weight: 700; }
+  .cause-card .cc-name { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.01em; }
+  .cause-card .cc-desc { font-family: 'Inter', sans-serif; font-size: 19px; line-height: 1.42; color: var(--ink-2); }
+
+  /* ── Diagnosis grid (7-point list) ───────────────────────────────── */
+  .diag-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, auto);
+    border-top: 2px solid var(--orange);
+  }
+  .diag-item {
+    display: grid; grid-template-columns: 48px 1fr; gap: 20px;
+    padding: 18px 28px 18px 0; border-bottom: 1px solid var(--rule-2);
+  }
+  .diag-item:nth-child(-n+4) { border-right: 1px solid var(--rule-2); padding-right: 34px; }
+  .diag-item .di-num { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--orange); }
+  .diag-item .di-title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; margin-bottom: 5px; letter-spacing: -0.005em; }
+  .diag-item .di-desc { font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.4; color: var(--ink-2); }
+
+  /* ── Pillars (the rework) ────────────────────────────────────────── */
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 2px solid var(--neon); border-bottom: 2px solid var(--neon); }
+  .pillar { padding: 34px 32px; border-right: 1px solid var(--rule-2); display: flex; flex-direction: column; gap: 16px; min-height: 300px; background: var(--bg-2); }
+  .pillar:last-child { border-right: 0; }
+  .pillar .p-num { font-family: 'JetBrains Mono', monospace; font-size: 19px; letter-spacing: 0.14em; color: var(--muted); }
+  .pillar .p-name { font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 500; line-height: 1.05; letter-spacing: -0.01em; }
+  .pillar .p-desc { font-family: 'Inter', sans-serif; font-size: 21px; color: var(--ink-2); line-height: 1.42; }
+
+  /* ── Flow diagram (shift loop) ───────────────────────────────────── */
+  .flow-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .flow-step {
+    border: 1px solid var(--rule-2); background: var(--bg-2); padding: 24px 22px;
+    display: flex; flex-direction: column; gap: 10px; min-height: 260px; position: relative;
+  }
+  .flow-step .fs-num { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: var(--neon); letter-spacing: 0.13em; }
+  .flow-step .fs-name { font-family: 'Space Grotesk', sans-serif; font-size: 27px; font-weight: 600; letter-spacing: -0.01em; }
+  .flow-step .fs-desc { font-family: 'Inter', sans-serif; font-size: 17px; color: var(--muted); line-height: 1.4; }
+  .flow-loop {
+    margin-top: 22px; display: flex; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--orange);
+    letter-spacing: 0.13em; text-transform: uppercase;
+  }
+
+  /* ── Stagger timeline (slide 8) ──────────────────────────────────── */
+  .stagger-strip { display: flex; justify-content: space-between; align-items: flex-start; position: relative; padding-top: 8px; }
+  .stagger-line { position: absolute; top: 78px; left: 2%; right: 2%; height: 2px; background: var(--rule-2); }
+  .stagger-tick { display: flex; flex-direction: column; align-items: center; gap: 14px; position: relative; flex: 1; }
+  .stagger-tick:nth-child(1) { margin-top: 0px; }
+  .stagger-tick:nth-child(2) { margin-top: 16px; }
+  .stagger-tick:nth-child(3) { margin-top: 32px; }
+  .stagger-tick:nth-child(4) { margin-top: 48px; }
+  .stagger-tick:nth-child(5) { margin-top: 64px; }
+  .stagger-tick:nth-child(6) { margin-top: 80px; }
+  .st-time { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 32px; color: var(--neon); }
+  .st-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 14px rgba(184,255,43,0.6); z-index: 1; }
+  .st-studio { font-family: 'JetBrains Mono', monospace; font-size: 16px; color: var(--ink-2); letter-spacing: 0.08em; text-transform: uppercase; }
+  .st-div { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ── SPS formula grid (slide 9) ──────────────────────────────────── */
+  .sps-grid { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; align-items: stretch; gap: 0 14px; }
+  .sps-card { border: 1px solid var(--rule-2); background: var(--bg-2); padding: 20px 20px; display: flex; flex-direction: column; gap: 8px; min-height: 200px; }
+  .sps-card .sc-weight { font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 500; color: var(--neon); letter-spacing: -0.02em; }
+  .sps-card .sc-name { font-family: 'Space Grotesk', sans-serif; font-size: 21px; font-weight: 600; letter-spacing: -0.005em; }
+  .sps-card .sc-desc { font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.36; color: var(--ink-2); }
+  .sps-plus { display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 26px; color: var(--muted); }
+
+  /* ── Career ladder (slide 9) ─────────────────────────────────────── */
+  .ladder { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border-top: 2px solid var(--neon); border-bottom: 2px solid var(--neon); }
+  .rung { padding: 18px 16px; border-right: 1px solid var(--rule-2); display: flex; flex-direction: column; gap: 6px; min-height: 178px; background: var(--bg-2); }
+  .rung:last-child { border-right: 0; }
+  .rung .r-num { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 500; line-height: 1; color: var(--muted); }
+  .rung .r-name { font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink); }
+  .rung .r-desc { font-family: 'Inter', sans-serif; font-size: 13.5px; color: var(--muted); line-height: 1.36; }
+  .rung .r-pay { font-family: 'JetBrains Mono', monospace; font-size: 16px; color: var(--neon); font-weight: 600; margin-top: auto; padding-top: 8px; border-top: 1px dashed var(--rule-2); }
+  .rung.champ { background: var(--neon); }
+  .rung.champ .r-num { color: rgba(10,11,10,0.6); }
+  .rung.champ .r-name { color: #0a0b0a; }
+  .rung.champ .r-desc { color: #1a2305; }
+  .rung.champ .r-pay { color: #0a0b0a; border-color: rgba(10,11,10,0.3); }
+
+  /* ── Trial chip row + gates (slide 10) ───────────────────────────── */
+  .chip-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 20px 26px; border: 1px solid var(--rule-2); background: var(--bg-2); }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 19px; letter-spacing: 0.08em; color: var(--ink); font-weight: 600; }
+  .chip-sep { color: var(--neon); font-family: 'JetBrains Mono', monospace; }
+
+  .gate-list { display: flex; flex-direction: column; }
+  .gate-row { display: grid; grid-template-columns: 56px 1fr; gap: 22px; padding: 16px 0; border-bottom: 1px dashed var(--rule-2); align-items: center; }
+  .gate-row .g-num { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; color: var(--neon); }
+  .gate-row .g-title { font-family: 'Space Grotesk', sans-serif; font-size: 21px; font-weight: 600; margin-bottom: 3px; }
+  .gate-row .g-desc { font-family: 'Inter', sans-serif; font-size: 17px; color: var(--ink-2); line-height: 1.35; }
+
+  .decision-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; border-top: 2px solid var(--neon); padding-top: 20px; }
+
+  /* ── Phase-2 panels (slide 11) ───────────────────────────────────── */
+  .p2-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .p2-panel { border: 1px solid var(--rule-2); background: var(--bg-2); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; min-height: 150px; }
+  .p2-panel .p2-label { font-family: 'JetBrains Mono', monospace; font-size: 14px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+  .p2-panel .p2-val { font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 500; color: var(--neon); letter-spacing: -0.02em; }
+  .p2-panel .p2-desc { font-family: 'Inter', sans-serif; font-size: 15.5px; color: var(--ink-2); line-height: 1.35; }
+
+  .break-strip { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule-2); }
+  .break-cell { padding: 18px 22px; border-right: 1px solid var(--rule-2); }
+  .break-cell:last-child { border-right: 0; }
+  .break-cell .bc-val { font-family: 'Space Grotesk', sans-serif; font-size: 42px; font-weight: 500; color: var(--ink); letter-spacing: -0.02em; }
+  .break-cell .bc-val.accent { color: var(--neon); }
+  .break-cell .bc-lbl { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 8px; line-height: 1.4; }
+
+  .ask-banner {
+    background: var(--neon); color: #0a0b0a;
+    padding: 22px 30px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .ask-banner .ab-title { font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 600; letter-spacing: -0.015em; }
+  .ask-banner .ab-sub { font-family: 'JetBrains Mono', monospace; font-size: 15px; letter-spacing: 0.06em; color: #1a2305; text-transform: uppercase; text-align: right; }
+</style>
+</head>
+<body>
+<a class="suite-nav" href="index.html">Back to suite</a>
+
+<script type="application/json" id="speaker-notes">
+{
+  "Cover": "This is a proposal, not an announcement. We are asking for six weeks on two studios, at existing pay and existing staffing, to test a small set of operating changes against NBA cancellations. Nothing here requires new budget to start — the ask is time and a controlled cell to run it in.",
+  "Context": "Quick grounding before the pitch. SIS Competitive Gaming runs sportsbook-grade, always-on live inventory — over 275,000 live events a year, broadcasting 24/7 across 10 concurrent streams. That scale is exactly why a reliability problem in production is a revenue problem, not just an operations footnote.",
+  "The Problem": "Cancellations happen in three concrete ways: a player is late or absent and the fixture voids after about ten minutes' grace; a tech fault or a random game crash isn't resolved in time; or some other technical or people-management issue gets in the way. No-shows in particular happen very often — sometimes several times in a single day — and when they do, the fallback is a three-man operation that gets widely complained about on the floor. Using working assumptions of a 5% cancellation rate and £1,000 of revenue lost per cancellation, that comes to roughly £4.71 million a year on NBA alone. I want to be clear that both of those inputs are working assumptions, not measured actuals.",
+  "Diagnosis": "None of this is a mystery to anyone who has stood in the studio. The cadence is repetitive with no stakes attached to it. A good week and a bad week look identical, because there's no progression. Pay tracks hours, not reliability. The current bonus structure and the ELO-style ranking are openly ridiculed by gamers — they carry no credibility. So cancelling has become the only pressure valve people have when they need a break, which is a format failure, not something to pin on individuals. Some come in sick rather than lose pay or standing, which then affects the people around them. And to be direct about it — none of this has ever been properly tried against an alternative.",
+  "The Opportunity": "Here is the lever, stated carefully. Every percentage point of reliability we recover is worth roughly 942 avoided cancellations and about £942,000 protected, on NBA alone. One point is £0.94 million, three points is £2.83 million, five points is £4.71 million — that last figure is the full baseline pool. Estate-wide, across EAFC and eAMF, the upside is almost certainly larger, but we're not modelling that until NBA proves the approach out.",
+  "The Rework": "The rework is three changes, and all three run at current pay and current staffing. Format: the two studios run as divisions with promotion and relegation, so every shift has stakes. Schedule: a ten-minute stagger paired with a fatigue-safe rotation, so no one carries more than three matches in a row without guaranteed rest. Progression: an SPS-based visible rank that covers skill, reliability, and attendance together. Zero incremental payroll for any of it.",
+  "Shift Cycle": "Here's the loop, in five steps. Seed the studios from the prior shift's standings. Play the rotation. Update the live table after every match. Promote the top, relegate the bottom. Then the next shift starts on new standings, with new stakes, running the same loop again.",
+  "The Stagger": "This slide is intentionally unglamorous. Staggering the six studios' starts ten minutes apart gives each one its own pre-show buffer to absorb a delay or a late change, so one studio's tech fault doesn't drag down the whole feed's rhythm. It also means a match closes roughly every ten minutes once everyone is live, which is simply steadier for broadcast and betting continuity. No bigger claim than that.",
+  "SPS & Progression": "SPS blends four inputs: event density at 45% — fixtures completed against what was scheduled, including delays; narrative at 25% — quarter-end lead changes, drop-offs and blowouts, with a cancellation penalty applied only to the gamer at fault; reliability at 15% — on-time starts, zero voids, feed uptime; and settlement accuracy at 15% — clean market close, zero disputes. Those weights are working values we intend to regress once we have trial data. The score maps to six career tiers, Academy through Champion, on an eight-week rolling window with no seasonal resets. The multiplier percentages you see are a phase-2 pay attachment — they are not part of the no-cost trial itself.",
+  "The Trial": "The ask, scoped tightly: Studios 5 and 6, Division 3, eight gamers, forty-two nights, at existing pay. We're measuring five things weekly — the cancel and void rate falling materially below the roughly 5% baseline, fewer three-man operations and late-start voids, visible SPS tier separation by week five, full gamer retention with stable or improving satisfaction, and whether the stagger and rotation actually run as designed. At the six-week mark we make one decision: expand to full NBA Night, tune and re-run, or stop.",
+  "Phase 2 & The Ask": "Phase 2 is what the trial's results would justify — it is not part of what we're asking for today. It's win bonuses of £1.80 to £2.80 a match, reliability multipliers from zero up to 35% by career tier, and on-call standby cover. That moves the cost per NBA shift from about £3.51K to about £4.51K, roughly £732,000 a year against 730 shifts, versus £942,000 protected per reliability point — so it breaks even at 0.78 of a point. Beyond that, proving revenue recovery lets us reinvest in gamer development — Analysts and Trainers, who've already shown good impact on lower-skilled gamers. But that's all downstream. Today's ask is simpler: approve the six-week no-cost trial."
+}
+</script>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- 1. Cover -->
+  <section data-label="Cover" class="slide">
+    <div class="grid-bg"></div>
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; position:relative; z-index: 1;">
+      <h1 class="display" style="margin-bottom: 40px;">
+        A <span style="color: var(--neon); text-shadow: 0 0 40px rgba(184,255,43,0.35);">reliability-first</span><br>
+        operating trial for<br>
+        NBA production.
+      </h1>
+      <div class="rule thick" style="margin: 36px 0 32px; width: 420px;"></div>
+      <div class="body lg" style="max-width: 1080px;">
+        Six weeks. <span class="accent">Studios 5–6.</span> <span class="accent">No additional cost.</span>
+      </div>
+    </div>
+    <div class="runner bot">
+      <span>A PROPOSAL TO LEADERSHIP</span>
+      <span>№ 01 / 11</span>
+    </div>
+  </section>
+
+  <!-- 2. Context -->
+  <section data-label="Context" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>CONTEXT</span>
+    </div>
+    <h1 class="title" style="margin-bottom: 52px; max-width: 1500px;">
+      SIS Competitive Gaming is<br>
+      sportsbook-grade, always-on<br>
+      live inventory.
+    </h1>
+
+    <div class="stat-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="stat-cell">
+        <div class="stat-num" style="color: var(--neon);">275k+</div>
+        <div class="stat-label">Live events / year</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Always-on broadcasts</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">10</div>
+        <div class="stat-label">Concurrent streams</div>
+      </div>
+    </div>
+
+    <div class="body" style="margin-top: 44px; font-size: 25px; max-width: 1300px;">
+      This is the production surface the NBA trial operates inside — high-volume, continuous, and built to be dependable minute to minute.
+    </div>
+
+    <div class="source-inline" style="margin-top: 34px;">
+      Public anchor: <a href="https://www.sis.tv/sis-competitive-gaming/">SIS Competitive Gaming</a> — event volume, always-on supply and stream count.
+    </div>
+
+    <div class="runner bot">
+      <span>CONTEXT</span>
+      <span>№ 02 / 11</span>
+    </div>
+  </section>
+
+  <!-- 3. The problem: cancellations -->
+  <section data-label="The Problem" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>THE PROBLEM</span>
+    </div>
+    <h1 class="title sm" style="margin-bottom: 40px; max-width: 1600px;">
+      Cancellations happen in three ways — and they happen often.
+    </h1>
+
+    <div class="cause-grid">
+      <div class="cause-card">
+        <div class="cc-num">01 · LATE OR ABSENT</div>
+        <div class="cc-name">The no-show void</div>
+        <div class="cc-desc">If a player isn't present within roughly ten minutes of the scheduled time, the fixture is voided.</div>
+      </div>
+      <div class="cause-card">
+        <div class="cc-num">02 · TECH FAULTS</div>
+        <div class="cc-name">Faults &amp; crashes</div>
+        <div class="cc-desc">Equipment issues and random game crashes — before, during, or after a match starts — that aren't resolved in time.</div>
+      </div>
+      <div class="cause-card">
+        <div class="cc-num">03 · OTHER OPS ISSUES</div>
+        <div class="cc-name">Other floor issues</div>
+        <div class="cc-desc">Other technical or people-management issues that stop a scheduled fixture from running.</div>
+      </div>
+    </div>
+
+    <div class="row gap-l" style="flex: 1; margin-top: 40px; align-items: stretch;">
+      <div class="col" style="flex: 1.3; justify-content: center;">
+        <div class="small" style="margin-bottom: 16px;">HOW OFTEN, HONESTLY</div>
+        <div class="body" style="font-size: 23px; max-width: 780px;">
+          No-shows happen <span class="accent">very often — sometimes several times in a single day.</span> When one does, the schedule is amended: the missing player is dropped and a <span class="orange">3-man operation</span> rotates in their place, unless a suitable replacement is found in time. These 3-man shifts are one of the most common complaints on the floor.
+        </div>
+      </div>
+      <div class="col" style="flex: 1; border-left: 1px solid var(--rule-2); padding-left: 48px; justify-content: center;">
+        <div class="small" style="margin-bottom: 14px;">ANNUALISED NBA IMPACT · WORKING ASSUMPTION</div>
+        <div class="stat-num md" style="color: var(--orange); text-shadow: 0 0 40px rgba(255,106,31,0.22);">£4.71M</div>
+        <div class="body" style="margin-top: 18px; font-size: 18px; color: var(--muted); max-width: 520px;">
+          At a 5% cancellation rate and £1,000 of revenue lost per cancel — both stated working assumptions, not measured actuals.
+        </div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>CANCELLATION IMPACT</span>
+      <span>№ 03 / 11</span>
+    </div>
+  </section>
+
+  <!-- 4. Why the current model produces this -->
+  <section data-label="Diagnosis" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>DIAGNOSIS</span>
+    </div>
+    <h1 class="title sm" style="margin-bottom: 36px; max-width: 1600px;">
+      None of this is a mystery to anyone who has worked a shift.
+    </h1>
+
+    <div class="diag-grid">
+      <div class="diag-item">
+        <div class="di-num">01</div>
+        <div>
+          <div class="di-title">Repetitive, no-stakes cadence</div>
+          <div class="di-desc">Every match is the same match. Nothing about the format changes when a shift is going well or badly.</div>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="di-num">02</div>
+        <div>
+          <div class="di-title">No progression</div>
+          <div class="di-desc">A good week and a bad week look identical. There is no visible "up" to play for.</div>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="di-num">03</div>
+        <div>
+          <div class="di-title">Flat, attendance-based pay</div>
+          <div class="di-desc">Pay tracks hours in the chair, not reliability or performance.</div>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="di-num">04</div>
+        <div>
+          <div class="di-title">A bonus system nobody trusts</div>
+          <div class="di-desc">The current bonus structure and the ELO-style ranking are openly ridiculed by gamers — they carry no credibility on the floor.</div>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="di-num">05</div>
+        <div>
+          <div class="di-title">Cancelling is the only pressure valve</div>
+          <div class="di-desc">People push to cancel strategically to gain break time. That is a <span class="accent">format failure</span>, not something to pin on individuals.</div>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="di-num">06</div>
+        <div>
+          <div class="di-title">Sick, not absent</div>
+          <div class="di-desc">People also come in sick rather than lose pay or standing — which puts the people around them at risk too. Expected to ease as the operation stabilises.</div>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="di-num">07</div>
+        <div>
+          <div class="di-title">Nothing has been tried, properly</div>
+          <div class="di-desc">None of the above has ever been tested against a real alternative — until now.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>DIAGNOSIS</span>
+      <span>№ 04 / 11</span>
+    </div>
+  </section>
+
+  <!-- 5. The opportunity -->
+  <section data-label="The Opportunity" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>THE OPPORTUNITY</span>
+    </div>
+    <h1 class="title" style="margin-bottom: 44px; max-width: 1500px;">
+      Reliability converts directly into protected revenue.
+    </h1>
+
+    <div class="row gap-l" style="flex: 1; align-items: stretch;">
+      <div class="col" style="flex: 1;">
+        <div class="callout">
+          <div class="c-num">942</div>
+          <div class="c-lbl">avoided cancellations per<br>reliability point ≈ <span class="accent">£942K</span> protected<br>(NBA-only)</div>
+        </div>
+        <div class="body" style="margin-top: 30px; max-width: 620px; font-size: 21px; color: var(--muted);">
+          Estate-wide upside — across EAFC and eAMF — is likely larger, but it stays unmodelled until NBA proves the approach out.
+        </div>
+      </div>
+
+      <div class="col" style="flex: 1.2; border-left: 1px solid var(--rule-2); padding-left: 52px; justify-content: center;">
+        <div class="small" style="margin-bottom: 22px;">RELIABILITY LADDER · ANNUAL PROTECTED, NBA-ONLY</div>
+        <div class="bar-row"><div class="bar-lbl">+1pp</div><div class="bar-track"><div class="bar-fill" style="width: 20%;"></div></div><div class="bar-val">£0.94M</div></div>
+        <div class="bar-row"><div class="bar-lbl">+3pp</div><div class="bar-track"><div class="bar-fill" style="width: 60%;"></div></div><div class="bar-val">£2.83M</div></div>
+        <div class="bar-row" style="border-bottom: 0;"><div class="bar-lbl">+5pp</div><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><div class="bar-val">£4.71M</div></div>
+        <div class="small" style="margin-top: 22px; font-size: 15px;">942 CANCELS / PP · £1,000 REVENUE LOST PER CANCEL · WORKING ASSUMPTIONS</div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>THE OPPORTUNITY</span>
+      <span>№ 05 / 11</span>
+    </div>
+  </section>
+
+  <!-- 6. The no-cost rework — three concepts -->
+  <section data-label="The Rework" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>THE PROPOSAL</span>
+    </div>
+    <h1 class="title" style="margin-bottom: 48px; max-width: 1500px;">
+      Three changes. Same pay, same staffing.
+    </h1>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="p-num">CONCEPT / 01</div>
+        <div class="p-name">Format</div>
+        <div class="p-desc">Studios 5–6 run as divisions with promotion and relegation. Stakes on every shift, not just the marquee ones.</div>
+      </div>
+      <div class="pillar">
+        <div class="p-num">CONCEPT / 02</div>
+        <div class="p-name">Schedule</div>
+        <div class="p-desc">A 10-minute stagger paired with a fatigue-safe rotation — no gamer carries more than three matches in a row without guaranteed rest.</div>
+      </div>
+      <div class="pillar">
+        <div class="p-num">CONCEPT / 03</div>
+        <div class="p-name">Progression</div>
+        <div class="p-desc">An SPS-based visible rank covering skill, reliability, <em>and</em> attendance — not attendance alone.</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px;">
+      <div class="marker-sticker">ALL OF IT AT CURRENT PAY AND STAFFING · £0 INCREMENTAL PAYROLL</div>
+    </div>
+
+    <div class="runner bot">
+      <span>THE PROPOSAL</span>
+      <span>№ 06 / 11</span>
+    </div>
+  </section>
+
+  <!-- 7. How a shift runs -->
+  <section data-label="Shift Cycle" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>HOW A SHIFT RUNS</span>
+    </div>
+    <h1 class="title" style="margin-bottom: 48px; max-width: 1500px;">
+      A loop, repeated every shift.
+    </h1>
+
+    <div class="flow-wrap">
+      <div class="flow-step">
+        <div class="fs-num">STEP 01</div>
+        <div class="fs-name">Seed</div>
+        <div class="fs-desc">Studios 5–6 are placed into standings order from the prior shift's results.</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">STEP 02</div>
+        <div class="fs-name">Play</div>
+        <div class="fs-desc">The rotation runs — staggered starts, fatigue-safe pairings, every match on the table.</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">STEP 03</div>
+        <div class="fs-name">Table</div>
+        <div class="fs-desc">Live standings update after every match — visible on the floor as the shift plays out.</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">STEP 04</div>
+        <div class="fs-name">Promote / Relegate</div>
+        <div class="fs-desc"><span class="accent">Top of the table moves up</span>, <span class="orange">bottom moves down.</span> Stakes reset for the next shift.</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">STEP 05</div>
+        <div class="fs-name">Reseed</div>
+        <div class="fs-desc">The next shift starts on new standings — new stakes, same rotation.</div>
+      </div>
+    </div>
+
+    <div class="flow-loop">↻ REPEATS · EVERY SHIFT, EVERY NIGHT</div>
+
+    <div class="body" style="margin-top: 36px; font-size: 21px; color: var(--muted); max-width: 1300px;">
+      Same five steps across all 42 trial nights — the point is a predictable loop gamers can actually plan around, shift to shift.
+    </div>
+
+    <div class="runner bot">
+      <span>HOW A SHIFT RUNS</span>
+      <span>№ 07 / 11</span>
+    </div>
+  </section>
+
+  <!-- 8. The 10-minute stagger -->
+  <section data-label="The Stagger" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>THE 10-MINUTE STAGGER</span>
+    </div>
+    <h1 class="title" style="margin-bottom: 44px; max-width: 1500px;">
+      A ten-minute head start, six times over.
+    </h1>
+
+    <div class="row gap-l" style="flex: 1; align-items: center;">
+      <div class="col gap-m" style="flex: 1;">
+        <div class="body" style="font-size: 24px;">
+          Staggered starts give every studio its own pre-show buffer to absorb a delay or a late change.
+        </div>
+        <div class="body" style="font-size: 24px;">
+          A single studio's tech fault no longer risks the whole feed's rhythm.
+        </div>
+        <div class="body" style="font-size: 24px;">
+          Once all six studios are live, a match closes <span class="accent">roughly every ten minutes</span> — steady for broadcast and betting continuity.
+        </div>
+      </div>
+
+      <div class="col" style="flex: 1.3; border-left: 1px solid var(--rule-2); padding-left: 52px;">
+        <div class="small" style="margin-bottom: 30px;">NIGHT SHIFT · SCHEDULED START TIMES</div>
+        <div class="stagger-strip">
+          <div class="stagger-line"></div>
+          <div class="stagger-tick"><div class="st-time">19:00</div><div class="st-dot"></div><div class="st-studio">S1</div><div class="st-div">DIV 1</div></div>
+          <div class="stagger-tick"><div class="st-time">19:10</div><div class="st-dot"></div><div class="st-studio">S2</div><div class="st-div">DIV 1</div></div>
+          <div class="stagger-tick"><div class="st-time">19:20</div><div class="st-dot"></div><div class="st-studio">S3</div><div class="st-div">DIV 2</div></div>
+          <div class="stagger-tick"><div class="st-time">19:30</div><div class="st-dot"></div><div class="st-studio">S4</div><div class="st-div">DIV 2</div></div>
+          <div class="stagger-tick"><div class="st-time">19:40</div><div class="st-dot"></div><div class="st-studio">S5</div><div class="st-div">DIV 3</div></div>
+          <div class="stagger-tick"><div class="st-time">19:50</div><div class="st-dot"></div><div class="st-studio">S6</div><div class="st-div">DIV 3</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>SCHEDULE DESIGN</span>
+      <span>№ 08 / 11</span>
+    </div>
+  </section>
+
+  <!-- 9. SPS + progression -->
+  <section data-label="SPS & Progression" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>SPS &amp; PROGRESSION</span>
+    </div>
+    <h1 class="title sm" style="margin-bottom: 28px; max-width: 1600px;">
+      One score. Four inputs. Six ranks.
+    </h1>
+
+    <div class="small" style="margin-bottom: 14px;">SPS = WEIGHTED BLEND · WEIGHTS ARE WORKING VALUES, TO BE REGRESSED ON TRIAL DATA</div>
+    <div class="sps-grid">
+      <div class="sps-card">
+        <div class="sc-weight">0.45</div>
+        <div class="sc-name">Event density</div>
+        <div class="sc-desc">Fixtures completed vs. scheduled, including delays.</div>
+      </div>
+      <div class="sps-plus">+</div>
+      <div class="sps-card">
+        <div class="sc-weight">0.25</div>
+        <div class="sc-name">Narrative</div>
+        <div class="sc-desc">Quarter-end lead changes, drop-offs, blowouts. Cancellation penalty applies only to the gamer at fault.</div>
+      </div>
+      <div class="sps-plus">+</div>
+      <div class="sps-card">
+        <div class="sc-weight">0.15</div>
+        <div class="sc-name">Reliability</div>
+        <div class="sc-desc">On-time starts, zero voids, feed uptime.</div>
+      </div>
+      <div class="sps-plus">+</div>
+      <div class="sps-card">
+        <div class="sc-weight">0.15</div>
+        <div class="sc-name">Settlement accuracy</div>
+        <div class="sc-desc">Clean market close, zero disputes.</div>
+      </div>
+    </div>
+
+    <div class="small" style="margin: 30px 0 12px;">CAREER TIER · 8-WEEK ROLLING WINDOW · FULL HISTORY RETAINED, NO SEASONAL RESETS · % = PHASE-2 PAY ATTACHMENT</div>
+    <div class="ladder">
+      <div class="rung">
+        <div class="r-num">01</div>
+        <div class="r-name">Academy</div>
+        <div class="r-desc">Entry rank. No prerequisites.</div>
+        <div class="r-pay">0%</div>
+      </div>
+      <div class="rung">
+        <div class="r-num">02</div>
+        <div class="r-name">Rookie</div>
+        <div class="r-desc">50+ shifts · cancel rate &lt; 6%.</div>
+        <div class="r-pay">+2.5%</div>
+      </div>
+      <div class="rung">
+        <div class="r-num">03</div>
+        <div class="r-name">Regular</div>
+        <div class="r-desc">Promoted out of D3 · &lt; 4%.</div>
+        <div class="r-pay">+7.5%</div>
+      </div>
+      <div class="rung">
+        <div class="r-num">04</div>
+        <div class="r-name">Specialist</div>
+        <div class="r-desc">1+ month in top studios · &lt; 3%.</div>
+        <div class="r-pay">+12.5%</div>
+      </div>
+      <div class="rung">
+        <div class="r-num">05</div>
+        <div class="r-name">Elite</div>
+        <div class="r-desc">3+ months in D1 · &lt; 2%.</div>
+        <div class="r-pay">+30%</div>
+      </div>
+      <div class="rung champ">
+        <div class="r-num">★</div>
+        <div class="r-name">Champion</div>
+        <div class="r-desc">Division title holder, 1 per division · 8+ wins/shift avg.</div>
+        <div class="r-pay">+35%</div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>SPS &amp; PROGRESSION</span>
+      <span>№ 09 / 11</span>
+    </div>
+  </section>
+
+  <!-- 10. The six-week no-cost trial -->
+  <section data-label="The Trial" class="slide grey">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>THE TRIAL</span>
+    </div>
+    <h1 class="title" style="margin-bottom: 36px; max-width: 1500px;">
+      Six weeks. One cell. No incremental cost.
+    </h1>
+
+    <div class="chip-row" style="margin-bottom: 36px;">
+      <span class="chip">STUDIOS 5–6</span><span class="chip-sep">·</span>
+      <span class="chip">DIVISION 3</span><span class="chip-sep">·</span>
+      <span class="chip">8 GAMERS</span><span class="chip-sep">·</span>
+      <span class="chip">42 NIGHTS</span><span class="chip-sep">·</span>
+      <span class="chip">EXISTING PAY</span>
+    </div>
+
+    <div class="small" style="margin-bottom: 6px;">SUCCESS GATES · MEASURED WEEKLY</div>
+    <div class="gate-list">
+      <div class="gate-row">
+        <div class="g-num">01</div>
+        <div><div class="g-title">Cancel / void rate falls</div><div class="g-desc">Materially below the ~5% baseline on Studios 5–6 — target &lt;3%.</div></div>
+      </div>
+      <div class="gate-row">
+        <div class="g-num">02</div>
+        <div><div class="g-title">Fewer 3-man operations</div><div class="g-desc">Fewer 3-man operations and late-start voids than baseline.</div></div>
+      </div>
+      <div class="gate-row">
+        <div class="g-num">03</div>
+        <div><div class="g-title">Visible SPS separation</div><div class="g-desc">SPS distribution shows visible tier separation by week 5.</div></div>
+      </div>
+      <div class="gate-row">
+        <div class="g-num">04</div>
+        <div><div class="g-title">Retention &amp; satisfaction</div><div class="g-desc">100% gamer retention; satisfaction stable or improving (short weekly survey).</div></div>
+      </div>
+      <div class="gate-row" style="border-bottom: 0;">
+        <div class="g-num">05</div>
+        <div><div class="g-title">Schedule adherence</div><div class="g-desc">The stagger and rotation run as designed.</div></div>
+      </div>
+    </div>
+
+    <div class="decision-row" style="margin-top: 32px;">
+      <div class="col gap-s">
+        <div class="small">IF GREEN</div>
+        <div class="body" style="font-size: 21px;">Expand to full NBA Night.</div>
+      </div>
+      <div class="col gap-s">
+        <div class="small">IF MIXED</div>
+        <div class="body" style="font-size: 21px;">Tune the mechanics and re-run the cell.</div>
+      </div>
+      <div class="col gap-s">
+        <div class="small">IF RED</div>
+        <div class="body" style="font-size: 21px;">Stop before any wider disruption.</div>
+      </div>
+    </div>
+
+    <div class="runner bot">
+      <span>WEEK-6 DECISION</span>
+      <span>№ 10 / 11</span>
+    </div>
+  </section>
+
+  <!-- 11. Phase 2 + the ask -->
+  <section data-label="Phase 2 & The Ask" class="slide">
+    <div class="runner top">
+      <span class="sis-mark"><span class="dot"></span>SIS</span>
+      <span>PHASE 2 · THE ASK</span>
+    </div>
+    <h1 class="title sm" style="margin-bottom: 20px; max-width: 1600px;">
+      What success unlocks — and the ask.
+    </h1>
+    <div class="body" style="font-size: 20px; color: var(--muted); margin-bottom: 26px; max-width: 1400px;">
+      Phase 2 is the investment case — proposed only after the trial's gates pass, not part of today's request.
+    </div>
+
+    <div class="p2-grid">
+      <div class="p2-panel">
+        <div class="p2-label">Win bonus</div>
+        <div class="p2-val">£1.80–£2.80</div>
+        <div class="p2-desc">Per match, descending division by division from S1 down to S6.</div>
+      </div>
+      <div class="p2-panel">
+        <div class="p2-label">Reliability multiplier</div>
+        <div class="p2-val">0 → 35%</div>
+        <div class="p2-desc">By career tier, on the ladder shown earlier — Academy through Champion.</div>
+      </div>
+      <div class="p2-panel">
+        <div class="p2-label">Standby cover</div>
+        <div class="p2-val">On-call</div>
+        <div class="p2-desc">One standby per shift — a new phase-2 addition, not part of the no-cost trial.</div>
+      </div>
+    </div>
+
+    <div class="break-strip" style="margin-top: 22px;">
+      <div class="break-cell">
+        <div class="bc-val">£3.51K → £4.51K</div>
+        <div class="bc-lbl">Cost per NBA shift, current → phase-2 model</div>
+      </div>
+      <div class="break-cell">
+        <div class="bc-val accent">+£732K/yr</div>
+        <div class="bc-lbl">Added cost across 730 NBA shifts/yr, vs £942K protected per point</div>
+      </div>
+      <div class="break-cell">
+        <div class="bc-val accent">0.78pp</div>
+        <div class="bc-lbl">Reliability gain needed to break even</div>
+      </div>
+    </div>
+
+    <div class="body" style="margin-top: 22px; font-size: 19px; color: var(--ink-2); max-width: 1500px;">
+      Beyond the pay model, proving revenue recovery lets us reinvest in gamer development — Analysts and Trainers, who have already shown good impact on lower-skilled gamers.
+    </div>
+
+    <div style="flex: 1;"></div>
+
+    <div class="ask-banner">
+      <div class="ab-title">The ask: approve the six-week no-cost trial.</div>
+      <div class="ab-sub">Studios 5–6 · Division 3 · 8 gamers · 42 nights<br>£0 incremental payroll</div>
+    </div>
+
+    <div class="runner bot">
+      <span>END · QUESTIONS?</span>
+      <span>№ 11 / 11</span>
+    </div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>

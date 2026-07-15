@@ -139,6 +139,10 @@
     background: var(--neon);
     border-color: var(--neon);
   }
+  .cards .card:nth-child(2) {
+    grid-column: 1 / -1;
+    min-height: 190px;
+  }
   .card:hover {
     transform: translateY(-2px);
     border-color: #111;
@@ -217,6 +221,44 @@
   footer a { color: var(--soft); text-underline-offset: 3px; }
   .mono { font-family: "JetBrains Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; }
 
+  .archive {
+    margin-top: 46px;
+    padding-top: 26px;
+    border-top: 1px solid var(--rule);
+  }
+  .archive-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .archive-note {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 740px;
+    margin-bottom: 18px;
+  }
+  .archive-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+  }
+  .archive-list a {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .archive-list a:hover { color: var(--neon); border-bottom-color: var(--neon); }
+  .archive-list a:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; }
+
   @media (max-width: 860px) {
     .page { padding: 42px 18px 56px; }
     header { grid-template-columns: 1fr; gap: 28px; align-items: start; }
@@ -227,6 +269,8 @@
     .metric:nth-child(1), .metric:nth-child(2) { border-bottom: 1px solid var(--rule); }
     .cards { grid-template-columns: 1fr; }
     .card.primary { grid-column: auto; }
+    .cards .card:nth-child(2) { grid-column: auto; }
+    .archive-list { gap: 8px 18px; }
     footer { flex-direction: column; }
   }
 </style>
@@ -235,69 +279,54 @@
 <main class="page">
   <header>
     <div>
-      <div class="tag">SIS Competitive Gaming · Product conviction</div>
-      <h1>A gaming-native operating model for reliable live content.</h1>
-      <p class="subtitle">This suite frames the NBA trial through a tech-and-gaming lens: tight feedback loops, visible rank, trusted uptime and a product that gives gamers a reason to keep showing up better.</p>
+      <div class="tag">SIS Competitive Gaming · NBA production trial</div>
+      <h1>A six-week, no-cost operating trial for NBA production reliability.</h1>
+      <p class="subtitle">This suite proposes a bounded trial of format, scheduling and visible-progression changes on NBA Night production, run at existing pay and existing staffing, to test reliability as a revenue lever before any investment decision is made.</p>
       <div class="metrics" aria-label="Public SIS Competitive Gaming anchors">
         <div class="metric"><strong>275k+</strong><span>Live events/year</span></div>
         <div class="metric"><strong>24/7</strong><span>Broadcasts</span></div>
         <div class="metric"><strong>10</strong><span>Concurrent streams</span></div>
-        <div class="metric"><strong>0.78pp</strong><span>Break-even gain</span></div>
+        <div class="metric"><strong>£0</strong><span>Incremental trial payroll</span></div>
       </div>
     </div>
     <aside class="thesis">
-      <h2>The six-week trial proves the revenue loop, not just the staffing model.</h2>
-      <p>The point is simple: if the ranked loop works on NBA Night, SIS gets more reliable content, gamers get a clearer path to progress, and the bonus model pays back before one percentage point of reliability improvement.</p>
+      <h2>The trial tests the reliability lever before any spend is proposed.</h2>
+      <p>Cancellations behave like a controllable rate, not a fixed cost of the current format. A six-week run on Studios 5-6 asks whether format, stagger and visible progression can lower that rate at existing pay and existing staffing. A phase-2 bonus and multiplier model — with an estimated 0.78-percentage-point break-even — is proposed only after the trial's gates pass.</p>
     </aside>
   </header>
 
   <section class="cards" aria-label="Presentation suite">
-    <a class="card primary" href="SIS Executive Brief.html">
+    <a class="card primary" href="SIS NBA Trial Presentation.html">
       <div class="card-top"><span class="num">01</span><span class="role">Start here</span></div>
-      <div class="card-title">Product Conviction Brief</div>
-      <div class="card-desc">Eight-slide narrative: why the product matters, why gaming logic makes the trial stronger, and what proof is required before scale.</div>
-      <div class="chips"><span class="chip">6-week trial</span><span class="chip">Player lens</span><span class="chip">Product proof</span></div>
+      <div class="card-title">Trial Presentation</div>
+      <div class="card-desc">Eleven-slide leadership narrative: the cancellation problem, why the current format produces it, the reliability opportunity, and the ask — a six-week no-cost trial on Studios 5-6 at existing pay and staffing, with the bonus and multiplier model shown only as a phase-2 follow-on.</div>
+      <div class="chips"><span class="chip">11 slides</span><span class="chip">No-cost trial</span><span class="chip">NBA first</span></div>
     </a>
 
-    <a class="card" href="SIS Trial Proposal.html">
-      <div class="card-top"><span class="num">02</span><span class="role">Trial build</span></div>
-      <div class="card-title">Trial Blueprint</div>
-      <div class="card-desc">Operational detail for the six-week run on Night Studios 5-6: cohort, incentives, schedule, cover, gates and bonus economics.</div>
-      <div class="chips"><span class="chip">6 weeks</span><span class="chip">0.78pp break-even</span></div>
+    <a class="card" href="SIS NBA Trial Supporting Document.html">
+      <div class="card-top"><span class="num">02</span><span class="role">Appendix</span></div>
+      <div class="card-title">Supporting Document</div>
+      <div class="card-desc">Single-page appendix: shift mechanics, the corrected fatigue-safe rotation grid, roster and cadence model, SPS and progression, trial measurement design, phase-2 economics and the full assumptions register.</div>
+      <div class="chips"><span class="chip">Mechanics</span><span class="chip">Rotation grid</span><span class="chip">Assumptions</span></div>
     </a>
+  </section>
 
-    <a class="card" href="Shift Structure v3.html">
-      <div class="card-top"><span class="num">03</span><span class="role">Operating model</span></div>
-      <div class="card-title">Shift Structure</div>
-      <div class="card-desc">NBA match volume, studio stagger, pool sizing, progression logic and cancellation recovery math tied to revenue lost.</div>
-      <div class="chips"><span class="chip">Scheduling</span><span class="chip">Pools</span></div>
-    </a>
-
-    <a class="card" href="Shift Economics Analysis.html">
-      <div class="card-top"><span class="num">04</span><span class="role">Economics</span></div>
-      <div class="card-title">Economics Analysis</div>
-      <div class="card-desc">Cost comparison, recovered event value, SPS weighting and trial assumptions for the NBA reliability model.</div>
-      <div class="chips"><span class="chip">Margins</span><span class="chip">SPS</span></div>
-    </a>
-
-    <a class="card" href="SIS Tournament Revamp.html">
-      <div class="card-top"><span class="num">05</span><span class="role">Narrative deck</span></div>
-      <div class="card-title">Tournament Revamp</div>
-      <div class="card-desc">Twelve-slide narrative deck tying reliability, progression and bonus economics into the decision ask.</div>
-      <div class="chips"><span class="chip">NBA first</span><span class="chip">12 slides</span></div>
-    </a>
-
-    <a class="card" href="SIS Ladder Animation.html">
-      <div class="card-top"><span class="num">06</span><span class="role">Visual proof</span></div>
-      <div class="card-title">Ladder Animation</div>
-      <div class="card-desc">Animated view of progression, reliability and tier movement using the local production bundle.</div>
-      <div class="chips"><span class="chip">Local bundle</span><span class="chip">Fallback</span></div>
-    </a>
+  <section class="archive" aria-label="Working archive">
+    <div class="archive-title">Working archive</div>
+    <p class="archive-note">Superseded working documents from earlier drafts of this suite, kept here for reference only. Where any figure in these pages conflicts with the Trial Presentation or Supporting Document above, those two current documents are the source of truth.</p>
+    <ul class="archive-list">
+      <li><a href="SIS Executive Brief.html">SIS Executive Brief</a></li>
+      <li><a href="SIS Trial Proposal.html">SIS Trial Proposal</a></li>
+      <li><a href="Shift Structure v3.html">Shift Structure v3</a></li>
+      <li><a href="Shift Economics Analysis.html">Shift Economics Analysis</a></li>
+      <li><a href="SIS Tournament Revamp.html">SIS Tournament Revamp</a></li>
+      <li><a href="SIS Ladder Animation.html">SIS Ladder Animation</a></li>
+    </ul>
   </section>
 
   <footer>
     <div>Public framing uses SIS Competitive Gaming, Hard Rock Bet, Genius Sports and bet365 source material.</div>
-    <div class="mono">Static suite · NBA trial first</div>
+    <div class="mono">Static suite · No-cost NBA trial first</div>
   </footer>
 </main>
 </body>
